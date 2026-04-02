@@ -1,0 +1,16 @@
+node_modules
+tmp
+venv
+fish-speech
+
+__pycache__
+.token
+*.7z
+*.gtirb
+*.rzdb
+*.exe
+bio2game
+bio2
+test
+hello*
+ddisasm

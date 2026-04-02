@@ -1,0 +1,81 @@
+
+
+FUN_509bb0
+
+res1_buf32 res165
+
+
+call FUN_50b230
+call FUN_50b3c0
+
+FUN_50c1f0
+FUN_50c0a0
+FUN_50c060
+
+
+          BYTE 044H
+          BYTE 094H
+          BYTE 004H
+          ...
+          
+          
+          
+          [VirtualAlloc]
+          
+
+            ;add ECX,575472                         ; 8C7F00h                    
+            ;shl ECX,4
+            ;mov DWORD PTR [ECX+ESI*1],EDX          ; 这里崩溃
+            mov DWORD PTR [ESI+$L_8c7F00], EDX
+            
+            
+            
+            FUN_4ec0f0 PROC 
+            
+006AC770 | A1 CE9C9200              | mov eax,dword ptr ds:[929CCE]           |Fun_433830
+006AC775 | 85C0                     | test eax,eax                            |
+006AC777 | 74 2D                    | je bio2.re.6AC7A6                       |
+006AC779 | 8B4C24 04                | mov ecx,dword ptr ss:[esp+4]            | ecx:SetAppCompatData+35F60
+006AC77D | 8B15 4A059400            | mov edx,dword ptr ds:[94054A]           | edx:_ImmAssociateContext@8+35B74E
+006AC783 | 83F9 01                  | cmp ecx,1                               | ecx:SetAppCompatData+35F60
+006AC786 | 8B08                     | mov ecx,dword ptr ds:[eax]              | ecx:SetAppCompatData+35F60, [eax]:SetAppCompatData+35F60
+006AC788 | 75 0E                    | jne bio2.re.6AC798                      |
+006AC78A | 6A 01                    | push 1                                  |ecx: 740aa360
+006AC78C | 52                       | push edx                                | edx:0090068c  _ImmAssociateContext@8+35B74E 
+006AC78D | 50                       | push eax                                | eax: 4e32230
+006AC78E | FF51 18                  | call dword ptr ds:[ecx+18]              | [ecx+18]:CompleteCreateSysmemSurface+410
+006AC791 | 85C0                     | test eax,eax                            |
+006AC793 | 74 11                    | je bio2.re.6AC7A6                       | 有问题
+006AC795 | 33C0                     | xor eax,eax                             |
+006AC797 | C3                       | ret                                     | 返回EIP=1,崩溃
+
+==================================================================================================
+00433830 | A1 A09C6600              | mov eax,dword ptr ds:[669CA0]           |
+00433835 | 85C0                     | test eax,eax                            |
+00433837 | 74 2D                    | je bio2.433866                          |
+00433839 | 8B4C24 04                | mov ecx,dword ptr ss:[esp+4]            |
+0043383D | 8B15 1C056800            | mov edx,dword ptr ds:[68051C]           |
+00433843 | 83F9 01                  | cmp ecx,1                               |
+00433846 | 8B08                     | mov ecx,dword ptr ds:[eax]              |
+00433848 | 75 0E                    | jne bio2.433858                         |
+0043384A | 6A 01                    | push 1                                  |ecx= 74282498
+0043384C | 52                       | push edx                                |edx= 7f067a
+0043384D | 50                       | push eax                                |eax= 011a0880
+0043384E | FF51 18                  | call dword ptr ds:[ecx+18]              | [ecx+18]:DllCanUnloadNow+18F0 正确执行
+
+
+FUN_50c66c PROC
+
+            jmp DWORD PTR __imp__DirectDrawCreate@12 <- 导入错误,修正完成
+FUN_50c66c ENDP
+
+DirectSoundCreate
+
+EXTERN __imp__DirectDrawCreate@12:PROC
+EXTERN _DirectDrawCreate@12:PROC
+EXTERN __imp___DirectSoundCreate@12:PROC
+EXTERN _DirectSoundCreate@12:PROC
+
+
+
+$L_434750:: 需要修正
