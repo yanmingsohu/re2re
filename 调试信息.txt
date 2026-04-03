@@ -84,10 +84,6 @@ mov EAX,DWORD PTR [$L_669ca0]
 
 
 
-
-fun_50c510 <- 开始画面随机崩溃
-fun_50bb20
-
 fun_4ceee0+198 <- ip跑飞
 
 fun_4ecc70+256 <- 内存非法访问
@@ -95,3 +91,10 @@ FUN_4edd00
 
 
 call FUN_45b740 <- 不存在的函数
+
+
+
+
+fun_50c510 <- 开始画面随机崩溃
+FUN_50bb20 ??
+FUN_50bad0 ??
