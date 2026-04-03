@@ -9,8 +9,10 @@ __pycache__
 *.gtirb
 *.rzdb
 *.exe
+*.obj
 bio2game
 bio2
 test
 hello*
 ddisasm
+bio2-dd-info

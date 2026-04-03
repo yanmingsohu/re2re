@@ -1,6 +1,6 @@
 set path=D:\GAME\bio2\ddisasm\bin;%path%
 
-ddisasm bio2.exe --ir bio2.gtirb
+ddisasm bio2.exe --ir bio2.gtirb --debug-dir ./bio2-dd-info/
 gtirb-pprinter bio2.gtirb --asm bio2.S
 
 

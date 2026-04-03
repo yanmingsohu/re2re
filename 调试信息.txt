@@ -79,3 +79,7 @@ EXTERN _DirectSoundCreate@12:PROC
 
 
 $L_434750:: 需要修正
+mov EAX,DWORD PTR [$L_669ca0]
+
+fcn_00434770 <- 修复的函数
+L_435a13
