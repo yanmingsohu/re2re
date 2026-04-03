@@ -98,3 +98,6 @@ call FUN_45b740 <- 不存在的函数
 fun_50c510 <- 开始画面随机崩溃
 FUN_50bb20 ??
 FUN_50bad0 ??
+
+
+FUN_4ede10 PROC <- 需要修复
