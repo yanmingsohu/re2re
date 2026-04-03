@@ -10,9 +10,12 @@ __pycache__
 *.rzdb
 *.exe
 *.obj
+*.pdb
+*.ilk
 bio2game
 bio2
 test
 hello*
 ddisasm
 bio2-dd-info
+env.txt

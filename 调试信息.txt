@@ -84,4 +84,10 @@ mov EAX,DWORD PTR [$L_669ca0]
 
 call FCN_00434770 ; 修复函数调用
 
-4ee220
+
+fun_50c510 <- 开始画面随机崩溃
+fun_50bb20
+
+fun_4ceee0+198 <- ip跑飞
+
+fun_4ecc70+256 <- 内存非法访问
