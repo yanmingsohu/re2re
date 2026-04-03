@@ -82,7 +82,7 @@ $L_434750:: 需要修正
 mov EAX,DWORD PTR [$L_669ca0]
 0x004ecef9      call    fcn.00434a70 ; fcn.00434a70 需要修正
 
-call FCN_00434770 ; 修复函数调用
+
 
 
 fun_50c510 <- 开始画面随机崩溃
@@ -91,3 +91,7 @@ fun_50bb20
 fun_4ceee0+198 <- ip跑飞
 
 fun_4ecc70+256 <- 内存非法访问
+FUN_4edd00
+
+
+call FUN_45b740 <- 不存在的函数
