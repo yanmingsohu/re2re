@@ -13,10 +13,13 @@ def parse_asm_file(filename):
 
     # 建立标签 -> 行号 的索引
     label_lines = {}
+    skip_label = {}
     for i, line in enumerate(lines):
         m = re.match(r'\s*(\$L_[0-9a-fA-F]+)(?:::|[\s])', line)
         if m:
-            label = m.group(1)
+            label = m.group(1)            
+            if ';++' in line: #忽略特殊标记
+              skip_label[label] = i 
             if label not in label_lines:
                 label_lines[label] = i
 
@@ -35,6 +38,10 @@ def parse_asm_file(filename):
     id = 0
     for lineno, label in jmp_targets:
         id += 1
+        if label in skip_label:
+          print(f"-- skip label {label}, is ok JID:{id}")
+          continue
+        
         print(f"\n{'='*60}")
         print(f"第 {lineno} 行找到跳转表引用: jmp [REG*4+{label}] JID:{id}")
 
