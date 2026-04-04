@@ -107,3 +107,5 @@ eip==44b07a
 
 
 {p:cip} {i:cip} esp={esp} eax={eax} ecx={ecx} eip={eip}
+
+搜索内存: findallmem bio2.fixed, AC A7 45

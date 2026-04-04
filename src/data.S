@@ -67061,9 +67061,8 @@ $L_532bd0           DWORD $L_532fb8
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_532ca8                     DB 'h.S'
-          BYTE 000H
-
+          
+$L_532ca8 DWORD $L_532e68
           BYTE 0f0H
           BYTE 009H
           BYTE 0ffH
@@ -67285,7 +67284,8 @@ $L_532e50                     DB 'pl1\zmovie\opn1stc.bin'
           BYTE 000H
 
           DB 1 DUP(0)
-                    DB 'pl1\zmovie\titlec.bin'
+
+$L_532e68                    DB 'pl1\zmovie\titlec.bin'
           BYTE 000H
 
           DB 2 DUP(0)
