@@ -101,3 +101,9 @@ FUN_50bad0 ??
 
 
 FUN_4ede10 PROC <- 需要修复
+
+崩溃条件
+eip==44b07a
+
+
+{p:cip} {i:cip} esp={esp} eax={eax} ecx={ecx} eip={eip}

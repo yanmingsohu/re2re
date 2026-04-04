@@ -1,5 +1,6 @@
 # 生成: set > env.txt
 include env.txt 
+#export PATH=$(Path)
 
 DD    = ddisasm
 gtirb = gtirb-pprinter
@@ -9,6 +10,7 @@ ml    = ml
 
 libs = kernel32.lib user32.lib gdi32.lib advapi32.lib ole32.lib winmm.lib ddraw.lib dsound.lib msacm32.lib imm32.lib
 libpath = C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22000.0\um\x86
+SRCS := $(wildcard src/*.S)
 
 first_target: build mv
 
@@ -18,11 +20,12 @@ bio2.gtirb: bio2.exe
 	
 bio2.S: bio2.gtirb
 	$(gtirb) bio2.gtirb --asm bio2.S
-	
+
+# To avoid accidental overwriting, it must be renamed.
 asm: bio2.S
 
 
-bio2.fixed.obj: bio2.fixed.S
+bio2.fixed.obj: bio2.fixed.S $(SRCS)
 	$(ml) //c //coff bio2.fixed.S //Fo bio2.fixed.obj //Zi
 	
 bio2.fixed.exe: bio2.fixed.obj
@@ -36,6 +39,17 @@ mv: bio2.fixed.exe
 	
 run: first_target
 	bio2game/bio2.fixed.exe
+  
+test:
+	echo $(PATH)
+  
+check_tool:
+	$(DD)    --version
+	$(gtirb) --version
+	$(link)  //help | findstr 'Microsoft (R) Incremental Linker Version'
+	$(ml)    //help | findstr 'Microsoft (R) Macro Assembler Version'
+  
+create_env: check_tool
+	echo Not implement...
 
-
-.PHONY: clean build asm first_target mv
+.PHONY: clean build asm first_target mv test check_tool create_env
