@@ -34289,10 +34289,7 @@ $L_529604           DWORD FUN_4803a0
           DWORD $L_480450
           DWORD $L_480530
 $L_529618           DWORD $L_4805c0
-          BYTE 020H
-          BYTE 007H
-          BYTE 048H
-          BYTE 000H
+          DWORD $L_480720
           DWORD $L_47fb20
           DB 4 DUP(0)
 $L_529628           DWORD $L_5a0001
@@ -35602,11 +35599,8 @@ $L_529bdc           DWORD FUN_483e60
           DWORD $L_4849a0
           DB 8 DUP(0)
           DWORD FUN_47e3b0
-$L_529bfc           DWORD $L_484110
-          BYTE 040H
-          BYTE 041H
-          BYTE 048H
-          BYTE 000H
+$L_529bfc           DWORD $L_484110 ;++
+          DWORD $L_484140
 $L_529c04           DWORD FUN_484170
           DWORD $L_484380
           DWORD FUN_47e3b0
@@ -36924,8 +36918,7 @@ $L_52a4df           BYTE 003H
           BYTE 000H
           BYTE 000H
 $L_52a4f4           DWORD $L_495f30
-                    DB '0_I'
-          BYTE 000H
+          DWORD $L_495f30
 
 $L_52a4fc           DWORD $L_495fe0
 $L_52a500           DWORD FUN_47e3b0

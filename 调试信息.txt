@@ -66,7 +66,7 @@ FUN_50c060
 
 FUN_50c66c PROC
 
-            jmp DWORD PTR __imp__DirectDrawCreate@12 <- 导入错误,修正完成
+            jmp DWORD PTR __imp__DirectDrawCreate@12 <- 导入错误,修正完成 ok
 FUN_50c66c ENDP
 
 DirectSoundCreate
@@ -78,24 +78,24 @@ EXTERN _DirectSoundCreate@12:PROC
 
 
 
-$L_434750:: 需要修正
+$L_434750:: 需要修正 ok
 mov EAX,DWORD PTR [$L_669ca0]
-0x004ecef9      call    fcn.00434a70 ; fcn.00434a70 需要修正
+0x004ecef9      call    fcn.00434a70 ; fcn.00434a70 需要修正 ok
 
 
 
-fun_4ceee0+198 <- ip跑飞
+fun_4ceee0+198 <- ip跑飞 ok
 
-fun_4ecc70+256 <- 内存非法访问
+fun_4ecc70+256 <- 内存非法访问 ok
 FUN_4edd00
 
 
-call FUN_45b740 <- 不存在的函数
+call FUN_45b740 <- 不存在的函数 ok
 
 
 
 
-fun_50c510 <- 开始画面随机崩溃
+fun_50c510 <- 开始画面随机崩溃 ok
 FUN_50bb20 ??
 FUN_50bad0 ??
 
@@ -111,3 +111,8 @@ eip==44b07a
 搜索内存: findallmem bio2.fixed, AC A7 45
 
 常用替换: DB 08dh, 049h, 0h ;lea ECX,DWORD PTR [ECX]
+
+需要完成的函数定义: 
+$L_46fb11 ok
+$L_470d90 ok
+$L_476f33 ok

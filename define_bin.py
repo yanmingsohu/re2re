@@ -22,7 +22,7 @@ def label_to_db(label, hexstr):
         if i == 0:
             print(f'$L_{addr_hex} DB {formatted} {comment}')
         else:
-            print(f'{indent}    DB {formatted} {comment}')
+            print(f'{indent} DB {formatted} {comment}')
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
