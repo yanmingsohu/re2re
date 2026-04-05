@@ -109,15 +109,18 @@ def not_empty_code(s):
 
 def parse_asm_file(lines):
     # 建立标签 -> 行号 的索引
+    id = 0
+    last_log = []
     label_lines = {}
     skip_label = {}
+    
     for i, line in enumerate(lines):
         m = end_label.match(line)
         if m:
             label = m.group(1)            
             if ';++' in line: #忽略特殊标记
               skip_label[label] = i 
-              print(f"-- skip label {label}, work end")
+              last_log.append(f"-- 明确标记完成的标签 {label}")
             if label not in label_lines:
                 label_lines[label] = i
 
@@ -135,17 +138,14 @@ def parse_asm_file(lines):
         print("没有找到跳转表指令")
         return
 
-    id = 0
-    last_log = []
     
     for lineno, label, sline, case_num, case_str in jmp_targets:
-        id += 1
         if label in skip_label:
           continue
         
         log = []
         log.append(f"\n{'='*60}")
-        log.append(f"找到跳转表引用: JID:{id} \n{sline}")
+        log.append(f"找到跳转表引用: \n{sline}")
 
         if label not in label_lines:
             log.append(f"  !! 找不到标签 {label} 的定义")
@@ -162,6 +162,7 @@ def parse_asm_file(lines):
         print_full_log = 0
         empty_ct = 0
         mem_size = 0
+        checknot_allref = 0
 
         # 从标签行开始，读到下一个 $L_ 标签为止
         for j in range(start, len(lines)):
@@ -213,11 +214,16 @@ def parse_asm_file(lines):
             elif dword_ref_ct == 1:
                 log.append(" !- 警告, 只有 1 个跳转引用了外部地址")
                 print_full_log += 1
-        else:
+            else:
+                checknot_allref += 1
+        else: 
             log.append(f' -- CASE:\n{case_str}')
             if case_num != dword_ref_ct:
-                print_full_log += 1
-                log.append(f" !! 错误, 跳转表数量 {dword_ref_ct} != 检测到的 case:{case_num}")
+                if nop_ct>0 or dword_ct>0 or byte_ct>0 or len(other_ct)>0:
+                    print_full_log += 1
+                    log.append(f" !! 错误, 跳转表数量 {dword_ref_ct} != 检测到的 case:{case_num}")
+                else:
+                    checknot_allref += 1
 
         if (dword_ct) > 0:
             log.append(f" !- 警告,  多个 dword 定义 {mem_size}bytes")
@@ -234,9 +240,13 @@ def parse_asm_file(lines):
 
         if print_full_log > 0:
             print("\n".join(log))
+        elif checknot_allref > 0:
+            # "\n{sline}" 回显代码
+            last_log.append(f'-- 标签 {label} 无法检测 switch数量, 跳转表全是地址引用')
         else:
-            last_log.append(f'\n-- 标签没有明显问题 {label}\n{sline}')
+            last_log.append(f'-- 标签没有明显问题 {label}')
 
+    print('='*80)
     print("\n".join(last_log))
 
 
