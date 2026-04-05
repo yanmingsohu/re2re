@@ -12,7 +12,7 @@ libs = kernel32.lib user32.lib gdi32.lib advapi32.lib ole32.lib winmm.lib ddraw.
 libpath = C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22000.0\um\x86
 SRCS := $(wildcard src/*.S)
 
-first_target: build mv
+first_target: build copygame
 
 
 bio2.gtirb: bio2.exe
@@ -34,7 +34,7 @@ bio2.fixed.exe: bio2.fixed.obj
 build: bio2.fixed.exe
 
 
-mv: bio2.fixed.exe
+copygame: bio2.fixed.exe
 	cp -f bio2.fixed.exe bio2game\
 	
 run: first_target
@@ -52,4 +52,4 @@ check_tool:
 create_env: check_tool
 	echo Not implement...
 
-.PHONY: clean build asm first_target mv test check_tool create_env
+.PHONY: clean build asm first_target copygame test check_tool create_env
