@@ -161,6 +161,7 @@ def parse_asm_file(lines):
         nop_ct = 0
         print_full_log = 0
         empty_ct = 0
+        mem_size = 0
 
         # 从标签行开始，读到下一个 $L_ 标签为止
         for j in range(start, len(lines)):
@@ -179,13 +180,21 @@ def parse_asm_file(lines):
 
             if dword.match(line):
                 dword_ct += 1
+                mem_size += 4
             elif dword_ref.match(line):
                 dword_ref_ct += 1
+                mem_size += 4
             elif x := byte_re.match(line):
+                mem_size += 1
                 b = numH(x.group(1))
-                if b != 0x90:
+                if b != 0x90: #nop
                     byte_ct += 1
+            elif x := db_re.match(line):
+                n = numH(x.group(1))
+                mem_size += n
+                byte_ct += 1
             elif nop_re.match(line):
+                mem_size += 1
                 nop_ct += 1
             elif j != start:
                 if line.startswith('ALIGN'):
@@ -211,10 +220,10 @@ def parse_asm_file(lines):
                 log.append(f" !! 错误, 跳转表数量 {dword_ref_ct} != 检测到的 case:{case_num}")
 
         if (dword_ct) > 0:
-            log.append(" !- 警告,  多个 dword 定义")
+            log.append(f" !- 警告,  多个 dword 定义 {mem_size}bytes")
             print_full_log += 1
         if byte_ct > 0:
-            log.append(" !- 警告, 多个 byte 定义")
+            log.append(f" !- 警告, 多个 byte 定义 {mem_size}bytes")
             print_full_log += 1
         if len(other_ct) > 0:
             log.append(" !- 警告, 找到非数据定义语句")
