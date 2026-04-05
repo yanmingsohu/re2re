@@ -94423,154 +94423,154 @@ $L_53acf1           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_53adb8           DWORD FUN_4e4280
-          DWORD $L_4e42a0
-          DWORD $L_4e42f0
-          DWORD $L_4e4310
-          DWORD $L_4e4330
-          DWORD $L_4e4360
-          DWORD $L_4e4390
-          DWORD $L_4e43e0
-          DWORD $L_4e4420
-          DWORD $L_4e4450
-          DWORD $L_4e4490
-          DWORD $L_4e44e0
-          DWORD $L_4e4510
-          DWORD $L_4e4540
-          DWORD $L_4e4640
-          DWORD $L_4e4690
-          DWORD $L_4e4700
-          DWORD $L_4e4730
-          DWORD $L_4e4780
-          DWORD $L_4e4840
-          DWORD $L_4e48d0
-          DWORD $L_4e48f0
-          DWORD $L_4e4910
-          DWORD $L_4e4940
-          DWORD $L_4e4990
-          DWORD $L_4e49f0
-          DWORD $L_4e4a30
-          DWORD $L_4e45b0
-          DWORD FUN_4e4280
-          DWORD $L_4e4a70
-          DWORD FUN_4e4280
-          DWORD FUN_4e4280
-          DWORD FUN_4e4280
-          DWORD $L_4e4ae0
-          DWORD $L_4e4b30
-          DWORD $L_4e4bb0
-          DWORD $L_4e4c50
-          DWORD $L_4e4c80
-          DWORD $L_4e4cc0
-          DWORD $L_4e4d00
-          DWORD $L_4e4e50
-          DWORD $L_4e4e70
-          DWORD $L_4e4ed0
-          DWORD $L_4e5060
-          DWORD $L_4e50b0
-          DWORD $L_4e55a0
-          DWORD $L_4e5d80
-          DWORD $L_4e5f30
-          DWORD $L_4e5f60
-          DWORD $L_4e5fd0
-          DWORD $L_4e6040
-          DWORD $L_4e60d0
-          DWORD $L_4e6110
-          DWORD $L_4e6150
-          DWORD $L_4e6c00
-          DWORD $L_4e6ce0
-          DWORD $L_4e8ad0
-          DWORD $L_4e6bc0
-          DWORD $L_4e6d20
-          DWORD $L_4e5140
-          DWORD $L_4e4f40
-          DWORD $L_4e6500
-          DWORD $L_4e6540
-          DWORD $L_4e71c0
-          DWORD $L_4e7220
-          DWORD $L_4e7400
-          DWORD $L_4e7520
-          DWORD $L_4e75b0
-          DWORD $L_4e76c0
-          DWORD $L_4e8e30
-          DWORD $L_4e54f0
-          DWORD $L_4e5550
-          DWORD $L_4e58d0
-          DWORD $L_4e5d20
-          DWORD $L_4e73c0
-          DWORD $L_4e4f80
-          DWORD $L_4e6fe0
-          DWORD $L_4503a0
-          DWORD $L_4e51d0
-          DWORD $L_4e8120
-          DWORD $L_4e8150
-          DWORD $L_4e8180
-          DWORD $L_4e70c0
-          DWORD $L_4e8210
-          DWORD $L_4e6e90
-          BYTE 0b0H
-          BYTE 068H
-          BYTE 04eH
-          BYTE 000H
-          DWORD $L_4e6900
-          DWORD $L_4e81d0
-          DWORD $L_4e7630
-          DWORD $L_4e8360
-          DWORD $L_4e86a0
-          DWORD $L_4e7690
-          DWORD $L_4e8440
-          DWORD $L_4e84e0
-          DWORD $L_4e8520
-          DWORD $L_4e83a0
-          DWORD $L_4e8780
-          DWORD $L_4e5010
-          DWORD $L_4e85f0
-          DWORD FUN_4e4280
-          DWORD $L_4e6e00
-          DWORD $L_4e7020
-          DWORD $L_4e7560
-          DWORD $L_4e50f0
-          DWORD $L_4e5180
-          DWORD $L_4e5410
-          DWORD $L_4e8880
-          DWORD $L_4e8900
-          DWORD $L_4e4ac0
-          DWORD $L_4e8aa0
-          DWORD $L_4e5e50
-          DWORD $L_4e8b30
-          DWORD $L_4e8b60
-          DWORD $L_4e8bf0
-          DWORD $L_4e5ab0
-          DWORD $L_4e8ca0
-          DWORD $L_4e82b0
-          DWORD $L_4e6f30
-          DWORD $L_4e8720
-          DWORD $L_4e8470
-          DWORD $L_4e84a0
-          DWORD $L_4e84c0
-          DWORD $L_4e8d00
-          DWORD $L_4e8da0
-          DWORD $L_4e8940
-          DWORD $L_4e8990
-          DWORD $L_4e8a10
-          DWORD $L_4e8a50
-          DWORD $L_4e83d0
-          DWORD $L_4e8550
-          DWORD $L_4e7050
-          DWORD $L_4e8ea0
-          DWORD $L_4e8ed0
-          DWORD $L_4e8f20
-          DWORD $L_4e8fb0
-          DWORD $L_4e8fd0
-          DWORD $L_4e8640
-          DWORD $L_4e8c60
-          DWORD $L_4e48d0
-          DWORD $L_4e48d0
-          DWORD $L_4e9000
-          DWORD $L_4e52a0
-          DWORD $L_4e7ba0
-          DB 4 DUP(0)
-$L_53aff8           BYTE 010H
+; 这个变量索引就是虚拟机操作码, 指向执行函数
+; This variable index is the virtual machine opcode, pointing to the function to be executed.
+; http://justsolve.archiveteam.org/wiki/RDT_(Resident_Evil_1997)
+$L_53adb8 DWORD FUN_4e4280 ; 00h nop
+          DWORD $L_4e42a0  ; 01h Evt_end EXIT
+          DWORD $L_4e42f0  ; 02h nop return 2
+          DWORD $L_4e4310  ; 03h call subroutine_id
+          DWORD $L_4e4330  ; 04h SPAWN
+          DWORD $L_4e4360  ; 05h KILL  slot_id
+          DWORD $L_4e4390  ; 06h IF start
+          DWORD $L_4e43e0  ; 07h Else start
+          DWORD $L_4e4420  ; 08h If end
+          DWORD $L_4e4450  ; 09h PUSH  stream[2..3]
+          DWORD $L_4e4490  ; 0Ah LOOP
+          DWORD $L_4e44e0  ; 0Bh ALLOC  
+          DWORD $L_4e4510  ; 0Ch WAIT_FOR_EVENT   
+          DWORD $L_4e4540  ; 0Dh For start
+          DWORD $L_4e4640  ; 0Eh For end
+          DWORD $L_4e4690  ; 0Fh While start
+          DWORD $L_4e4700  ; 10h While end
+          DWORD $L_4e4730  ; 11h Do-while start
+          DWORD $L_4e4780  ; 12h Do-while end
+          DWORD $L_4e4840  ; 13h Switch
+          DWORD $L_4e48d0  ; 14h case in Switch
+          DWORD $L_4e48f0  ; 15h default in Switch
+          DWORD $L_4e4910  ; 16h Switch end
+          DWORD $L_4e4940  ; 17h Goto
+          DWORD $L_4e4990  ; 18h Call-sub
+          DWORD $L_4e49f0  ; 19h End-sub
+          DWORD $L_4e4a30  ; 1Ah break
+          DWORD $L_4e45b0  ; 1Bh IF_ENTITY_EXISTS
+          DWORD FUN_4e4280 ; 1Ch nop
+          DWORD $L_4e4a70  ; 1Dh SET_VAR_FROM_TABLE var=*(0x98ea84)
+          DWORD FUN_4e4280 ; 1Eh nop
+          DWORD FUN_4e4280 ; 1Fh nop
+          DWORD FUN_4e4280 ; 20h nop
+          DWORD $L_4e4ae0  ; 21h Bit test
+          DWORD $L_4e4b30  ; 22h Bit op
+          DWORD $L_4e4bb0  ; 23h OP_CMP_VAR Compare
+          DWORD $L_4e4c50  ; 24h SET Table from var
+          DWORD $L_4e4c80  ; 25h SET var from var
+          DWORD $L_4e4cc0  ; 26h var = var op(1) x
+          DWORD $L_4e4d00  ; 27h var = var op(2) x
+          DWORD $L_4e4e50  ; 28h random
+          DWORD $L_4e4e70  ; 29h Cut_chg cut camera
+          DWORD $L_4e4ed0  ; 2Ah Cut_old restore camera
+          DWORD $L_4e5060  ; 2Bh Message_on
+          DWORD $L_4e50b0  ; 2Ch Aot_set
+          DWORD $L_4e55a0  ; 2Dh Obj_model_set?
+          DWORD $L_4e5d80  ; 2Eh Work_set 
+          DWORD $L_4e5f30  ; 2Fh Speed_set
+          DWORD $L_4e5f60  ; 30h Move_apply
+          DWORD $L_4e5fd0  ; 31h Accel_apply
+          DWORD $L_4e6040  ; 32h Pos_set
+          DWORD $L_4e60d0  ; 33h Dir_set
+          DWORD $L_4e6110  ; 34h Member_set ?
+          DWORD $L_4e6150  ; 35h Member_set2 ?
+          DWORD $L_4e6c00  ; 36h Se_on(3D)
+          DWORD $L_4e6ce0  ; 37h Sca_id_set?
+          DWORD $L_4e8ad0  ; 38h floor_flag_set?
+          DWORD $L_4e6bc0  ; 39h Dir_ck?
+          DWORD $L_4e6d20  ; 3ah espr_on?
+          DWORD $L_4e5140  ; 3Bh Door_aot_set
+          DWORD $L_4e4f40  ; 3Ch Cut_auto
+          DWORD $L_4e6500  ; 3Dh Member_copy?
+          DWORD $L_4e6540  ; 3Eh Member_cmp?
+          DWORD $L_4e71c0  ; 3Fh Plc_motion
+          DWORD $L_4e7220  ; 40h Plc_dest
+          DWORD $L_4e7400  ; 41h Plc_neck
+          DWORD $L_4e7520  ; 42h Plc_ret
+          DWORD $L_4e75b0  ; 43h Plc_flg
+          DWORD $L_4e76c0  ; 44h em_set
+          DWORD $L_4e8e30  ; 45h Col_chg_set?
+          DWORD $L_4e54f0  ; 46h Aot_reset
+          DWORD $L_4e5550  ; 47h Aot_on?
+          DWORD $L_4e58d0  ; 48h Super_set?
+          DWORD $L_4e5d20  ; 49h Super_reset?
+          DWORD $L_4e73c0  ; 4Ah Plc_gun?
+          DWORD $L_4e4f80  ; 4Bh Cut_replace?
+          DWORD $L_4e6fe0  ; 4Ch espr_kill?
+          DWORD $L_4503a0  ; 4Dh Door_model_set?
+          DWORD $L_4e51d0  ; 4Eh Item_aot_set
+          DWORD $L_4e8120  ; 4Fh key_ck?
+          DWORD $L_4e8150  ; 50h trg_ck?
+          DWORD $L_4e8180  ; 51h bgm_control
+          DWORD $L_4e70c0  ; 52h espr_control?
+          DWORD $L_4e8210  ; 53h fade_set?
+          DWORD $L_4e6e90  ; 54h espr3d_on?
+          DWORD $L_4e68b0  ; 55h Member_calc?
+          DWORD $L_4e6900  ; 56h Member_calc2?
+          DWORD $L_4e81d0  ; 57h bgmtbl_set?
+          DWORD $L_4e7630  ; 58h Plc_rot?
+          DWORD $L_4e8360  ; 59h Xa_on
+          DWORD $L_4e86a0  ; 5Ah Weapon_chg?
+          DWORD $L_4e7690  ; 5Bh Plc_cnt?
+          DWORD $L_4e8440  ; 5Ch shake_on?
+          DWORD $L_4e84e0  ; 5Dh Mizu_div_set?
+          DWORD $L_4e8520  ; 5Eh Keep_Item_ck?
+          DWORD $L_4e83a0  ; 5Fh Xa_vol?
+          DWORD $L_4e8780  ; 60h Kage_set?
+          DWORD $L_4e5010  ; 61h Cut_be_set?
+          DWORD $L_4e85f0  ; 62h Item_lost?
+          DWORD FUN_4e4280 ; 63h nop ? Plc_gun_eff
+          DWORD $L_4e6e00  ; 64h espr_on2?
+          DWORD $L_4e7020  ; 65h espr_kill2?
+          DWORD $L_4e7560  ; 66h Plc_stop?
+          DWORD $L_4e50f0  ; 67h Aot_set_4p?
+          DWORD $L_4e5180  ; 68h Door_aot_set_4p?
+          DWORD $L_4e5410  ; 69h Item_aot_set_4p?
+          DWORD $L_4e8880  ; 6ah Light_pos_set?
+          DWORD $L_4e8900  ; 6Bh Light_kido_set?
+          DWORD $L_4e4ac0  ; 6Ch Rbj_reset?
+          DWORD $L_4e8aa0  ; 6Dh scr_move?
+          DWORD $L_4e5e50  ; 6Eh Parts_set?
+          DWORD $L_4e8b30  ; 6Fh Movie_on?
+          DWORD $L_4e8b60  ; 70h Splc_ret?
+          DWORD $L_4e8bf0  ; 71h Splc_sce?
+          DWORD $L_4e5ab0  ; 72h Super_on?
+          DWORD $L_4e8ca0  ; 73h Mirror_set?
+          DWORD $L_4e82b0  ; 74h fade_adjust?
+          DWORD $L_4e6f30  ; 75h espr3d_on2?
+          DWORD $L_4e8720  ; 76h Item_get?
+          DWORD $L_4e8470  ; 77h line_start?
+          DWORD $L_4e84a0  ; 78h line_main?
+          DWORD $L_4e84c0  ; 79h line_end?
+          DWORD $L_4e8d00  ; 7Ah parts_bomb?
+          DWORD $L_4e8da0  ; 7Bh parts_down?
+          DWORD $L_4e8940  ; 7Ch Light_color_set?
+          DWORD $L_4e8990  ; 7Dh Light_pos_set2?
+          DWORD $L_4e8a10  ; 7Eh Light_kido_set2?
+          DWORD $L_4e8a50  ; 7Fh Light_color_set2?
+          DWORD $L_4e83d0  ; 80h Se_vol?
+          DWORD $L_4e8550  ; 81h Item_cmp?
+          DWORD $L_4e7050  ; 82h espr_task?
+          DWORD $L_4e8ea0  ; 83h Plc_heal?
+          DWORD $L_4e8ed0  ; 84h St_map_hint?
+          DWORD $L_4e8f20  ; 85h em_pos_ck?
+          DWORD $L_4e8fb0  ; 86h Poison_ck?
+          DWORD $L_4e8fd0  ; 87h Poison_clr?
+          DWORD $L_4e8640  ; 88h Item_ck_Lost?
+          DWORD $L_4e8c60  ; 89h Evt_next2?
+          DWORD $L_4e48d0  ; 8Ah Vib_set0?
+          DWORD $L_4e48d0  ; 8Bh Vib_set1?
+          DWORD $L_4e9000  ; 8Ch Vib_fade_set?
+          DWORD $L_4e52a0  ; 8Dh Item_aot_set2?
+          DWORD $L_4e7ba0  ; 8Eh em_set2?
+          DB 4 DUP(0)      ; 8Fh
+$L_53aff8 BYTE 010H
           BYTE 010H
           BYTE 011H
           BYTE 010H
