@@ -1116,7 +1116,7 @@ $L_4e4b30 PROC
             add EAX,4
             mov EDX,ECX
             mov DWORD PTR [ESI+28],EAX
-            mov EAX,DWORD PTR [EDI*4+$L_53b1c0]
+            mov EAX,DWORD PTR [EDI*4+$L_53b1c0] ; 崩溃时 EDI=1f 越界访问, EAX=15003f6<-下内存写入断点
             and ECX,31
             sar EDX,5
             pop EDI
@@ -1133,7 +1133,7 @@ $L_4e4b30 PROC
             sub EAX,6
             jne $L_4e4baa
 
-            mov EAX,2147483648
+            mov EAX,80000000h
             shr EAX,CL
             mov ECX,DWORD PTR [EDX]
             xor ECX,EAX
@@ -1144,7 +1144,7 @@ $L_4e4b88::
 
             mov EAX,80000000h
             shr EAX,CL
-            mov ECX,DWORD PTR [EDX]
+            mov ECX,DWORD PTR [EDX] ;崩溃 ECX=9, EDX=98eccc 非法内存访问
             or ECX,EAX
             mov EAX,1
             mov DWORD PTR [EDX],ECX
