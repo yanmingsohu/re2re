@@ -23,10 +23,10 @@ def ref_writer():
     for i, chunk in enumerate(chunks):
         formatted = int(chunk[0], 16) + (int(chunk[1], 16)<<8) \
                   + (int(chunk[2], 16)<<16) + (int(chunk[3], 16)<<24)
-        formatted = f'$L_{hex(formatted)}'
+        formatted = f'$L_{hex(formatted)}'.replace('0x', '')
         addr = base_addr + i * 4
         total += len(chunk)
-        comment = f'; {",".join(chunk)} ({total} bytes) case{i}'
+        comment = f'; case{i} | {",".join(chunk)} ({total} bytes)'
 
         if i == 0:
             print(f'$L_{addr_hex} DWORD {formatted} {comment}')

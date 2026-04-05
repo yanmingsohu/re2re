@@ -106,6 +106,9 @@ FUN_4ede10 PROC <- 需要修复
 eip==44b07a
 
 
+ALIGN 16
+
+
 {p:cip} {i:cip} esp={esp} eax={eax} ecx={ecx} eip={eip}
 
 搜索内存: findallmem bio2.fixed, AC A7 45
@@ -116,3 +119,9 @@ eip==44b07a
 $L_46fb11 ok
 $L_470d90 ok
 $L_476f33 ok
+Fun_4b2960 ok
+
+修复调用这个函数的代码:
+Fun_459650  ok
+FUN_45a750 没有任何调用这个函数
+L_4f7560
