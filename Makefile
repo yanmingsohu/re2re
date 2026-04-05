@@ -25,20 +25,20 @@ bio2.S: bio2.gtirb
 asm: bio2.S
 
 
-bio2.fixed.obj: bio2.fixed.S $(SRCS)
-	$(ml) //c //coff bio2.fixed.S //Fo bio2.fixed.obj //Zi
+main.obj: main.S $(SRCS)
+	$(ml) //c //coff main.S //Fo main.obj //Zi
 	
-bio2.fixed.exe: bio2.fixed.obj
-	$(link) //SUBSYSTEM:WINDOWS //ENTRY:_EntryPoint $(libs) bio2.fixed.obj //OUT:bio2.fixed.exe //LIBPATH:"$(libpath)"  //DEBUG
+bio2re.exe: main.obj
+	$(link) //SUBSYSTEM:WINDOWS //ENTRY:_EntryPoint $(libs) main.obj //OUT:bio2re.exe //LIBPATH:"$(libpath)"  //DEBUG
 	
-build: bio2.fixed.exe
+build: bio2re.exe
 
 
-copygame: bio2.fixed.exe
-	cp -f bio2.fixed.exe bio2game\
+copygame: bio2re.exe
+	cp -f bio2re.exe bio2game\
 	
 run: first_target
-	bio2game/bio2.fixed.exe
+	bio2game/bio2re.exe
   
 test:
 	echo $(PATH)

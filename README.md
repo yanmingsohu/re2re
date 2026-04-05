@@ -25,9 +25,9 @@ Open the `cmd` command line to make the above tool `link/ddisasm` executable.
 
 Run `set > env.txt` in the project directory.
 
-`make` compiles and generates `bio2game/bio2.fixed.exe`.
+`make` compiles and generates `bio2game/bio2re.exe`.
 
-Other targets in `make` are used to disassemble and generate `bio2.fixed.S`; this is the initial workflow.
+Other targets in `make` are used to disassemble and generate `main.S`; this is the initial workflow.
 
 
 # Tool
@@ -36,11 +36,11 @@ Other targets in `make` are used to disassemble and generate `bio2.fixed.S`; thi
 `pip install angr pefile`
 
 检查数据定义标签与源程序二进制一致性
-`python extract_data_labels.py bio2.fixed.S bio2.exe > data_label.txt`
+`python extract_data_labels.py main.S bio2.exe > data_label.txt`
 `python extract_data_labels.py src/data.S bio2.exe > data2_label.txt`
 
 跳转表 switch 结构检查报告
-`python parse_jumptable.py bio2.fixed.S > jumptable.txt`
+`python parse_jumptable.py main.S > jumptable.txt`
 
 二级制转换为 asm 中的常量定义
 `python define_bin.py $L_403df8 01020304`
