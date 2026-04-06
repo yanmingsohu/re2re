@@ -916,17 +916,14 @@ $L_5173fc           DWORD FUN_412b90
           DWORD $L_413080
           DWORD FUN_414a00
           DWORD FUN_42fb30
-$L_517424           DWORD $L_4150b0
+$L_517424 DWORD $L_4150b0
           DWORD FUN_42ff70
-$L_51742c           BYTE 000H
+$L_51742c BYTE 000H
           BYTE 000H
           BYTE 080H
           BYTE 039H
-$L_517430           DWORD $L_4150b0
-          BYTE 020H
-          BYTE 00aH
-          BYTE 043H
-          BYTE 000H
+$L_517430 DWORD $L_4150b0
+          DWORD FUN_430a20
 $L_517438           BYTE 000H
           BYTE 000H
           BYTE 020H
@@ -967,60 +964,21 @@ $L_517458           BYTE 000H
           BYTE 000H
           BYTE 0b0H
           BYTE 040H
-$L_517460           BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 03eH
-          BYTE 040H
-          BYTE 024H
-          BYTE 056H
-          BYTE 065H
-          BYTE 072H
-          BYTE 073H
-          BYTE 069H
-          BYTE 06fH
-          BYTE 06eH
-          BYTE 03aH
-          BYTE 020H
-          BYTE 031H
-          BYTE 02eH
-          BYTE 030H
-          BYTE 02eH
-          BYTE 030H
-          BYTE 020H
-          BYTE 04aH
-          BYTE 061H
-          BYTE 06eH
-          BYTE 020H
-          BYTE 020H
-          BYTE 036H
-          BYTE 020H
-          BYTE 032H
-          BYTE 030H
-          BYTE 030H
-          BYTE 036H
-          BYTE 020H
-          BYTE 031H
-          BYTE 031H
-          BYTE 03aH
-          BYTE 035H
-          BYTE 034H
-          BYTE 03aH
-          BYTE 033H
-          BYTE 033H
-          BYTE 020H
-          BYTE 024H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
+$l_517460 DWORD 000000000h  ;==
+          DWORD 0403E0000h
+          DWORD 072655624h
+          DWORD 06E6F6973h
+          DWORD 02E31203Ah
+          DWORD 020302E30h
+          DWORD 0206E614Ah
+          DWORD 032203620h
+          DWORD 020363030h
+          DWORD 0353A3131h
+          DWORD 033333A34h
+          DWORD 000002420h
+          DWORD 000000000h
           DWORD $L_524ed4
-$L_517498           BYTE 03cH
+$L_517498 BYTE 03cH             ;==
           BYTE 000H
           BYTE 000H
           BYTE 000H
@@ -1099,8 +1057,7 @@ $L_5174e8           BYTE 000H
           BYTE 000H
           BYTE 064H
           BYTE 040H
-$L_5174f0           DB 1 DUP(0)
-          DB 7 DUP(0)
+$L_5174f0 DB 8 DUP(0)
 $L_5174f8           BYTE 000H
           BYTE 000H
           BYTE 000H
@@ -1141,109 +1098,34 @@ $L_5174f8           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_517520           BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 001H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 002H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 003H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 004H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 005H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 006H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 007H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 020H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 008H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 009H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 00aH
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 00bH
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 00cH
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 00dH
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 00eH
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 00fH
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 010H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 021H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 004H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
+$l_517520 DWORD 000000000h  ;==
+          DWORD 000000001h
+          DWORD 000000002h
+          DWORD 000000003h
+          DWORD 000000004h
+          DWORD 000000005h
+          DWORD 000000006h
+          DWORD 000000007h
+          DWORD 000000020h
+          DWORD 000000008h
+          DWORD 000000009h
+          DWORD 00000000Ah
+          DWORD 00000000Bh
+          DWORD 00000000Ch
+          DWORD 00000000Dh
+          DWORD 00000000Eh
+          DWORD 00000000Fh
+          DWORD 000000010h
+          DWORD 000000021h
+          DWORD 000000004h
           DWORD $L_5174f0
-          BYTE 002H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 002H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
+          DWORD 000000002h
+          DWORD 000000002h
           DWORD $L_5174f8
-          BYTE 00aH
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
+          DWORD 00000000Ah
+          DWORD 000000000h
           DWORD $L_517520
-          BYTE 013H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
+          DWORD 000000013h
 $L_517590           BYTE 0a7H
           BYTE 0e7H
           BYTE 08eH
@@ -1652,37 +1534,19 @@ $L_517718           BYTE 05cH
           BYTE 0d9H
           BYTE 018H
           BYTE 09dH
-$L_517728           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
+$l_517728 DWORD 0FFFFFFFFh  ;==
+          DWORD 000000000h
           DWORD FUN_50cbc6
-          DB 4 DUP(0)
-$L_517738           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
+          DWORD 000000000h
+$l_517738 DWORD 0FFFFFFFFh  ;==
           DWORD $L_50cc1a
           DWORD $L_50cc24
 $L_517744           DB 4 DUP(0)
-$L_517748           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
+$l_517748 DWORD 0FFFFFFFFh  ;==
+          DWORD 000000000h
           DWORD FUN_50ccbc
-          DB 4 DUP(0)
-$L_517758           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
+          DWORD 000000000h
+$l_517758 DWORD 0FFFFFFFFh  ;==
           DWORD $L_50d9bb
           DWORD $L_50d9cf
 $L_517764           BYTE 006H
@@ -1777,25 +1641,13 @@ $L_517764           BYTE 006H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_5177c0           DWORD $L_6e0028
+$l_5177c0 DWORD $L_6e0028  ;==
           DWORD $L_6c0075
-                    DB 'l'
+          DWORD 00029006Ch
+          DWORD 000000000h
+$L_5177d0 DB '(null)' ;==
           BYTE 000H
-
-                    DB ')'
           BYTE 000H
-
-          DB 4 DUP(0)
-$L_5177d0                     DB '('
-
-                    DB 'n'
-
-                    DB 'ul'
-
-                    DB 'l)'
-          BYTE 000H
-
-          DB 1 DUP(0)
 $L_5177d8           BYTE 000H
           BYTE 000H
           BYTE 000H
@@ -1833,61 +1685,34 @@ $L_517820                     DB 'e+000'
           BYTE 000H
 
           DB 2 DUP(0)
-$L_517828           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
+$l_517828 DWORD 0FFFFFFFFh  ;==
           DWORD $L_50ec01
           DWORD $L_50ec0b
-          DB 4 DUP(0)
-$L_517838           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
+          DWORD 000000000h
+$l_517838 DWORD 0FFFFFFFFh  ;==
+          DWORD 000000000h
           DWORD $L_50ed71
-          DB 4 DUP(0)
+          DWORD 000000000h
           DWORD $L_50ed4f
           DWORD $L_50ed59
-$L_517850           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
+$l_517850 DWORD 0FFFFFFFFh  ;==
           DWORD $L_50efa1
           DWORD $L_50efa5
-          DB 4 DUP(0)
-$L_517860           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
+          DWORD 000000000h
+$l_517860 DWORD 0FFFFFFFFh  ;==
           DWORD $L_50f003
           DWORD $L_50f00c
-          DB 4 DUP(0)
-$L_517870           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
+          DWORD 000000000h
+$l_517870 DWORD 0FFFFFFFFh  ;==
+          DWORD 000000000h
           DWORD FUN_50f0dd
-          DB 4 DUP(0)
+          DWORD 000000000h
           DWORD $L_50f0c9
           DWORD $L_50f0cd
-$L_517888           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
+$l_517888 DWORD 0FFFFFFFFh  ;==
+          DWORD 000000000h
           DWORD FUN_50f133
-          DB 4 DUP(0)
+          DWORD 000000000h
           DWORD $L_50f11f
           DWORD $L_50f123
 $L_5178a0           BYTE 000H
@@ -1953,41 +1778,24 @@ $L_5178d4           BYTE 000H
 $L_5178dc           DB 8 DUP(0)
 $L_5178e4           DB 4 DUP(0)
 $L_5178e8           DB 8 DUP(0)
-$L_5178f0           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 060H
-          BYTE 00aH
-          BYTE 051H
-          BYTE 000H
-          BYTE 064H
-          BYTE 00aH
-          BYTE 051H
-          BYTE 000H
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
+$l_5178f0 DWORD 0FFFFFFFFh  ;==
+          DWORD $L_510a60
+          DWORD $L_510a64
+          DWORD 0FFFFFFFFh
           DWORD $L_510b14
           DWORD $L_510b18
-$L_517908                     DB '__GLOBAL_HEAP_SELECTED'
+$L_517908 DB '__GLOBAL_HEAP_SELECTED'
           BYTE 000H
-
-          DB 1 DUP(0)
-$L_517920                     DB '__MSVCRT_HEAP_SELECT'
           BYTE 000H
-
-          DB 3 DUP(0)
-$L_517938                     DB 'runtime error '
+$L_517920 DB '__MSVCRT_HEAP_SELECT'
+          DWORD 000H
+$L_517938 DB 'runtime error ' ;==
           BYTE 000H
-
-          DB 1 DUP(0)
+          BYTE 000H
 $L_517948                     BYTE 00dH
           BYTE 00aH
           BYTE 000H
-
-          DB 1 DUP(0)
+          BYTE 000H
 $L_51794c                     DB 'TLOSS error'
           BYTE 00dH
           BYTE 00aH
@@ -2121,14 +1929,11 @@ $L_517b9c                     DB 'R6002'
 
           DB 3 DUP(0)
 $L_517bc4                     DB 'Microsoft Visual C++ Runtime Library'
-          BYTE 000H
-
-          DB 3 DUP(0)
+          DWORD 000000000h
 $L_517bec                     BYTE 00aH
           BYTE 00aH
           BYTE 000H
-
-          DB 1 DUP(0)
+          BYTE 000H
 $L_517bf0                     DB 'Runtime Error!'
           BYTE 00aH
           BYTE 00aH
@@ -2143,10 +1948,7 @@ $L_517c10                     DB '<program name unknown>'
           BYTE 000H
 
           DB 1 DUP(0)
-$L_517c28           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
+$l_517c28 DWORD 0FFFFFFFFh  ;==
           DWORD $L_514282
           DWORD $L_514286
 $L_517c34                     DB 'GetLastActivePopup'
@@ -2277,50 +2079,25 @@ $L_517d3c                     DB 'pow'
 
 $L_517d40                     DB 'exp'
           BYTE 000H
-
+$L_517D44 BYTE 0ffH
           BYTE 0ffH
           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 070H
+          BYTE 0ffH 
+          BYTE 070H  ;TODO 修正引用
           BYTE 05bH
           BYTE 051H
           BYTE 000H
-$L_517d4c           BYTE 020H
-          BYTE 005H
-          BYTE 093H
-          BYTE 019H
-          BYTE 001H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 044H
-          BYTE 07dH
-          BYTE 051H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          DWORD $L_515b9b
-          DB 4 DUP(0)
-          DWORD $L_515b90
+$l_517d4c DWORD 019930520h   ;==
+          DWORD 000000001h   ;0x517d50
+          DWORD $L_517D44    ;0x517d54
+          DWORD 000000000h   ;0x517d58
+          DWORD 000000000h   ;0x517d5c
+          DWORD 000000000h   ;0x517d60
+          DWORD 000000000h   ;0x517d64
+          DWORD 0FFFFFFFFh   ;0x517d68
+          DWORD $L_515b9b    ;0x517d6c
+          DWORD 000000000h   ;0x517d70
+          DWORD $L_515b90    ;0x517d74
 $L_517d78           BYTE 020H
           BYTE 005H
           BYTE 093H

@@ -741,42 +741,11 @@ $L_401918           DWORD $L_4010e2
 $L_40191c           DWORD $L_4010ef
 $L_401920           DWORD $L_4010fc
 $L_401924           DWORD $L_401907
-$L_401928           BYTE ($L_401914-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401918-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_40191c-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401924-$L_401914)/4
-          BYTE ($L_401920-$L_401914)/4
+$L_401928 DB 000h,004h,004h,004h,004h,001h,004h,004h ; 0x401928 (8 bytes)
+          DB 004h,004h,004h,004h,004h,004h,004h,002h ; 0x401930 (16 bytes)
+          DB 004h,004h,004h,004h,004h,004h,004h,004h ; 0x401938 (24 bytes)
+          DB 004h,004h,004h,004h,004h,004h,004h,004h ; 0x401940 (32 bytes)
+          DB 004h,004h,004h,003h ; 0x401948 (36 bytes)
 $L_40194c           DWORD $L_401133
 $L_401950           DWORD $L_401140
 $L_401954           DWORD $L_40114d
@@ -787,78 +756,15 @@ $L_401964           DWORD $L_401181
 $L_401968           DWORD $L_40118e
 $L_40196c           DWORD $L_40119b
 $L_401970           DWORD $L_401907
-$L_401974           BYTE ($L_40194c-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401950-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401954-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401958-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_40195c-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401960-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401964-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401968-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_401970-$L_40194c)/4
-          BYTE ($L_40196c-$L_40194c)/4
-          BYTE 090H
+$L_401974 DB 000h,009h,009h,009h,009h,001h,009h,009h ; 0x401974 (8 bytes)
+          DB 009h,009h,002h,009h,009h,009h,009h,009h ; 0x40197c (16 bytes)
+          DB 009h,009h,009h,009h,003h,009h,009h,009h ; 0x401984 (24 bytes)
+          DB 009h,009h,009h,009h,009h,009h,004h,009h ; 0x40198c (32 bytes)
+          DB 009h,009h,009h,009h,009h,009h,009h,009h ; 0x401994 (40 bytes)
+          DB 005h,009h,009h,009h,009h,009h,009h,009h ; 0x40199c (48 bytes)
+          DB 009h,009h,009h,009h,009h,009h,009h,006h ; 0x4019a4 (56 bytes)
+          DB 009h,009h,009h,009h,007h,009h,009h,009h ; 0x4019ac (64 bytes)
+          DB 009h,009h,009h,009h,009h,009h,008h,090h ; 0x4019b4 (72 bytes)
 $L_4019bc           DWORD $L_4011d4
 $L_4019c0           DWORD $L_4011e1
 $L_4019c4           DWORD $L_4011ee
@@ -879,150 +785,24 @@ $L_4019fc           DWORD $L_4012a4
 $L_401a00           DWORD $L_4012b1
 $L_401a04           DWORD $L_4012be
 $L_401a08           DWORD $L_401907
-$L_401a0c           BYTE ($L_4019bc-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_4019c0-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_4019c4-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_4019c8-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_4019cc-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_4019d0-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_4019d4-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_4019d8-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_4019dc-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_4019e0-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_4019e4-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_4019e8-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_4019ec-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_4019f0-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_4019f4-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_4019f8-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_4019fc-$L_4019bc)/4
-          BYTE ($L_401a00-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a08-$L_4019bc)/4
-          BYTE ($L_401a04-$L_4019bc)/4
-          BYTE 08dH
-          BYTE 049H
-          BYTE 000H
+$L_401a0c DB 000h,013h,013h,013h,013h,013h,013h,013h ; 0x401a0c (8 bytes)
+          DB 013h,013h,013h,013h,013h,013h,013h,013h ; 0x401a14 (16 bytes)
+          DB 013h,013h,013h,013h,013h,013h,013h,013h ; 0x401a1c (24 bytes)
+          DB 013h,001h,013h,013h,013h,013h,002h,013h ; 0x401a24 (32 bytes)
+          DB 003h,013h,013h,004h,013h,013h,013h,013h ; 0x401a2c (40 bytes)
+          DB 005h,013h,006h,013h,013h,007h,013h,013h ; 0x401a34 (48 bytes)
+          DB 013h,013h,008h,013h,013h,013h,013h,013h ; 0x401a3c (56 bytes)
+          DB 013h,013h,013h,013h,009h,013h,013h,013h ; 0x401a44 (64 bytes)
+          DB 013h,013h,013h,013h,013h,013h,00Ah,013h ; 0x401a4c (72 bytes)
+          DB 013h,013h,013h,00Bh,013h,013h,013h,013h ; 0x401a54 (80 bytes)
+          DB 00Ch,013h,013h,013h,013h,013h,013h,013h ; 0x401a5c (88 bytes)
+          DB 013h,013h,013h,013h,013h,013h,013h,013h ; 0x401a64 (96 bytes)
+          DB 013h,013h,013h,013h,00Dh,013h,013h,013h ; 0x401a6c (104 bytes)
+          DB 013h,013h,013h,013h,013h,013h,00Eh,013h ; 0x401a74 (112 bytes)
+          DB 013h,013h,013h,013h,013h,013h,013h,013h ; 0x401a7c (120 bytes)
+          DB 013h,013h,013h,013h,013h,013h,013h,013h ; 0x401a84 (128 bytes)
+          DB 013h,013h,00Fh,013h,013h,013h,013h,013h ; 0x401a8c (136 bytes)
+          DB 010h,011h,013h,013h,012h,08Dh,049h,000h ; 0x401a94 (144 bytes)
 $L_401a9c           DWORD $L_4012f7
 $L_401aa0           DWORD $L_401304
 $L_401aa4           DWORD $L_401311
@@ -1063,250 +843,37 @@ $L_401b2c           DWORD $L_4014be
 $L_401b30           DWORD $L_4014cb
 $L_401b34           DWORD $L_4014d8
 $L_401b38           DWORD $L_401907
-$L_401b3c           BYTE ($L_401a9c-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401aa0-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401aa4-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401aa8-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401aac-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401ab0-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401ab4-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401ab8-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401abc-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401ac0-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401ac4-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401ac8-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401acc-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401ad0-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401ad4-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401ad8-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401adc-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401ae0-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401ae4-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401ae8-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401aec-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401af0-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401af4-$L_401a9c)/4
-          BYTE ($L_401af8-$L_401a9c)/4
-          BYTE ($L_401afc-$L_401a9c)/4
-          BYTE ($L_401b00-$L_401a9c)/4
-          BYTE ($L_401b38-$L_401a9c)/4
-          BYTE ($L_401b04-$L_401a9c)/4
-          BYTE ($L_401b08-$L_401a9c)/4
-          BYTE ($L_401b0c-$L_401a9c)/4
-          BYTE ($L_401b10-$L_401a9c)/4
-          BYTE ($L_401b14-$L_401a9c)/4
-          BYTE ($L_401b18-$L_401a9c)/4
-          BYTE ($L_401b1c-$L_401a9c)/4
-          BYTE ($L_401b20-$L_401a9c)/4
-          BYTE ($L_401b24-$L_401a9c)/4
-          BYTE ($L_401b28-$L_401a9c)/4
-          BYTE ($L_401b2c-$L_401a9c)/4
-          BYTE ($L_401b30-$L_401a9c)/4
-          BYTE ($L_401b34-$L_401a9c)/4
-          BYTE 090H
+$L_401b3c DB 000h,027h,027h,027h,027h,001h,027h,027h ; 0x401b3c (8 bytes)
+          DB 027h,027h,027h,027h,027h,027h,027h,002h ; 0x401b44 (16 bytes)
+          DB 027h,027h,027h,027h,027h,027h,027h,027h ; 0x401b4c (24 bytes)
+          DB 027h,003h,027h,027h,027h,027h,027h,027h ; 0x401b54 (32 bytes)
+          DB 027h,027h,027h,027h,027h,027h,027h,027h ; 0x401b5c (40 bytes)
+          DB 027h,027h,027h,027h,027h,004h,027h,005h ; 0x401b64 (48 bytes)
+          DB 027h,027h,027h,027h,006h,027h,027h,027h ; 0x401b6c (56 bytes)
+          DB 027h,027h,027h,027h,027h,027h,027h,027h ; 0x401b74 (64 bytes)
+          DB 027h,007h,027h,027h,027h,027h,027h,027h ; 0x401b7c (72 bytes)
+          DB 027h,027h,027h,008h,027h,027h,027h,027h ; 0x401b84 (80 bytes)
+          DB 027h,027h,027h,027h,027h,009h,027h,027h ; 0x401b8c (88 bytes)
+          DB 027h,027h,027h,027h,027h,027h,027h,00Ah ; 0x401b94 (96 bytes)
+          DB 027h,027h,027h,027h,00Bh,027h,027h,027h ; 0x401b9c (104 bytes)
+          DB 027h,00Ch,027h,027h,027h,027h,027h,027h ; 0x401ba4 (112 bytes)
+          DB 027h,027h,027h,00Dh,027h,027h,027h,027h ; 0x401bac (120 bytes)
+          DB 027h,027h,027h,027h,027h,00Eh,027h,027h ; 0x401bb4 (128 bytes)
+          DB 027h,027h,027h,027h,027h,027h,027h,00Fh ; 0x401bbc (136 bytes)
+          DB 027h,027h,027h,027h,027h,027h,027h,027h ; 0x401bc4 (144 bytes)
+          DB 027h,010h,027h,027h,027h,027h,027h,027h ; 0x401bcc (152 bytes)
+          DB 027h,027h,027h,011h,027h,027h,027h,027h ; 0x401bd4 (160 bytes)
+          DB 027h,027h,027h,027h,027h,027h,027h,027h ; 0x401bdc (168 bytes)
+          DB 027h,027h,027h,027h,027h,027h,027h,012h ; 0x401be4 (176 bytes)
+          DB 027h,027h,027h,027h,027h,027h,027h,027h ; 0x401bec (184 bytes)
+          DB 027h,013h,027h,027h,027h,027h,027h,027h ; 0x401bf4 (192 bytes)
+          DB 027h,027h,027h,027h,027h,027h,027h,027h ; 0x401bfc (200 bytes)
+          DB 027h,027h,014h,027h,027h,015h,027h,027h ; 0x401c04 (208 bytes)
+          DB 027h,027h,027h,027h,027h,027h,027h,027h ; 0x401c0c (216 bytes)
+          DB 027h,027h,027h,027h,027h,027h,027h,027h ; 0x401c14 (224 bytes)
+          DB 027h,016h,017h,018h,019h,027h,01Ah,01Bh ; 0x401c1c (232 bytes)
+          DB 01Ch,01Dh,01Eh,01Fh,020h,021h,022h,023h ; 0x401c24 (240 bytes)
+          DB 024h,025h,026h,090h ; 0x401c2c (244 bytes)
 $L_401c30           DWORD $L_401511
 $L_401c34           DWORD $L_40151e
 $L_401c38           DWORD $L_40152b
@@ -1386,217 +953,31 @@ $L_401d5c           DWORD $L_4018e0
 $L_401d60           DWORD $L_4018ed
 $L_401d64           DWORD $L_4018fa
 $L_401d68           DWORD $L_401907
-$L_401d6c           BYTE ($L_401c30-$L_401c30)/4
-          BYTE ($L_401c34-$L_401c30)/4
-          BYTE ($L_401c38-$L_401c30)/4
-          BYTE ($L_401c3c-$L_401c30)/4
-          BYTE ($L_401c40-$L_401c30)/4
-          BYTE ($L_401c44-$L_401c30)/4
-          BYTE ($L_401c48-$L_401c30)/4
-          BYTE ($L_401c4c-$L_401c30)/4
-          BYTE ($L_401c50-$L_401c30)/4
-          BYTE ($L_401c54-$L_401c30)/4
-          BYTE ($L_401c58-$L_401c30)/4
-          BYTE ($L_401c5c-$L_401c30)/4
-          BYTE ($L_401c60-$L_401c30)/4
-          BYTE ($L_401c64-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401c68-$L_401c30)/4
-          BYTE ($L_401c6c-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401c70-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401c74-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401c78-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-$L_401db0           BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401c7c-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401c80-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401c84-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401c88-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401c8c-$L_401c30)/4
-          BYTE ($L_401c90-$L_401c30)/4
-          BYTE ($L_401c94-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401c98-$L_401c30)/4
-          BYTE ($L_401c9c-$L_401c30)/4
-          BYTE ($L_401ca0-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401ca4-$L_401c30)/4
-          BYTE ($L_401ca8-$L_401c30)/4
-          BYTE ($L_401cac-$L_401c30)/4
-          BYTE ($L_401cb0-$L_401c30)/4
-          BYTE ($L_401cb4-$L_401c30)/4
-          BYTE ($L_401cb8-$L_401c30)/4
-          BYTE ($L_401cbc-$L_401c30)/4
-          BYTE ($L_401cc0-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401cc4-$L_401c30)/4
-          BYTE ($L_401cc8-$L_401c30)/4
-          BYTE ($L_401ccc-$L_401c30)/4
-          BYTE ($L_401cd0-$L_401c30)/4
-          BYTE ($L_401cd4-$L_401c30)/4
-          BYTE ($L_401cd8-$L_401c30)/4
-          BYTE ($L_401cdc-$L_401c30)/4
-          BYTE ($L_401ce0-$L_401c30)/4
-          BYTE ($L_401ce4-$L_401c30)/4
-          BYTE ($L_401ce8-$L_401c30)/4
-          BYTE ($L_401cec-$L_401c30)/4
-          BYTE ($L_401cf0-$L_401c30)/4
-          BYTE ($L_401cf4-$L_401c30)/4
-          BYTE ($L_401cf8-$L_401c30)/4
-          BYTE ($L_401cfc-$L_401c30)/4
-          BYTE ($L_401d00-$L_401c30)/4
-          BYTE ($L_401d04-$L_401c30)/4
-          BYTE ($L_401d08-$L_401c30)/4
-          BYTE ($L_401d0c-$L_401c30)/4
-          BYTE ($L_401d10-$L_401c30)/4
-          BYTE ($L_401d14-$L_401c30)/4
-          BYTE ($L_401d18-$L_401c30)/4
-          BYTE ($L_401d1c-$L_401c30)/4
-          BYTE ($L_401d20-$L_401c30)/4
-          BYTE ($L_401d24-$L_401c30)/4
-          BYTE ($L_401d28-$L_401c30)/4
-          BYTE ($L_401d2c-$L_401c30)/4
-          BYTE ($L_401d30-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d34-$L_401c30)/4
-          BYTE ($L_401d38-$L_401c30)/4
-          BYTE ($L_401d3c-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d40-$L_401c30)/4
-          BYTE ($L_401d44-$L_401c30)/4
-          BYTE ($L_401d48-$L_401c30)/4
-          BYTE ($L_401d4c-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d68-$L_401c30)/4
-          BYTE ($L_401d50-$L_401c30)/4
-          BYTE ($L_401d54-$L_401c30)/4
-          BYTE ($L_401d58-$L_401c30)/4
-          BYTE ($L_401d5c-$L_401c30)/4
-          BYTE ($L_401d60-$L_401c30)/4
-          BYTE ($L_401d64-$L_401c30)/4
-
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
+$L_401d6c DB 000h,001h,002h,003h,004h,005h,006h,007h ; 0x401d6c (8 bytes)
+          DB 008h,009h,00Ah,00Bh,00Ch,00Dh,04Eh,04Eh ; 0x401d74 (16 bytes)
+          DB 04Eh,04Eh,04Eh,04Eh,04Eh,00Eh,00Fh,04Eh ; 0x401d7c (24 bytes)
+          DB 04Eh,04Eh,04Eh,04Eh,04Eh,04Eh,04Eh,04Eh ; 0x401d84 (32 bytes)
+          DB 04Eh,04Eh,04Eh,04Eh,04Eh,04Eh,04Eh,04Eh ; 0x401d8c (40 bytes)
+          DB 04Eh,010h,04Eh,04Eh,04Eh,04Eh,04Eh,04Eh ; 0x401d94 (48 bytes)
+          DB 04Eh,04Eh,04Eh,011h,04Eh,04Eh,04Eh,04Eh ; 0x401d9c (56 bytes)
+          DB 04Eh,04Eh,04Eh,04Eh,04Eh,012h,04Eh,04Eh ; 0x401da4 (64 bytes)
+          DB 04Eh,04Eh,04Eh,04Eh,04Eh,04Eh,04Eh,04Eh ; 0x401dac (72 bytes)
+          DB 04Eh,04Eh,04Eh,04Eh,04Eh,04Eh,04Eh,04Eh ; 0x401db4 (80 bytes)
+          DB 04Eh,013h,04Eh,04Eh,04Eh,04Eh,04Eh,04Eh ; 0x401dbc (88 bytes)
+          DB 04Eh,04Eh,04Eh,04Eh,04Eh,04Eh,04Eh,04Eh ; 0x401dc4 (96 bytes)
+          DB 04Eh,04Eh,04Eh,04Eh,04Eh,014h,04Eh,04Eh ; 0x401dcc (104 bytes)
+          DB 04Eh,04Eh,04Eh,04Eh,04Eh,04Eh,04Eh,015h ; 0x401dd4 (112 bytes)
+          DB 04Eh,04Eh,04Eh,04Eh,016h,04Eh,04Eh,04Eh ; 0x401ddc (120 bytes)
+          DB 017h,018h,019h,04Eh,04Eh,04Eh,01Ah,01Bh ; 0x401de4 (128 bytes)
+          DB 01Ch,04Eh,04Eh,01Dh,01Eh,01Fh,020h,021h ; 0x401dec (136 bytes)
+          DB 022h,023h,024h,04Eh,04Eh,025h,026h,027h ; 0x401df4 (144 bytes)
+          DB 028h,029h,02Ah,02Bh,02Ch,02Dh,02Eh,02Fh ; 0x401dfc (152 bytes)
+          DB 030h,031h,032h,033h,034h,035h,036h,037h ; 0x401e04 (160 bytes)
+          DB 038h,039h,03Ah,03Bh,03Ch,03Dh,03Eh,03Fh ; 0x401e0c (168 bytes)
+          DB 040h,04Eh,04Eh,041h,042h,043h,04Eh,04Eh ; 0x401e14 (176 bytes)
+          DB 04Eh,04Eh,04Eh,04Eh,04Eh,044h,045h,046h ; 0x401e1c (184 bytes)
+          DB 047h,04Eh,04Eh,04Eh,04Eh,04Eh,04Eh,048h ; 0x401e24 (192 bytes)
+          DB 049h,04Ah,04Bh,04Ch,04Dh,090h,090h,090h ; 0x401e2c (200 bytes)
+          DB 090h,090h,090h,090h,090h,090h,090h,090h ; 0x401e34 (208 bytes)
+          DB 090h,090h,090h,090h ; 0x401e3c (212 bytes)
 FUN_401000 ENDP
