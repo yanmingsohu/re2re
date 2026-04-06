@@ -11,7 +11,6 @@ ASSUME GS:NOTHING
 Include src/imports.S
 
 EXTERN ___ImageBase:BYTE
-
 PUBLIC __EntryPoint
 
 ;===================================

@@ -3558,9 +3558,7 @@ $L_4e6432::
 $L_4e6440::
 
             ret 
-          BYTE 08dH
-          BYTE 049H
-          BYTE 000H
+            LEA ECX, [ECX+0]
 $L_4e6444 DWORD $L_4e61a4
           DWORD $L_4e61b1
           DWORD $L_4e61bf
@@ -6392,9 +6390,7 @@ $L_4e832e::
             mov EAX,1
             pop EBP
             ret 
-          BYTE 08dH
-          BYTE 049H
-          BYTE 000H
+            LEA ECX, [ECX+0]
 $L_4e8340           DWORD $L_4e82f3
 $L_4e8344           DWORD $L_4e8304
 $L_4e8348 DB 000h, 000h, 000h, 000h, 001h, 000h, 000h, 000h
@@ -6684,9 +6680,7 @@ $L_4e85c7::
 
             mov EAX,1
             ret 
-          BYTE 08dH
-          BYTE 049H
-          BYTE 000H
+            LEA ECX, [ECX+0]
 $L_4e85d0           DWORD $L_4e8590
           DWORD $L_4e859a
           DWORD $L_4e85a1
