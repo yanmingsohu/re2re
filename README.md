@@ -6,7 +6,7 @@ Objective: To compile the assembly code so that it can run.
 ![screen](screen/2.png)
 
 
-Current status: |>>------------------| 10%
+Current status: |>>>-----------------| 11%
 * Able to enter the first scene
 * The moving animation is strange
 * open menu

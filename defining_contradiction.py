@@ -111,7 +111,8 @@ def show_code(lines, i):
 def check_misplaced_tokens(lines):
   status = _WAIT
   st_label = None
-  last_err_line = -10
+  last_err_label = None
+  last_err_line = 0
 
   for i, (code, comm, filename, no) in enumerate(lines):
     if not code:
@@ -121,10 +122,14 @@ def check_misplaced_tokens(lines):
       continue
 
     def msg(s):
-      nonlocal last_err_line
-      if i-5 < last_err_line:
+      nonlocal last_err_label, last_err_line
+      if st_label == last_err_label:
         return
-      last_err_line = i
+      if i <= last_err_line:
+        return
+      last_err_label = label
+      last_err_line = i + 10
+      print('\n', '='*80)
       print(s, f'\n{filename}:{no}:')
       show_code(lines, i)
 
@@ -143,6 +148,7 @@ def check_misplaced_tokens(lines):
     if ctype == _NEW_LABEL:
       status = test_st
       st_label = label
+      last_err_line = i
       continue
     if ctype == _END_PROC:
       status = _WAIT
