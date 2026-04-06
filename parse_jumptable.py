@@ -7,7 +7,7 @@ from pathlib import Path
 jmp_pattern = re.compile(
     r'jmp\s+DWORD\s+PTR\s+\[(\w+)(?:\*[0-9a-fA-F])\+(\$L_[0-9a-fA-F]+)\]', re.IGNORECASE)
 case_reg_re = re.compile(
-    r'\s*cmp\s+(\w+)\s*,\s*(E.+)', re.IGNORECASE)
+    r'\s*cmp\s+(\w+)\s*,\s*(E.+)(?:\s*;.*)', re.IGNORECASE)
 
 # 找标签定义: $L_xxxxxx:: 或 $L_xxxxxx DWORD ...
 label_pattern = re.compile(r'(\$L_[0-9a-fA-F]+)')
@@ -28,6 +28,8 @@ byte_re = re.compile(r'\s*.*\s*BYTE\s+([0-9a-fA-F]+H*)',
 db_re = re.compile(r'\s*.*\s*DB\s+([0-9a-fA-F]+H*)(\s+DUP.+)?', 
     re.IGNORECASE)
 nop_re = re.compile(r'\s*.*\s*nop.*', re.IGNORECASE)
+
+complete_annotation = ';++'
 
 
 def numH(n):
@@ -118,7 +120,7 @@ def parse_asm_file(lines):
         m = end_label.match(line)
         if m:
             label = m.group(1)            
-            if ';++' in line: #忽略特殊标记
+            if complete_annotation in line: #忽略特殊标记
               skip_label[label] = i 
               last_log.append(f"-- 明确标记完成的标签 {label}")
             if label not in label_lines:
@@ -250,27 +252,45 @@ def parse_asm_file(lines):
     print("\n".join(last_log))
 
 
-
-def readfile(filename, lines):
+def readfile(filename, lines, structured):
     print(f"; read {filename}")
     no = 0
     ml = 80
+    comment_ret = re.compile(r'^COMMENT\s+(.?)', re.IGNORECASE)
+    comment_end = None
+
     with open(filename, 'r', encoding='utf-8', errors='replace') as f:
         for line in f.readlines():
             no += 1
-            comm = f"; {filename}:{no}"
-            indent = ' ' * (ml - len(line) - len(comm))
-            nline = line.replace('\n', '') + indent + comm
-            lines.append(nline)
+            if comment_end:
+                if line == comment_end:
+                    comment_end = None
+                continue
+            if r := comment_ret.match(line):
+                comment_end = r.group(1)
+                continue
+
+            if structured:
+                sp = line.split(';')
+                code, comm = (sp[0], ','.join(sp[1:])) if len(sp)>1 else (sp[0], '')
+                lines.append(( code.strip(), comm.strip(), filename, no ))
+            else:
+                comm = f"; {filename}:{no}"
+                indent = ' ' * (ml - len(line) - len(comm))
+                nline = line.replace('\n', '') + indent + comm
+                lines.append(nline)
+
+
+def read_all_files(mainfile="main.S", srcdir='./src', structured=False):
+    lines = []
+    readfile(mainfile, lines, structured)
+    for file in Path(srcdir).rglob('*.S'):
+        if file.is_file():
+            readfile(file, lines, structured)
+    return lines    
+
 
 if __name__ == '__main__':
-    lines = []
-    filename = sys.argv[1] if len(sys.argv) > 1 else 'bio2.fixed.S'
-    readfile(filename, lines)
-
-    dir = Path('./src')
-    for file in dir.rglob('*.S'):
-        if file.is_file():
-            readfile(file, lines)
-                
+    mainfile = sys.argv[1] if len(sys.argv) > 1 else 'main.S'
+    lines = read_all_files(mainfile)    
     parse_asm_file(lines)

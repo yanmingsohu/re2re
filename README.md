@@ -32,21 +32,25 @@ Other targets in `make` are used to disassemble and generate `main.S`; this is t
 
 # Tool
 
-安装依赖
+Install dependencies
 `pip install angr pefile`
 
-检查数据定义标签与源程序二进制一致性
+Check the consistency between the data definition label 
+and the source program binary.
 `python extract_data_labels.py main.S bio2.exe > data_label.txt`
 `python extract_data_labels.py src/data.S bio2.exe > data2_label.txt`
 
-跳转表 switch 结构检查报告
+Jump table switch structure check report
 `python parse_jumptable.py main.S > jumptable.txt`
 
-二级制转换为 asm 中的常量定义
+Converting binary to constant definitions in ASM
 `python define_bin.py $L_403df8 01020304`
 
-二级制转换为 asm 中的变量引用
+Converting binary to variable reference in ASM
 `python define_bin.py $L_403df8 01020304 -r`
 
-反汇编程序中的片段
+Snippets from the disassembler
 `python dasm.py bio2.exe 0x466350 0x4663d6`
+
+Search for data definitions within functions (and vice versa).
+`python defining_contradiction.py > test.txt`

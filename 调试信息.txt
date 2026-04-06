@@ -127,3 +127,11 @@ FUN_45a750 没有任何调用这个函数
 L_4f7560
 
 $L_53adb8 in 4e4b30? 
+
+
+BYTE 08dH
+BYTE 049H
+BYTE 000H ->> LEA ECX, [ECX+0]
+
+BYTE 08dH[\S\s]?BYTE 049H[\S\s]?BYTE 000H
+BYTE 08dH\n[\s\t]*BYTE 049H\n[\s\t]*BYTE 000H
