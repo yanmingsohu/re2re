@@ -12,6 +12,7 @@ __pycache__
 *.obj
 *.pdb
 *.ilk
+*.o
 bio2game
 bio2
 test

@@ -6,11 +6,14 @@ DD    = ddisasm
 gtirb = gtirb-pprinter
 link  = link
 ml    = ml
+cc    = cl
 
 
-libs = kernel32.lib user32.lib gdi32.lib advapi32.lib ole32.lib winmm.lib ddraw.lib dsound.lib msacm32.lib imm32.lib
+libs = kernel32.lib user32.lib gdi32.lib advapi32.lib ole32.lib winmm.lib ddraw.lib dsound.lib msacm32.lib imm32.lib ucrt.lib vcruntime.lib
 libpath = C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22000.0\um\x86
 SRCS := $(wildcard src/*.S)
+C_SRC = $(wildcard src/*.c)
+C_OBJECTS = $(patsubst src/%.c, %.obj, $(C_SRC))
 
 first_target: build copygame
 
@@ -25,13 +28,18 @@ bio2.S: bio2.gtirb
 asm: bio2.S
 
 
-main.obj: main.S $(SRCS)
+main.obj: main.S $(SRCS) 
 	$(ml) //c //coff main.S //Fo main.obj //Zi
 	
-bio2re.exe: main.obj
-	$(link) //SUBSYSTEM:WINDOWS //ENTRY:_EntryPoint $(libs) main.obj //OUT:bio2re.exe //LIBPATH:"$(libpath)"  //DEBUG
+bio2re.exe: main.obj $(C_OBJECTS)
+	$(link) //SUBSYSTEM:WINDOWS //ENTRY:_EntryPoint $(libs) $^ //OUT:bio2re.exe //LIBPATH:"$(libpath)"  //DEBUG
 	
 build: bio2re.exe
+
+
+%.obj: src/%.c
+	$(cc) //c //Zi //Od $<
+
 
 
 copygame: bio2re.exe

@@ -1,0 +1,1 @@
+EXTERN  _on_winmain_call : PROC

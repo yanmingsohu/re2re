@@ -9,6 +9,7 @@ ASSUME FS:NOTHING
 ASSUME GS:NOTHING
 
 Include src/imports.S
+Include src/c_ext.S
 
 EXTERN ___ImageBase:BYTE
 PUBLIC __EntryPoint

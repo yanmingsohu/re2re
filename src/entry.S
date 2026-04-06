@@ -85,6 +85,7 @@ $L_50d9a0::
             push ESI
             call DWORD PTR __imp__GetModuleHandleA
 
+            ; 这里打开窗口
             push EAX
             call FUN_441e60
 
