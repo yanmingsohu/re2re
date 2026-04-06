@@ -91,9 +91,27 @@ def what_code(label, comma, cmd):
   return _NORM_CODE, _NO_CHG
 
 
+def show_code(lines, i):
+  for j in range(i-5, i+6, 1):
+    if j >= len(lines)-1:
+      break
+      
+    lcode, lcomm, lfilename, lno = lines[j]
+    num = str(lno)
+    numst = ' ' * (8-len(num))
+    commst = ''
+    thisline = ' '
+    if lcomm:
+      commst = ' '* (80 - len(lcomm)) +';'
+    if j == i:
+      thisline = '>'
+    print(f"{thisline} {num} |{numst}{lcode}{commst}{lcomm}")
+
+
 def check_misplaced_tokens(lines):
   status = _WAIT
   st_label = None
+  last_err_line = -10
 
   for i, (code, comm, filename, no) in enumerate(lines):
     if not code:
@@ -103,21 +121,12 @@ def check_misplaced_tokens(lines):
       continue
 
     def msg(s):
+      nonlocal last_err_line
+      if i-5 < last_err_line:
+        return
+      last_err_line = i
       print(s, f'\n{filename}:{no}:')
-      for j in range(i-5, i+6, 1):
-        if j >= len(lines)-1:
-          break
-          
-        lcode, lcomm, lfilename, lno = lines[j]
-        num = str(lno)
-        numst = ' ' * (8-len(num))
-        commst = ''
-        thisline = ' '
-        if lcomm:
-          commst = ' '* (80 - len(lcomm)) +';'
-        if j == i:
-          thisline = '>'
-        print(f"{thisline} {num} |{numst}{lcode}{commst}{lcomm}")
+      show_code(lines, i)
 
     d = st.groupdict()
     label = d['label'].lower()

@@ -1,0 +1,1084 @@
+; read main.S
+; read src\data.S
+; read src\entry.S
+; read src\FUN_401000_format_err_message.S
+; read src\FUN_509160_disk_verification.S
+; read src\imports.S
+; read src\script.S
+; read src\unorganized.S
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:78765:
+  78760 |   mov DWORD PTR [ESP+4],7
+  78761 |   jmp FUN_434e60
+  78762 |   
+  78763 |   mov EDI,EDI
+  78764 |   $L_434750::
+> 78765 |   DWORD case0
+  78766 |   DWORD case1
+  78767 |   DWORD case2
+  78768 |   DWORD case3
+  78769 |   DWORD case4
+  78770 |   DWORD case5
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:78770:
+  78765 |   DWORD case0
+  78766 |   DWORD case1
+  78767 |   DWORD case2
+  78768 |   DWORD case3
+  78769 |   DWORD case4
+> 78770 |   DWORD case5
+  78771 |   DWORD case6
+  78772 |   DWORD case7
+  78773 |   FUN_434460 ENDP
+  78774 |   
+  78775 |              ;增加缺失的函数 fcn.00434770(int32_t arg_4h, int32_t arg_8h, int32_t arg_ch),
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:113887:
+  113882 |  $L_44a89e::
+  113883 |  
+  113884 |  mov EAX,DWORD PTR [ESI*4+$L_6880a4]
+  113885 |  test EAX,EAX
+  113886 |  je $L_44a8b4
+> 113887 |  BYTE 050H
+  113888 |  BYTE 056H
+  113889 |  BYTE 057H
+  113890 |  BYTE 0e8H
+  113891 |  BYTE 0bfH
+  113892 |  BYTE 0a1H
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:113892:
+  113887 |  BYTE 050H
+  113888 |  BYTE 056H
+  113889 |  BYTE 057H
+  113890 |  BYTE 0e8H
+  113891 |  BYTE 0bfH
+> 113892 |  BYTE 0a1H
+  113893 |  BYTE 0feH
+  113894 |  BYTE 0ffH
+  113895 |  
+  113896 |  add ESP,12
+  113897 |  $L_44a8b4::
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:113909:
+  113904 |  $L_44a8bc::
+  113905 |  
+  113906 |  mov EAX,DWORD PTR [ESI*4+$L_689340]
+  113907 |  test EAX,EAX
+  113908 |  je $L_44a8d3
+> 113909 |  BYTE 050H
+  113910 |  BYTE 056H
+  113911 |  BYTE 06aH
+  113912 |  BYTE 006H
+  113913 |  BYTE 0e8H
+  113914 |  BYTE 0a0H
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:113914:
+  113909 |  BYTE 050H
+  113910 |  BYTE 056H
+  113911 |  BYTE 06aH
+  113912 |  BYTE 006H
+  113913 |  BYTE 0e8H
+> 113914 |  BYTE 0a0H
+  113915 |  BYTE 0a1H
+  113916 |  BYTE 0feH
+  113917 |  BYTE 0ffH
+  113918 |  
+  113919 |  add ESP,12
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:114081:
+  114076 |  $L_44aa1c::
+  114077 |  
+  114078 |  mov EAX,DWORD PTR [ESI*4+$L_6880a4]
+  114079 |  test EAX,EAX
+  114080 |  je $L_44aa32
+> 114081 |  BYTE 050H
+  114082 |  BYTE 056H
+  114083 |  BYTE 057H
+  114084 |  BYTE 0e8H
+  114085 |  BYTE 041H
+  114086 |  BYTE 0a0H
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:114086:
+  114081 |  BYTE 050H
+  114082 |  BYTE 056H
+  114083 |  BYTE 057H
+  114084 |  BYTE 0e8H
+  114085 |  BYTE 041H
+> 114086 |  BYTE 0a0H
+  114087 |  BYTE 0feH
+  114088 |  BYTE 0ffH
+  114089 |  
+  114090 |  add ESP,12
+  114091 |  $L_44aa32::
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:114103:
+  114098 |  $L_44aa3a::
+  114099 |  
+  114100 |  mov EAX,DWORD PTR [ESI*4+$L_689340]
+  114101 |  test EAX,EAX
+  114102 |  je $L_44aa51
+> 114103 |  BYTE 050H
+  114104 |  BYTE 056H
+  114105 |  BYTE 06aH
+  114106 |  BYTE 006H
+  114107 |  BYTE 0e8H
+  114108 |  BYTE 022H
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:114108:
+  114103 |  BYTE 050H
+  114104 |  BYTE 056H
+  114105 |  BYTE 06aH
+  114106 |  BYTE 006H
+  114107 |  BYTE 0e8H
+> 114108 |  BYTE 022H
+  114109 |  BYTE 0a0H
+  114110 |  BYTE 0feH
+  114111 |  BYTE 0ffH
+  114112 |  
+  114113 |  add ESP,12
+ -- 警告: 在函数外检测到代码 
+src\unorganized.S:152535:
+  152530 |  pop EDI
+  152531 |  pop ESI
+  152532 |  pop EBP
+  152533 |  ret
+  152534 |  $L_463200 ENDP
+> 152535 |  mov edi, edi                                                                             ;nop
+  152536 |  $L_463344           DWORD $L_46325e
+  152537 |  DWORD $L_4632e8
+  152538 |  DWORD $L_46331e
+  152539 |  DWORD $L_46325e
+  152540 |  DWORD $L_463294
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:158886:
+  158881 |  push ESI
+  158882 |  or AL,128
+  158883 |  push 7
+  158884 |  mov BYTE PTR [ESI+467],AL
+  158885 |  call FUN_4edd00
+> 158886 |  BYTE 033H
+  158887 |  
+  158888 |  shr BYTE PTR [EDX],138
+  158889 |  xchg BYTE PTR [EDI],CH
+  158890 |  add AL,BYTE PTR [EAX]
+  158891 |  add BYTE PTR [EBP+2084095244],CL
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:169752:
+  169747 |  push ESI
+  169748 |  or AL,128
+  169749 |  push 7
+  169750 |  mov BYTE PTR [ESI+467],AL
+  169751 |  call FUN_4edd00
+> 169752 |  BYTE 033H
+  169753 |  
+  169754 |  shr BYTE PTR [EDX],138
+  169755 |  xchg BYTE PTR [EDI],CH
+  169756 |  add AL,BYTE PTR [EAX]
+  169757 |  add BYTE PTR [EBP-2096577268],CL
+ -- 警告: 在函数外检测到代码 
+src\unorganized.S:196077:
+  196072 |  $L_47f6c8::
+  196073 |  
+  196074 |  pop ESI
+  196075 |  ret
+  196076 |  $L_47f480 ENDP
+> 196077 |  mov edi, edi                                                                             ;nop
+  196078 |  $L_47f6cc           DWORD $L_47f4a0
+  196079 |  DWORD $L_47f4b5
+  196080 |  DWORD $L_47f4c6
+  196081 |  DWORD $L_47f4e6
+  196082 |  DWORD $L_47f4ff
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:264536:
+  264531 |  push ECX
+  264532 |  mov AL,BYTE PTR [ESI+4]
+  264533 |  push EDX
+  264534 |  push ESI
+  264535 |  call DWORD PTR [EAX*4+$L_52bba0]
+> 264536 |  BYTE 056H
+  264537 |  BYTE 0e8H
+  264538 |  BYTE 01dH
+  264539 |  BYTE 02fH
+  264540 |  BYTE 000H
+  264541 |  BYTE 000H
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:264541:
+  264536 |  BYTE 056H
+  264537 |  BYTE 0e8H
+  264538 |  BYTE 01dH
+  264539 |  BYTE 02fH
+  264540 |  BYTE 000H
+> 264541 |  BYTE 000H
+  264542 |  
+  264543 |  mov AL,BYTE PTR [ESI+563]
+  264544 |  add ESP,16
+  264545 |  test AL,AL
+  264546 |  je $L_4acbf8
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:357213:
+  357208 |  cmp AL,2
+  357209 |  jne $L_4ec9d3
+  357210 |  
+  357211 |  cmp BYTE PTR [$L_6937a2],255
+  357212 |  jle $L_4ec9cc
+> 357213 |  BYTE 0a1H
+  357214 |  BYTE 0a4H
+  357215 |  BYTE 037H
+  357216 |  BYTE 069H
+  357217 |  BYTE 000H
+  357218 |  BYTE 025H
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:357218:
+  357213 |  BYTE 0a1H
+  357214 |  BYTE 0a4H
+  357215 |  BYTE 037H
+  357216 |  BYTE 069H
+  357217 |  BYTE 000H
+> 357218 |  BYTE 025H
+  357219 |  BYTE 0ffH
+  357220 |  BYTE 0ffH
+  357221 |  BYTE 000H
+  357222 |  BYTE 000H
+  357223 |  BYTE 050H
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:357223:
+  357218 |  BYTE 025H
+  357219 |  BYTE 0ffH
+  357220 |  BYTE 0ffH
+  357221 |  BYTE 000H
+  357222 |  BYTE 000H
+> 357223 |  BYTE 050H
+  357224 |  BYTE 056H
+  357225 |  BYTE 06aH
+  357226 |  BYTE 005H
+  357227 |  BYTE 0e8H
+  357228 |  BYTE 0adH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:357228:
+  357223 |  BYTE 050H
+  357224 |  BYTE 056H
+  357225 |  BYTE 06aH
+  357226 |  BYTE 005H
+  357227 |  BYTE 0e8H
+> 357228 |  BYTE 0adH
+  357229 |  BYTE 080H
+  357230 |  BYTE 0f4H
+  357231 |  BYTE 0ffH
+  357232 |  BYTE 083H
+  357233 |  BYTE 0c4H
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:357233:
+  357228 |  BYTE 0adH
+  357229 |  BYTE 080H
+  357230 |  BYTE 0f4H
+  357231 |  BYTE 0ffH
+  357232 |  BYTE 083H
+> 357233 |  BYTE 0c4H
+  357234 |  BYTE 00cH
+  357235 |  BYTE 046H
+  357236 |  BYTE 083H
+  357237 |  $L_4ec9c8           BYTE 0feH
+  357238 |  BYTE 003H
+ -- 警告: 在函数外检测到代码 
+src\unorganized.S:359089:
+  359084 |  mov DL,BYTE PTR [$L_693be8]
+  359085 |  test DL,DL
+  359086 |  je $L_4ed86f
+  359087 |  $L_4ed874 ENDP
+  359088 |  
+> 359089 |  cmp cx, ax
+  359090 |  jbe L4eda3c
+  359091 |  xor eax, eax
+  359092 |  mov ax, cx
+  359093 |  jmp L4eda46
+  359094 |  L4eda3c:
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:409446:
+  409441 |  add ESI,EAX
+  409442 |  add EDI,EAX
+  409443 |  $L_50ce4f::
+  409444 |  
+  409445 |  jmp DWORD PTR [EDX*4+$L_50ce58]
+> 409446 |  BYTE 08bH                                                             ;mov edi edi , ?????
+  409447 |  BYTE 0ffH
+  409448 |  $L_50ce58           DWORD $L_50ce68                                                                              ;++
+  409449 |  DWORD $L_50ce70
+  409450 |  DWORD $L_50ce7c
+  409451 |  DWORD $L_50ce90
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:409597:
+  409592 |  rep movsd
+  409593 |  
+  409594 |  cld
+  409595 |  jmp DWORD PTR [EDX*4+$L_50cff0]
+  409596 |  
+> 409597 |  DWORD $L_50cfa4
+  409598 |  DWORD $L_50cfac
+  409599 |  DWORD $L_50cfb4
+  409600 |  DWORD $L_50cfbc
+  409601 |  DWORD $L_50cfc4
+  409602 |  DWORD $L_50cfcc
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:409602:
+  409597 |  DWORD $L_50cfa4
+  409598 |  DWORD $L_50cfac
+  409599 |  DWORD $L_50cfb4
+  409600 |  DWORD $L_50cfbc
+  409601 |  DWORD $L_50cfc4
+> 409602 |  DWORD $L_50cfcc
+  409603 |  DWORD $L_50cfd4
+  409604 |  $L_50cfa0           DWORD $L_50cfe7                                                                              ;++
+  409605 |  $L_50cfa4::
+  409606 |  
+  409607 |  mov EAX,DWORD PTR [ESI+ECX*4+28]
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:409687:
+  409682 |  mov EAX,DWORD PTR [EBP+8]
+  409683 |  pop ESI
+  409684 |  pop EDI
+  409685 |  leave
+  409686 |  ret
+> 409687 |  BYTE 0ccH
+  409688 |  BYTE 0ccH
+  409689 |  BYTE 0ccH
+  409690 |  BYTE 0ccH
+  409691 |  BYTE 0ccH
+  409692 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:409692:
+  409687 |  BYTE 0ccH
+  409688 |  BYTE 0ccH
+  409689 |  BYTE 0ccH
+  409690 |  BYTE 0ccH
+  409691 |  BYTE 0ccH
+> 409692 |  BYTE 0ccH
+  409693 |  BYTE 0ccH
+  409694 |  BYTE 0ccH
+  409695 |  BYTE 0ccH
+  409696 |  BYTE 0ccH
+  409697 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:409697:
+  409692 |  BYTE 0ccH
+  409693 |  BYTE 0ccH
+  409694 |  BYTE 0ccH
+  409695 |  BYTE 0ccH
+  409696 |  BYTE 0ccH
+> 409697 |  BYTE 0ccH
+  409698 |  
+  409699 |  $L_50d050::                                                                         ;不可达代码??
+  409700 |  sub ESP,8
+  409701 |  fst QWORD PTR [ESP]
+  409702 |  call FUN_50f4d8
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:414300:
+  414295 |  add ESP,8
+  414296 |  pop EBP
+  414297 |  ret 4
+  414298 |  
+  414299 |  int 3
+> 414300 |  BYTE 0ccH
+  414301 |  BYTE 0ccH
+  414302 |  BYTE 0ccH
+  414303 |  BYTE 0ccH
+  414304 |  BYTE 0ccH
+  414305 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:414305:
+  414300 |  BYTE 0ccH
+  414301 |  BYTE 0ccH
+  414302 |  BYTE 0ccH
+  414303 |  BYTE 0ccH
+  414304 |  BYTE 0ccH
+> 414305 |  BYTE 0ccH
+  414306 |  
+  414307 |  int 3
+  414308 |  
+  414309 |  cmp BYTE PTR [EDX+14],5
+  414310 |  jne $L_50f237
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:414495:
+  414490 |  ret
+  414491 |  $L_50f3e3 ENDP
+  414492 |  $L_50f3ea PROC
+  414493 |  
+  414494 |  int 3
+> 414495 |  BYTE 0ccH
+  414496 |  BYTE 0ccH
+  414497 |  BYTE 0ccH
+  414498 |  BYTE 0ccH
+  414499 |  
+  414500 |  int 3
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:414772:
+  414767 |  jmp $L_50f572
+  414768 |  $L_50f58a ENDP
+  414769 |  $L_50f5dc PROC
+  414770 |  
+  414771 |  int 3
+> 414772 |  BYTE 0ccH
+  414773 |  BYTE 0ccH
+  414774 |  
+  414775 |  int 3
+  414776 |  $L_50f5dc ENDP
+  414777 |  ALIGN 16
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:428473:
+  428468 |  BYTE 0ccH
+  428469 |  ALIGN 16
+  428470 |  FUN_515ad0 PROC
+  428471 |  
+  428472 |  jmp DWORD PTR __imp__RtlUnwind
+> 428473 |  BYTE 0ccH
+  428474 |  BYTE 0ccH
+  428475 |  BYTE 0ccH
+  428476 |  BYTE 0ccH
+  428477 |  BYTE 0ccH
+  428478 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:428478:
+  428473 |  BYTE 0ccH
+  428474 |  BYTE 0ccH
+  428475 |  BYTE 0ccH
+  428476 |  BYTE 0ccH
+  428477 |  BYTE 0ccH
+> 428478 |  BYTE 0ccH
+  428479 |  BYTE 0ccH
+  428480 |  BYTE 0ccH
+  428481 |  BYTE 0ccH
+  428482 |  BYTE 0ccH
+  428483 |  
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:428571:
+  428566 |  pop EDI
+  428567 |  leave
+  428568 |  ret
+  428569 |  
+  428570 |  int 3
+> 428571 |  BYTE 0ccH
+  428572 |  BYTE 0ccH
+  428573 |  
+  428574 |  int 3
+  428575 |  
+  428576 |  lea ECX,DWORD PTR [EBP-20]
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:428672:
+  428667 |  jmp $L_50c81c
+  428668 |  $L_515c03 ENDP
+  428669 |  $L_515c0d PROC
+  428670 |  
+  428671 |  int 3
+> 428672 |  BYTE 0ccH
+  428673 |  
+  428674 |  int 3
+  428675 |  $L_515c10::
+  428676 |  
+  428677 |  lea ECX,DWORD PTR [EBP-20]
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:428701:
+  428696 |  jmp $L_50c81c
+  428697 |  $L_515c2f ENDP
+  428698 |  $L_515c39 PROC
+  428699 |  
+  428700 |  int 3
+> 428701 |  BYTE 0ccH
+  428702 |  BYTE 0ccH
+  428703 |  BYTE 0ccH
+  428704 |  BYTE 0ccH
+  428705 |  BYTE 0ccH
+  428706 |  
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:428938:
+  428933 |  jmp FUN_40fee0
+  428934 |  $L_515e28::
+  428935 |  
+  428936 |  mov EAX,OFFSET $L_517f38
+  428937 |  jmp $L_50c81c
+> 428938 |  BYTE 0ccH
+  428939 |  BYTE 0ccH
+  428940 |  BYTE 0ccH
+  428941 |  BYTE 0ccH
+  428942 |  BYTE 0ccH
+  428943 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:428943:
+  428938 |  BYTE 0ccH
+  428939 |  BYTE 0ccH
+  428940 |  BYTE 0ccH
+  428941 |  BYTE 0ccH
+  428942 |  BYTE 0ccH
+> 428943 |  BYTE 0ccH
+  428944 |  BYTE 0ccH
+  428945 |  BYTE 0ccH
+  428946 |  BYTE 0ccH
+  428947 |  BYTE 0ccH
+  428948 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:428948:
+  428943 |  BYTE 0ccH
+  428944 |  BYTE 0ccH
+  428945 |  BYTE 0ccH
+  428946 |  BYTE 0ccH
+  428947 |  BYTE 0ccH
+> 428948 |  BYTE 0ccH
+  428949 |  BYTE 0ccH
+  428950 |  BYTE 0ccH
+  428951 |  BYTE 0ccH
+  428952 |  
+  428953 |  mov ECX,DWORD PTR [EBP-16]
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:428959:
+  428954 |  jmp FUN_4149f0
+  428955 |  $L_515e48::
+  428956 |  
+  428957 |  mov EAX,OFFSET $L_517f5c
+  428958 |  jmp $L_50c81c
+> 428959 |  BYTE 0ccH
+  428960 |  BYTE 0ccH
+  428961 |  BYTE 0ccH
+  428962 |  BYTE 0ccH
+  428963 |  BYTE 0ccH
+  428964 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:428964:
+  428959 |  BYTE 0ccH
+  428960 |  BYTE 0ccH
+  428961 |  BYTE 0ccH
+  428962 |  BYTE 0ccH
+  428963 |  BYTE 0ccH
+> 428964 |  BYTE 0ccH
+  428965 |  BYTE 0ccH
+  428966 |  BYTE 0ccH
+  428967 |  BYTE 0ccH
+  428968 |  BYTE 0ccH
+  428969 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:428969:
+  428964 |  BYTE 0ccH
+  428965 |  BYTE 0ccH
+  428966 |  BYTE 0ccH
+  428967 |  BYTE 0ccH
+  428968 |  BYTE 0ccH
+> 428969 |  BYTE 0ccH
+  428970 |  BYTE 0ccH
+  428971 |  BYTE 0ccH
+  428972 |  BYTE 0ccH
+  428973 |  
+  428974 |  lea ECX,DWORD PTR [EBP-60]
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429116:
+  429111 |  jmp FUN_4149f0
+  429112 |  $L_515f28::
+  429113 |  
+  429114 |  mov EAX,OFFSET $L_51804c
+  429115 |  jmp $L_50c81c
+> 429116 |  BYTE 0ccH
+  429117 |  BYTE 0ccH
+  429118 |  BYTE 0ccH
+  429119 |  BYTE 0ccH
+  429120 |  BYTE 0ccH
+  429121 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429121:
+  429116 |  BYTE 0ccH
+  429117 |  BYTE 0ccH
+  429118 |  BYTE 0ccH
+  429119 |  BYTE 0ccH
+  429120 |  BYTE 0ccH
+> 429121 |  BYTE 0ccH
+  429122 |  BYTE 0ccH
+  429123 |  BYTE 0ccH
+  429124 |  BYTE 0ccH
+  429125 |  BYTE 0ccH
+  429126 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429126:
+  429121 |  BYTE 0ccH
+  429122 |  BYTE 0ccH
+  429123 |  BYTE 0ccH
+  429124 |  BYTE 0ccH
+  429125 |  BYTE 0ccH
+> 429126 |  BYTE 0ccH
+  429127 |  BYTE 0ccH
+  429128 |  BYTE 0ccH
+  429129 |  BYTE 0ccH
+  429130 |  
+  429131 |  mov ECX,DWORD PTR [EBP-16]
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429137:
+  429132 |  jmp FUN_430f70
+  429133 |  $L_515f48::
+  429134 |  
+  429135 |  mov EAX,OFFSET $L_518070
+  429136 |  jmp $L_50c81c
+> 429137 |  BYTE 0ccH
+  429138 |  BYTE 0ccH
+  429139 |  BYTE 0ccH
+  429140 |  BYTE 0ccH
+  429141 |  BYTE 0ccH
+  429142 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429142:
+  429137 |  BYTE 0ccH
+  429138 |  BYTE 0ccH
+  429139 |  BYTE 0ccH
+  429140 |  BYTE 0ccH
+  429141 |  BYTE 0ccH
+> 429142 |  BYTE 0ccH
+  429143 |  BYTE 0ccH
+  429144 |  BYTE 0ccH
+  429145 |  BYTE 0ccH
+  429146 |  BYTE 0ccH
+  429147 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429147:
+  429142 |  BYTE 0ccH
+  429143 |  BYTE 0ccH
+  429144 |  BYTE 0ccH
+  429145 |  BYTE 0ccH
+  429146 |  BYTE 0ccH
+> 429147 |  BYTE 0ccH
+  429148 |  BYTE 0ccH
+  429149 |  BYTE 0ccH
+  429150 |  BYTE 0ccH
+  429151 |  
+  429152 |  mov ECX,DWORD PTR [EBP-16]
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429298:
+  429293 |  
+  429294 |  mov EAX,OFFSET $L_51817c
+  429295 |  jmp $L_50c81c
+  429296 |  
+  429297 |  int 3
+> 429298 |  BYTE 0ccH
+  429299 |  
+  429300 |  int 3
+  429301 |  
+  429302 |  lea ECX,DWORD PTR [EBP-76]
+  429303 |  jmp FUN_42fe70
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429308:
+  429303 |  jmp FUN_42fe70
+  429304 |  $L_516048::
+  429305 |  
+  429306 |  mov EAX,OFFSET $L_5181a0
+  429307 |  jmp $L_50c81c
+> 429308 |  BYTE 0ccH
+  429309 |  BYTE 0ccH
+  429310 |  BYTE 0ccH
+  429311 |  BYTE 0ccH
+  429312 |  BYTE 0ccH
+  429313 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429313:
+  429308 |  BYTE 0ccH
+  429309 |  BYTE 0ccH
+  429310 |  BYTE 0ccH
+  429311 |  BYTE 0ccH
+  429312 |  BYTE 0ccH
+> 429313 |  BYTE 0ccH
+  429314 |  BYTE 0ccH
+  429315 |  BYTE 0ccH
+  429316 |  BYTE 0ccH
+  429317 |  BYTE 0ccH
+  429318 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429318:
+  429313 |  BYTE 0ccH
+  429314 |  BYTE 0ccH
+  429315 |  BYTE 0ccH
+  429316 |  BYTE 0ccH
+  429317 |  BYTE 0ccH
+> 429318 |  BYTE 0ccH
+  429319 |  BYTE 0ccH
+  429320 |  BYTE 0ccH
+  429321 |  BYTE 0ccH
+  429322 |  
+  429323 |  lea ECX,DWORD PTR [EBP-76]
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429476:
+  429471 |  ret
+  429472 |  $L_51612b::
+  429473 |  
+  429474 |  mov EAX,OFFSET $L_51829c
+  429475 |  jmp $L_50c81c
+> 429476 |  BYTE 0ccH
+  429477 |  BYTE 0ccH
+  429478 |  BYTE 0ccH
+  429479 |  BYTE 0ccH
+  429480 |  BYTE 0ccH
+  429481 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429481:
+  429476 |  BYTE 0ccH
+  429477 |  BYTE 0ccH
+  429478 |  BYTE 0ccH
+  429479 |  BYTE 0ccH
+  429480 |  BYTE 0ccH
+> 429481 |  BYTE 0ccH
+  429482 |  BYTE 0ccH
+  429483 |  BYTE 0ccH
+  429484 |  BYTE 0ccH
+  429485 |  BYTE 0ccH
+  429486 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429486:
+  429481 |  BYTE 0ccH
+  429482 |  BYTE 0ccH
+  429483 |  BYTE 0ccH
+  429484 |  BYTE 0ccH
+  429485 |  BYTE 0ccH
+> 429486 |  BYTE 0ccH
+  429487 |  
+  429488 |  lea ECX,DWORD PTR [EBP-96]
+  429489 |  jmp FUN_430280
+  429490 |  $L_516148::
+  429491 |  
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429494:
+  429489 |  jmp FUN_430280
+  429490 |  $L_516148::
+  429491 |  
+  429492 |  mov EAX,OFFSET $L_5182c0
+  429493 |  jmp $L_50c81c
+> 429494 |  BYTE 0ccH
+  429495 |  BYTE 0ccH
+  429496 |  BYTE 0ccH
+  429497 |  BYTE 0ccH
+  429498 |  BYTE 0ccH
+  429499 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429499:
+  429494 |  BYTE 0ccH
+  429495 |  BYTE 0ccH
+  429496 |  BYTE 0ccH
+  429497 |  BYTE 0ccH
+  429498 |  BYTE 0ccH
+> 429499 |  BYTE 0ccH
+  429500 |  BYTE 0ccH
+  429501 |  BYTE 0ccH
+  429502 |  BYTE 0ccH
+  429503 |  BYTE 0ccH
+  429504 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429504:
+  429499 |  BYTE 0ccH
+  429500 |  BYTE 0ccH
+  429501 |  BYTE 0ccH
+  429502 |  BYTE 0ccH
+  429503 |  BYTE 0ccH
+> 429504 |  BYTE 0ccH
+  429505 |  BYTE 0ccH
+  429506 |  BYTE 0ccH
+  429507 |  BYTE 0ccH
+  429508 |  
+  429509 |  mov EAX,DWORD PTR [EBP-84]
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429636:
+  429631 |  
+  429632 |  mov EAX,OFFSET $L_5183c0
+  429633 |  jmp $L_50c81c
+  429634 |  
+  429635 |  int 3
+> 429636 |  BYTE 0ccH
+  429637 |  
+  429638 |  int 3
+  429639 |  $L_516240::
+  429640 |  
+  429641 |  mov ECX,DWORD PTR [EBP-16]
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429664:
+  429659 |  jmp $L_50c81c
+  429660 |  $L_51625e ENDP
+  429661 |  $L_516268 PROC
+  429662 |  
+  429663 |  int 3
+> 429664 |  BYTE 0ccH
+  429665 |  BYTE 0ccH
+  429666 |  BYTE 0ccH
+  429667 |  BYTE 0ccH
+  429668 |  BYTE 0ccH
+  429669 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429669:
+  429664 |  BYTE 0ccH
+  429665 |  BYTE 0ccH
+  429666 |  BYTE 0ccH
+  429667 |  BYTE 0ccH
+  429668 |  BYTE 0ccH
+> 429669 |  BYTE 0ccH
+  429670 |  
+  429671 |  int 3
+  429672 |  $L_516270::
+  429673 |  
+  429674 |  mov ECX,DWORD PTR [EBP-16]
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429697:
+  429692 |  jmp $L_50c81c
+  429693 |  $L_51628e ENDP
+  429694 |  $L_516298 PROC
+  429695 |  
+  429696 |  int 3
+> 429697 |  BYTE 0ccH
+  429698 |  BYTE 0ccH
+  429699 |  BYTE 0ccH
+  429700 |  BYTE 0ccH
+  429701 |  BYTE 0ccH
+  429702 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429702:
+  429697 |  BYTE 0ccH
+  429698 |  BYTE 0ccH
+  429699 |  BYTE 0ccH
+  429700 |  BYTE 0ccH
+  429701 |  BYTE 0ccH
+> 429702 |  BYTE 0ccH
+  429703 |  
+  429704 |  int 3
+  429705 |  $L_5162a0::
+  429706 |  
+  429707 |  lea ECX,DWORD PTR [EBP-428]
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429795:
+  429790 |  jmp FUN_50bab0
+  429791 |  $L_51633b::
+  429792 |  
+  429793 |  mov EAX,OFFSET $L_5184d8
+  429794 |  jmp $L_50c81c
+> 429795 |  BYTE 0ccH
+  429796 |  BYTE 0ccH
+  429797 |  BYTE 0ccH
+  429798 |  BYTE 0ccH
+  429799 |  BYTE 0ccH
+  429800 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429800:
+  429795 |  BYTE 0ccH
+  429796 |  BYTE 0ccH
+  429797 |  BYTE 0ccH
+  429798 |  BYTE 0ccH
+  429799 |  BYTE 0ccH
+> 429800 |  BYTE 0ccH
+  429801 |  BYTE 0ccH
+  429802 |  BYTE 0ccH
+  429803 |  BYTE 0ccH
+  429804 |  BYTE 0ccH
+  429805 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429805:
+  429800 |  BYTE 0ccH
+  429801 |  BYTE 0ccH
+  429802 |  BYTE 0ccH
+  429803 |  BYTE 0ccH
+  429804 |  BYTE 0ccH
+> 429805 |  BYTE 0ccH
+  429806 |  
+  429807 |  mov ECX,DWORD PTR [EBP-16]
+  429808 |  add ECX,4
+  429809 |  jmp FUN_50bab0
+  429810 |  $L_51635b::
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429814:
+  429809 |  jmp FUN_50bab0
+  429810 |  $L_51635b::
+  429811 |  
+  429812 |  mov EAX,OFFSET $L_5184fc
+  429813 |  jmp $L_50c81c
+> 429814 |  BYTE 0ccH
+  429815 |  BYTE 0ccH
+  429816 |  BYTE 0ccH
+  429817 |  BYTE 0ccH
+  429818 |  BYTE 0ccH
+  429819 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429819:
+  429814 |  BYTE 0ccH
+  429815 |  BYTE 0ccH
+  429816 |  BYTE 0ccH
+  429817 |  BYTE 0ccH
+  429818 |  BYTE 0ccH
+> 429819 |  BYTE 0ccH
+  429820 |  BYTE 0ccH
+  429821 |  BYTE 0ccH
+  429822 |  BYTE 0ccH
+  429823 |  BYTE 0ccH
+  429824 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429824:
+  429819 |  BYTE 0ccH
+  429820 |  BYTE 0ccH
+  429821 |  BYTE 0ccH
+  429822 |  BYTE 0ccH
+  429823 |  BYTE 0ccH
+> 429824 |  BYTE 0ccH
+  429825 |  
+  429826 |  mov ECX,DWORD PTR [EBP-16]
+  429827 |  add ECX,4
+  429828 |  jmp FUN_50bab0
+  429829 |  $L_51637b::
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429833:
+  429828 |  jmp FUN_50bab0
+  429829 |  $L_51637b::
+  429830 |  
+  429831 |  mov EAX,OFFSET $L_518520
+  429832 |  jmp $L_50c81c
+> 429833 |  BYTE 0ccH
+  429834 |  BYTE 0ccH
+  429835 |  BYTE 0ccH
+  429836 |  BYTE 0ccH
+  429837 |  BYTE 0ccH
+  429838 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429838:
+  429833 |  BYTE 0ccH
+  429834 |  BYTE 0ccH
+  429835 |  BYTE 0ccH
+  429836 |  BYTE 0ccH
+  429837 |  BYTE 0ccH
+> 429838 |  BYTE 0ccH
+  429839 |  BYTE 0ccH
+  429840 |  BYTE 0ccH
+  429841 |  BYTE 0ccH
+  429842 |  BYTE 0ccH
+  429843 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429843:
+  429838 |  BYTE 0ccH
+  429839 |  BYTE 0ccH
+  429840 |  BYTE 0ccH
+  429841 |  BYTE 0ccH
+  429842 |  BYTE 0ccH
+> 429843 |  BYTE 0ccH
+  429844 |  
+  429845 |  lea ECX,DWORD PTR [EBP-20]
+  429846 |  jmp FUN_50bab0
+  429847 |  $L_516330 ENDP
+  429848 |  $L_516398 PROC
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429869:
+  429864 |  jmp $L_50c81c
+  429865 |  $L_5163af ENDP
+  429866 |  $L_5163b9 PROC
+  429867 |  
+  429868 |  int 3
+> 429869 |  BYTE 0ccH
+  429870 |  BYTE 0ccH
+  429871 |  BYTE 0ccH
+  429872 |  BYTE 0ccH
+  429873 |  BYTE 0ccH
+  429874 |  
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429925:
+  429920 |  jmp $L_50c81c
+  429921 |  $L_5163ff ENDP
+  429922 |  $L_516409 PROC
+  429923 |  
+  429924 |  int 3
+> 429925 |  BYTE 0ccH
+  429926 |  BYTE 0ccH
+  429927 |  BYTE 0ccH
+  429928 |  BYTE 0ccH
+  429929 |  BYTE 0ccH
+  429930 |  
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429958:
+  429953 |  jmp $L_50c81c
+  429954 |  $L_51642f ENDP
+  429955 |  $L_516439 PROC
+  429956 |  
+  429957 |  int 3
+> 429958 |  BYTE 0ccH
+  429959 |  BYTE 0ccH
+  429960 |  BYTE 0ccH
+  429961 |  BYTE 0ccH
+  429962 |  BYTE 0ccH
+  429963 |  
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:429985:
+  429980 |  
+  429981 |  mov EAX,OFFSET $L_5185f4
+  429982 |  jmp $L_50c81c
+  429983 |  
+  429984 |  int 3
+> 429985 |  BYTE 0ccH
+  429986 |  BYTE 0ccH
+  429987 |  BYTE 0ccH
+  429988 |  BYTE 0ccH
+  429989 |  BYTE 0ccH
+  429990 |  
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:430012:
+  430007 |  
+  430008 |  mov EAX,OFFSET $L_518620
+  430009 |  jmp $L_50c81c
+  430010 |  
+  430011 |  int 3
+> 430012 |  BYTE 0ccH
+  430013 |  BYTE 0ccH
+  430014 |  BYTE 0ccH
+  430015 |  BYTE 0ccH
+  430016 |  BYTE 0ccH
+  430017 |  
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:430081:
+  430076 |  jmp $L_50c81c
+  430077 |  $L_5164f0 ENDP
+  430078 |  $L_5164fa PROC
+  430079 |  
+  430080 |  int 3
+> 430081 |  BYTE 0ccH
+  430082 |  BYTE 0ccH
+  430083 |  BYTE 0ccH
+  430084 |  BYTE 0ccH
+  430085 |  
+  430086 |  int 3
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:430095:
+  430090 |  jmp FUN_50bab0
+  430091 |  $L_516508::
+  430092 |  
+  430093 |  mov EAX,OFFSET $L_5186b4
+  430094 |  jmp $L_50c81c
+> 430095 |  BYTE 0ccH
+  430096 |  BYTE 0ccH
+  430097 |  BYTE 0ccH
+  430098 |  BYTE 0ccH
+  430099 |  BYTE 0ccH
+  430100 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:430100:
+  430095 |  BYTE 0ccH
+  430096 |  BYTE 0ccH
+  430097 |  BYTE 0ccH
+  430098 |  BYTE 0ccH
+  430099 |  BYTE 0ccH
+> 430100 |  BYTE 0ccH
+  430101 |  BYTE 0ccH
+  430102 |  BYTE 0ccH
+  430103 |  BYTE 0ccH
+  430104 |  BYTE 0ccH
+  430105 |  BYTE 0ccH
+ -- 错误: 在函数中检测到数据定义 
+src\unorganized.S:430105:
+  430100 |  BYTE 0ccH
+  430101 |  BYTE 0ccH
+  430102 |  BYTE 0ccH
+  430103 |  BYTE 0ccH
+  430104 |  BYTE 0ccH
+> 430105 |  BYTE 0ccH
+  430106 |  BYTE 0ccH
+  430107 |  BYTE 0ccH
+  430108 |  BYTE 0ccH
+  430109 |  
+  430110 |  lea ECX,DWORD PTR [EBP-20]
+ -- 警告: 在函数外检测到代码 
+src\unorganized.S:430165:
+  430160 |  
+  430161 |  mov EAX,OFFSET $L_518714
+  430162 |  jmp $L_50c81c
+  430163 |  $L_51656f ENDP
+  430164 |                                               ;===================================
+> 430165 |  _TEXT ENDS
+  430166 |                                               ;===================================
+  430167 |  
