@@ -44,13 +44,17 @@ Jump table switch structure check report
 `python parse_jumptable.py main.S > jumptable.txt`
 
 Converting binary to constant definitions in ASM
-`python define_bin.py $L_403df8 01020304`
+`python define_bin.py $L_403df8 01020304ffffffff`
 
 Converting binary to variable reference in ASM
-`python define_bin.py $L_403df8 01020304 -r`
+`python define_bin.py $L_403df8 01020304ffffffff -r`
+
+Converting binary from exe file to constant definitions or variable reference
+`python define_bin.py -e bio2.exe <Label> <end-address> [-r]`
 
 Snippets from the disassembler
 `python dasm.py bio2.exe 0x466350 0x4663d6`
 
 Search for data definitions within functions (and vice versa).
 `python defining_contradiction.py > test.txt`
+

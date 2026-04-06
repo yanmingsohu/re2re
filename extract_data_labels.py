@@ -134,6 +134,20 @@ def read_bytes_from_exe(exe_path: str, va: int, count: int, pe: pefile.PE) -> by
     except Exception as e:
         return None
 
+def pe_va_scope(pe):
+    return pe.OPTIONAL_HEADER.ImageBase, pe.OPTIONAL_HEADER.SizeOfImage
+
+
+def show_pe_info(pe):
+    image_base = pe.OPTIONAL_HEADER.ImageBase
+    size_of_image = pe.OPTIONAL_HEADER.SizeOfImage
+    print(f"整体VA范围: {image_base:#010x} ~ {image_base + size_of_image:#010x}")
+    for section in pe.sections:
+        name = section.Name.rstrip(b'\x00').decode()
+        va_start = image_base + section.VirtualAddress
+        va_end   = va_start + section.Misc_VirtualSize
+        print(f"{name:<10} {va_start:#010x} ~ {va_end:#010x}  ({section.Misc_VirtualSize:#x} bytes)")
+
 
 # ── 格式化输出 ────────────────────────────────────────────────────────────────
 

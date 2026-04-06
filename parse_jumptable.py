@@ -30,12 +30,69 @@ db_re = re.compile(r'\s*.*\s*DB\s+([0-9a-fA-F]+H*)(\s+DUP.+)?',
 nop_re = re.compile(r'\s*.*\s*nop.*', re.IGNORECASE)
 
 complete_annotation = ';++'
+hexstr = '0123456789abcdefABCDEF'
 
 
-def numH(n):
-    if n.lower().endswith('h'):
-        return int(n[:-1], 16)
-    return int(n)
+def num(str):
+    if len(str) < 1:
+        return 0
+    str = str.lower().strip()
+    if str.startswith('fun_'):
+        return int(str[4:], 16)
+    for i, c in enumerate(str):
+        if c in hexstr:
+            if i>0:
+                if str.endswith('h'):
+                    return int(str[:-1], 16)
+                return int(str[i:], 16)
+            else:
+                if str.endswith('h'):
+                    return int(str[:-1], 16)
+                return int(str, 0)
+    return 0
+
+
+# DD str 判断是数字还是引用
+def isnum(str):
+    return (str[0] in hexstr[:10]) if str else False
+
+
+dup_re = re.compile(r'dup\((\d+)\)', re.IGNORECASE)
+
+# (num-count, ref-count) 返回一个命令参数中, 常量和地址引用的数量
+def numtype(arr):
+    db_str = False
+    nn = 0
+    ref = 0
+    for s in arr:
+        if r := dup_re.match(s):
+            nn += int(r.group(1))
+            return (nn, ref)
+    for s in arr:
+        if isnum(s):
+            nn += 1
+        elif s.find("'")>=0 or s.find('"')>=0 or db_str:
+            nn += len(s) #很粗糙的计算
+            db_str = True
+        else:
+            ref += 1
+    if db_str:
+        nn -= 2
+    return (nn, ref)
+
+
+def is_ok(line):
+    if type(line) == str:
+        return line.find(complete_annotation) >= 0
+    elif type(line) == tuple:
+        return line[1].find(complete_annotation) >= 0 if comm[1] else -1
+
+
+def has_args(what):
+    for i, a in enumerate(sys.argv):
+        if a == what:
+            return i
+    return False
 
 
 def show_code_btw(buf, a, b):
@@ -76,7 +133,7 @@ def find_case_num(lines, st, reg):
 
         case_num = find_re.match(ln)
         if case_num:
-            num = numH(case_num.group(2))
+            num = num(case_num.group(2))
             show_code_btw(case_buf, ln, lines[st])
             if treg and treg != case_num.group(1):
                 case_buf.append(f" -- 警告: {treg}!={case_num.group(1)}")
@@ -189,11 +246,11 @@ def parse_asm_file(lines):
                 mem_size += 4
             elif x := byte_re.match(line):
                 mem_size += 1
-                b = numH(x.group(1))
+                b = num(x.group(1))
                 if b != 0x90: #nop
                     byte_ct += 1
             elif x := db_re.match(line):
-                n = numH(x.group(1))
+                n = num(x.group(1))
                 mem_size += n
                 byte_ct += 1
             elif nop_re.match(line):
