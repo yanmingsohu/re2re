@@ -18,6 +18,9 @@ import struct
 import argparse
 import os
 import pefile  # pip install pefile
+from utils import \
+  read_bytes_from_exe, pe_va_scope, show_pe_info, \
+  get_section_name, open_pe
 
 
 # ── 正则 ──────────────────────────────────────────────────────────────────────
@@ -121,34 +124,6 @@ def parse_s_file(s_path: str) -> list[dict]:
     return results
 
 
-# ── 从 .exe 读取字节 ──────────────────────────────────────────────────────────
-
-def read_bytes_from_exe(exe_path: str, va: int, count: int, pe: pefile.PE) -> bytes | None:
-    """将虚拟地址转换为文件偏移，读取 count 字节。"""
-    try:
-        offset = pe.get_offset_from_rva(va - pe.OPTIONAL_HEADER.ImageBase)
-        with open(exe_path, "rb") as f:
-            f.seek(offset)
-            data = f.read(count)
-        return data if len(data) == count else None
-    except Exception as e:
-        return None
-
-def pe_va_scope(pe):
-    return pe.OPTIONAL_HEADER.ImageBase, pe.OPTIONAL_HEADER.SizeOfImage
-
-
-def show_pe_info(pe):
-    image_base = pe.OPTIONAL_HEADER.ImageBase
-    size_of_image = pe.OPTIONAL_HEADER.SizeOfImage
-    print(f"整体VA范围: {image_base:#010x} ~ {image_base + size_of_image:#010x}")
-    for section in pe.sections:
-        name = section.Name.rstrip(b'\x00').decode()
-        va_start = image_base + section.VirtualAddress
-        va_end   = va_start + section.Misc_VirtualSize
-        print(f"{name:<10} {va_start:#010x} ~ {va_end:#010x}  ({section.Misc_VirtualSize:#x} bytes)")
-
-
 # ── 格式化输出 ────────────────────────────────────────────────────────────────
 
 def format_output(label: str, va: int, data: bytes, asm: bytes) -> str:
@@ -206,12 +181,7 @@ def main():
         print(f"错误: 找不到文件 {args.exe_file}", file=sys.stderr)
         sys.exit(1)
 
-    # 加载 PE
-    try:
-        pe = pefile.PE(args.exe_file, fast_load=True)
-    except Exception as e:
-        print(f"错误: 无法解析 PE 文件: {e}", file=sys.stderr)
-        sys.exit(1)
+    pe = open_pe(args.exe_file)
 
     if args.imagebase:
         pe.OPTIONAL_HEADER.ImageBase = int(args.imagebase, 16)

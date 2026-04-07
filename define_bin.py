@@ -1,8 +1,7 @@
 import sys
 import pefile  # pip install pefile
-from parse_jumptable import \
-  num, is_ok, read_all_files, readfile, has_args
-from extract_data_labels import read_bytes_from_exe
+from utils import \
+  num, is_ok, read_all_files, readfile, has_args, read_bytes_from_exe
 
 
 def db_writer():

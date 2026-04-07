@@ -1,13 +1,13 @@
 import re
 import sys
-from parse_jumptable import \
-  complete_annotation, read_all_files, readfile, isnum, \
-  numtype, is_ok, num
 from dataclasses import dataclass, field
 from typing import Literal, Final
 import pefile  # pip install pefile
-from extract_data_labels import \
-  read_bytes_from_exe, pe_va_scope, show_pe_info
+from utils import \
+  read_bytes_from_exe, pe_va_scope, show_pe_info, \
+  get_section_name, read_all_files, readfile, isnum, \
+  numtype, is_ok, num, has_args
+from tqdm import tqdm
 
 
 line_re = re.compile(
@@ -46,7 +46,7 @@ _MNEMONICS = {
     "xlat", "xlatb",
     "lahf", "sahf", "pushf", "popf", "pushfd", "popfd",
 }
-_LABEL_ST = { "$", "F", "L" }
+_LABEL_FIRST = { "$", "F", "L",  }
 ok_comm = '=='
 
 _WAIT     : Final = 0
@@ -71,30 +71,72 @@ _NAME_MAP: dict[int, str] = {
     _SKIP:       'skip',
     _DEFINE_DATA:'define-data',
 }
+_SECTION_MP = { '.text':'程序段', '.rdata':'常量', '.data':'全局变量'}
+_DB_STRING = re.compile(r".*DB\s+'.*'")
 
 
 def tname(i: int) -> str:
   return _NAME_MAP.get(i, f'unknown({i})')
 
 
-def what_code(label, comma, cmd):
-  if label in _KEYWORD or cmd in _KEYWORD:
-    return _SKIP, _NO_CHG
-  if cmd == 'proc':
-    return _NEW_LABEL, _PROGRAM
-  if cmd == 'endp':
-    return _END_PROC, _WAIT
-  if comma == ':' or comma == '::':
-    return _NEW_LABEL, _PROGRAM
-  if cmd in _MNEMONICS:
-    return _NEW_LABEL, _PROGRAM
-  if label in _MNEMONICS:
-    return _NORM_CODE, _NO_CHG
-  if cmd in _DATA_DIRECTIVES:
-    return _NEW_LABEL, _DATA
-  if label in _DATA_DIRECTIVES:
-    return _DEFINE_DATA, _DATA
-  return _NORM_CODE, _NO_CHG
+def what_code(code, lineInf=""):
+  rlabel = None
+  cmd = None
+  args = None
+  act = _SKIP
+  _type = _NO_CHG
+  ok = False
+  
+  while code:
+    st = line_re.match(code)
+    if not st:
+      break
+    d = st.groupdict()
+    rlabel = d['label'] 
+    label = rlabel.lower()
+    cmds = d['command']
+    comma = d['comma']
+    sp = cmds.split(' ')
+    cmd = sp[0].lower()
+    args = sp[1:]
+    ok = True
+    if label in _KEYWORD or cmd in _KEYWORD:
+      act = _SKIP
+      _type = _NO_CHG
+      break
+    if cmd == 'proc':
+      act = _NEW_LABEL
+      _type = _PROGRAM
+      break
+    if cmd == 'endp':
+      act = _END_PROC
+      _type = _WAIT
+      break
+    if comma == ':' or comma == '::':
+      act = _NEW_LABEL
+      _type = _PROGRAM
+      break
+    if cmd in _MNEMONICS:
+      act = _NEW_LABEL
+      _type = _PROGRAM
+      break
+    if label in _MNEMONICS:
+      act = _NORM_CODE
+      _type = _NO_CHG
+      break
+    if cmd in _DATA_DIRECTIVES:
+      act = _NEW_LABEL
+      _type = _DATA
+      break 
+    if label in _DATA_DIRECTIVES:
+      act = _DEFINE_DATA
+      _type = _DATA
+      args = cmd.split(' ')
+      cmd = rlabel
+      break
+    # raise OSError(f"未知的代码: {code}, {lineInf}")
+    break
+  return ok, rlabel, cmd, args, act, _type
 
 
 def show_code(lines, i):
@@ -131,107 +173,132 @@ def dword(d):
   return r
 
 
+def make_label(addr:int):
+  return '$L_'+ hex(addr).replace('0x', '')
+
+
 def create_data_label(name):
   c = 0
   ind = ' ' * len(name)
   t = 'DWORD'
   addr = num(name)
-  def write(x):
+  def insert(x, ocomm=""):
     nonlocal c, addr
     if c > 0:
       addr += 4
-      print(ind, t, x, ' '*(11-len(x)), f";{hex(addr)}")
+      print(ind, t, x, ' '*(11-len(x)), f";{hex(addr)} {ocomm}")
     else:
       c = 1
-      print(name, t, x, '  ;'+ok_comm)
-  return write
+      print(name, t, x, f'  ;{ok_comm} {ocomm}')
+  return insert
 
 
-def check_misplaced_tokens(lines):
+def make_label_chain(lines):
+  label_map = { -1:{'next':-1, 'cmd':"NONE", 'file':'NONE', 'no':-1} }
+  last_addr = -1
+  print("正则构建标签库", file=sys.stderr)
+  for code, comm, filename, no in tqdm(lines):
+    ok, label, cmd, args, ctype, test_st = what_code(code, f"{filename}:{no}")
+    if ctype == _NEW_LABEL:
+      # print(label)
+      addr = num(label)
+      label_map[addr] = {
+        'next': last_addr, 
+        'cmd' : label, 
+        'file': filename, 
+        'no'  : no,
+        'code': code,
+      }
+      label_map[last_addr]['next'] = addr
+      last_addr = addr
+  return label_map
+
+
+def show_fix(data, st_label, label_map, comm_map={}):
+  insert = create_data_label(st_label)
+  for j in range(0, len(data), 4):
+    x = dword(data[j:j+4])
+    comm = comm_map.get(x, '')
+    if x in label_map:
+      insert(label_map[x]['cmd'], comm)
+    else:
+      insert(hh(x), comm)
+
+
+def check_misplaced_tokens(lines, _fix_mix=True):
   status = _WAIT
   st_label = None
+  st_label_index = 0
   last_err_label = None
   last_err_line = 0
   ref_var = 0
   const_var = 0
   donot_msg = 0
   last_log = []
-  label_map = { -1:(-1, 'none') }
-  last_addr = -1
+  label_map = make_label_chain(lines)
   limit = 100
-
-  for i, (code, comm, filename, no) in enumerate(lines):
-    cmd = code.split(' ')[0]
-    if not cmd or not cmd[0]:
-      continue
-    if cmd[0] in _LABEL_ST:
-      cmd = cmd.replace(':', '')
-      addr = num(cmd)
-      label_map[addr] = (last_addr, cmd)
-      _, llabel = label_map[last_addr]
-      label_map[last_addr] = (addr, llabel)
-      last_addr = addr
 
   exefile = 'bio2.exe' 
   pe = pefile.PE(exefile, fast_load=True)
-  pe_st, pe_ed = pe_va_scope(pe)
   # 需要区分 rdata 只读地址段, pe_ed需要重新计算
   show_pe_info(pe)
 
-  def show_fix(data):
-    insert = create_data_label(st_label)
-    for j in range(0, len(data), 4):
-      x = dword(data[j:j+4])
-      if x in label_map:
-        _, tlabel = label_map[x]
-        insert(tlabel)
-      else:
-        insert(hh(x))
 
-  def fix_data():
-    print("尝试修正:")
+  def fix_mixed_data():
+    print("尝试修正混合定义:")
     st_index = num(st_label)
     if st_index in label_map:
-      next_index, _ = label_map[st_index]
+      next_index = label_map[st_index]['next']
       count = next_index - st_index
       data = read_bytes_from_exe(exefile, st_index, count, pe)
-      show_fix(data)
+      # print("read", hex(st_index), hex(next_index), data)
+      show_fix(data, st_label, label_map)
     else:
       print("找不到结束标签", st_label)
 
   def try_fixed_ref(lines, i):
     st_index = num(st_label)
-    li = i
-    filename = "?"
-    for j in range(i, 0, -1):
-      code = lines[j][0]
-      filename = lines[j][2]
-      if code.lower().find(st_label)>=0:
-        li = j
-        break
-
     mayberef = []
     data = None
     if st_index in label_map:
-      next_index, _ = label_map[st_index]
+      _code = label_map[st_index]['code']
+      if _DB_STRING.match(_code):
+        last_log.append(f"跳过明确的字符串定义 {_code}")
+        return
+      next_index = label_map[st_index]['next']
       count = next_index - st_index
+      # print("read", hex(st_index), hex(next_index), get_section_name(pe, st_index))
       data = read_bytes_from_exe(exefile, st_index, count, pe)
       for j in range(0, len(data), 4):
         x = dword(data[j:j+4])
-        if x >= pe_st and x <= pe_ed:
+        sn = get_section_name(pe, x)
+        if sn in _SECTION_MP and x%4==0:
           xaddr = hex(st_index + j)
-          mayberef.append((xaddr, hex(x)))
+          mayberef.append((xaddr, x, _SECTION_MP[sn]))
     
     if len(mayberef) != ref_var:
       print('='*80)
+      comm_map = {}
       # print(ref_var, mayberef)
-      for o, v in mayberef:
-        print(f" !- 注意: 在偏移 {o} 上, 这个整数值 {v} 可能是地址引用")
+      for o, v, t in mayberef:
+        print(f" !- | 注意: 在PE偏移 {o} 上, 这个整数值 {hex(v)} 可能是 {t}")
+        if ol := label_map.get(v, None):
+          msg = f"在文件 {ol['file']}:{ol['no']} 找到这个标签定义: {ol['cmd']}"
+          comm_map[v] = " <- "
+        elif v%4 != 0:
+          msg = f'地址不能整除4, 不是地址引用'
+          comm_map[v] = " <- "+ msg
+        else:
+          vl = make_label(v)
+          msg = f"找不到标签定义: {vl}"
+          comm_map[v] = " <- "+ msg
+        print(f"    | {msg}")
+
       print(f'{filename}:{no}:[{st_label}]')
-      show_code(lines, li)
+      show_code(lines, st_label_index)
       if data:
-        print("尝试修正:")
-        show_fix(data)
+        print("尝试修正地址引用:")
+        show_fix(data, st_label, label_map, comm_map)
 
   def check_duplicate_output():
     nonlocal last_err_label, last_err_line, limit
@@ -248,14 +315,13 @@ def check_misplaced_tokens(lines):
     last_err_line = i + 10
     limit -= 1
     if limit < 0:
-      raise Error(" !! 还有更多修正未完成, 在以上修正完成后继续...")
+      raise OSError(" !! 还有更多修正未完成, 在以上修正完成后继续...")
     return False
 
-  for i, (code, comm, filename, no) in enumerate(lines):
-    if not code:
-      continue
-    st = line_re.match(code)
-    if not st:
+  print("正则检查汇编代码", file=sys.stderr)
+  for i, (code, comm, filename, no) in enumerate(tqdm(lines)):
+    ok, label, cmd, args, ctype, test_st = what_code(code)
+    if not ok:
       continue
 
     def msg(s, cb=None):
@@ -268,15 +334,6 @@ def check_misplaced_tokens(lines):
       if cb != None:
         cb()
 
-    d = st.groupdict()
-    label = d['label'].lower()
-    comma = d['comma']
-    cmds = d['command']
-    sp = cmds.split(' ')
-    cmd = sp[0].lower()
-    args = sp[1:]
-
-    ctype, test_st = what_code(label, comma, cmd)
     # print(no, '|', label, comma, cmd, "|", tname(ctype), tname(test_st))
     if ctype == _SKIP:
       continue
@@ -286,6 +343,7 @@ def check_misplaced_tokens(lines):
         try_fixed_ref(lines, i)
       status = test_st
       st_label = label
+      st_label_index = i
       last_err_line = i
       last_err_label = None
       ref_var = 0
@@ -296,8 +354,6 @@ def check_misplaced_tokens(lines):
       status = _WAIT
       st_label = None
       continue
-    if ctype == _DEFINE_DATA:
-      args = cmd.split(' ')
 
     if status == _WAIT:
       if test_st == _NO_CHG and ctype == _NORM_CODE:
@@ -314,9 +370,13 @@ def check_misplaced_tokens(lines):
       n, r = numtype(args)
       ref_var += r
       const_var += n
-      # print(ref_var, const_var, '----')
+      
+      # print(n, r, ref_var, const_var, args)
       if ref_var>0 and const_var>0:
-        msg(" -- 警告: 在数据标签中同时定义常量和地址引用", fix_data)
+        if _fix_mix:
+          msg(" -- 警告: 在数据标签中同时定义常量和地址引用", fix_mixed_data)
+        else:
+          last_log.append(f"数据标签中同时定义常量和地址引用 {filename}:{no}:[{st_label}]")
 
     else:
       raise Error("无效状态")
@@ -329,5 +389,5 @@ if __name__ == '__main__':
     readfile(sys.argv[1], lines, True)
   else:
     lines = read_all_files(structured=True) 
-
-  check_misplaced_tokens(lines) 
+  fix_mix = has_args('-f1')
+  check_misplaced_tokens(lines, fix_mix) 

@@ -6,11 +6,12 @@ Objective: To compile the assembly code so that it can run.
 ![screen](screen/2.png)
 
 
-Current status: |>>>-----------------| 11%
+Current status: |>>>-----------------| 12%
 * Able to enter the first scene
 * The moving animation is strange
 * open menu
 * cannot shot
+* Extend functionality using C language
 
 
 # Depends 
@@ -37,11 +38,11 @@ Install dependencies
 
 Check the consistency between the data definition label 
 and the source program binary.
-`python extract_data_labels.py main.S bio2.exe > data_label.txt`
+`python extract_data_labels.py src/unorganized.S bio2.exe > data_label.txt`
 `python extract_data_labels.py src/data.S bio2.exe > data2_label.txt`
 
 Jump table switch structure check report
-`python parse_jumptable.py main.S > jumptable.txt`
+`python parse_jumptable.py > jumptable.txt`
 
 Converting binary to constant definitions in ASM
 `python define_bin.py $L_403df8 01020304ffffffff`

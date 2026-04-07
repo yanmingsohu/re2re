@@ -1,6 +1,7 @@
 import re
 import sys
 from pathlib import Path
+from utils import show_code_btw, readfile, read_all_files, num
 
 
 # 找所有 jmp DWORD PTR [REG*4+$L_xxxxxx] 指令
@@ -30,86 +31,6 @@ db_re = re.compile(r'\s*.*\s*DB\s+([0-9a-fA-F]+H*)(\s+DUP.+)?',
 nop_re = re.compile(r'\s*.*\s*nop.*', re.IGNORECASE)
 
 complete_annotation = ';++'
-hexstr = '0123456789abcdefABCDEF'
-
-
-def num(str):
-    if len(str) < 1:
-        return 0
-    str = str.lower().strip()
-    if str.startswith('fun_'):
-        return int(str[4:], 16)
-    for i, c in enumerate(str):
-        if c in hexstr:
-            if i>0:
-                if str.endswith('h'):
-                    return int(str[:-1], 16)
-                return int(str[i:], 16)
-            else:
-                if str.endswith('h'):
-                    return int(str[:-1], 16)
-                return int(str, 0)
-    return 0
-
-
-# DD str 判断是数字还是引用
-def isnum(str):
-    return (str[0] in hexstr[:10]) if str else False
-
-
-dup_re = re.compile(r'dup\((\d+)\)', re.IGNORECASE)
-
-# (num-count, ref-count) 返回一个命令参数中, 常量和地址引用的数量
-def numtype(arr):
-    db_str = False
-    nn = 0
-    ref = 0
-    for s in arr:
-        if r := dup_re.match(s):
-            nn += int(r.group(1))
-            return (nn, ref)
-    for s in arr:
-        if isnum(s):
-            nn += 1
-        elif s.find("'")>=0 or s.find('"')>=0 or db_str:
-            nn += len(s) #很粗糙的计算
-            db_str = True
-        else:
-            ref += 1
-    if db_str:
-        nn -= 2
-    return (nn, ref)
-
-
-def is_ok(line):
-    if type(line) == str:
-        return line.find(complete_annotation) >= 0
-    elif type(line) == tuple:
-        return line[1].find(complete_annotation) >= 0 if comm[1] else -1
-
-
-def has_args(what):
-    for i, a in enumerate(sys.argv):
-        if a == what:
-            return i
-    return False
-
-
-def show_code_btw(buf, a, b):
-    def ln(x):
-        x = x.split(';')
-        if x and len(x)>1:
-            x = x[1].split(':')
-            if x and len(x)>1:
-                return int(x[1])
-        return 0
-    buf.append(a)
-    x = ln(a)
-    y = ln(b)
-    n = y - x
-    leading_spaces = len(a) - len(a.lstrip())
-    buf.append((' ')*leading_spaces + f"...(n)")
-    buf.append(b)
 
 
 # 找 switch 可能的数量
@@ -120,20 +41,20 @@ def find_case_num(lines, st, reg):
         fr'\s*xor\s+{reg}\s*,\s*{reg}', re.IGNORECASE)    
     case_buf = []
     treg = None
-    num = -2
+    _num = -2
 
     for i in range(st-1, 0, -1):
         ln = lines[i]
 
         one = one_re.match(ln)
         if one:
-            num = 0
+            _num = 0
             show_code_btw(case_buf, ln, lines[st])
             break
 
         case_num = find_re.match(ln)
         if case_num:
-            num = num(case_num.group(2))
+            _num = num(case_num.group(2))
             show_code_btw(case_buf, ln, lines[st])
             if treg and treg != case_num.group(1):
                 case_buf.append(f" -- 警告: {treg}!={case_num.group(1)}")
@@ -154,7 +75,7 @@ def find_case_num(lines, st, reg):
         if callor_re.match(ln):
             break
     # 跳转表从 0 开始
-    return num+1, '\n'.join(case_buf)
+    return _num+1, '\n'.join(case_buf)
 
 
 def not_empty_code(s):
@@ -307,44 +228,6 @@ def parse_asm_file(lines):
 
     print('='*80)
     print("\n".join(last_log))
-
-
-def readfile(filename, lines, structured):
-    print(f"; read {filename}")
-    no = 0
-    ml = 80
-    comment_ret = re.compile(r'^COMMENT\s+(.?)', re.IGNORECASE)
-    comment_end = None
-
-    with open(filename, 'r', encoding='utf-8', errors='replace') as f:
-        for line in f.readlines():
-            no += 1
-            if comment_end:
-                if line == comment_end:
-                    comment_end = None
-                continue
-            if r := comment_ret.match(line):
-                comment_end = r.group(1)
-                continue
-
-            if structured:
-                sp = line.split(';')
-                code, comm = (sp[0], ','.join(sp[1:])) if len(sp)>1 else (sp[0], '')
-                lines.append(( code.strip(), comm.strip(), filename, no ))
-            else:
-                comm = f"; {filename}:{no}"
-                indent = ' ' * (ml - len(line) - len(comm))
-                nline = line.replace('\n', '') + indent + comm
-                lines.append(nline)
-
-
-def read_all_files(mainfile="main.S", srcdir='./src', structured=False):
-    lines = []
-    readfile(mainfile, lines, structured)
-    for file in Path(srcdir).rglob('*.S'):
-        if file.is_file():
-            readfile(file, lines, structured)
-    return lines    
 
 
 if __name__ == '__main__':
