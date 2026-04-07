@@ -1549,7 +1549,7 @@ $l_517748 DWORD 0FFFFFFFFh  ;==
 $l_517758 DWORD 0FFFFFFFFh  ;==
           DWORD $L_50d9bb
           DWORD $L_50d9cf
-$L_517764           BYTE 006H
+$L_517764           BYTE 006H ;++==
           BYTE 000H
           BYTE 000H
           BYTE 006H
@@ -1608,7 +1608,7 @@ $L_517764           BYTE 006H
           BYTE 008H
           BYTE 060H
           BYTE 068H
-          BYTE 060H
+          BYTE 060H ; <- 这里不是指针可能时位图数据
           BYTE 060H
           BYTE 060H
           BYTE 060H
@@ -2079,54 +2079,27 @@ $L_517d3c                     DB 'pow'
 
 $L_517d40                     DB 'exp'
           BYTE 000H
-$L_517D44 BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH 
-          BYTE 070H  ;TODO 修正引用
-          BYTE 05bH
-          BYTE 051H
-          BYTE 000H
-$l_517d4c DWORD 019930520h   ;==
+$L_517D44 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_515b70    ;0x517d48
+$L_517d4c DWORD 019930520h   ;==
           DWORD 000000001h   ;0x517d50
           DWORD $L_517D44    ;0x517d54
           DWORD 000000000h   ;0x517d58
           DWORD 000000000h   ;0x517d5c
           DWORD 000000000h   ;0x517d60
           DWORD 000000000h   ;0x517d64
-          DWORD 0FFFFFFFFh   ;0x517d68
+$L_517d68 DWORD 0FFFFFFFFh   ;0x517d68 ==
           DWORD $L_515b9b    ;0x517d6c
           DWORD 000000000h   ;0x517d70
           DWORD $L_515b90    ;0x517d74
-$L_517d78           BYTE 020H
-          BYTE 005H
-          BYTE 093H
-          BYTE 019H
-          BYTE 002H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 068H
-          BYTE 07dH
-          BYTE 051H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-$L_517d94           BYTE 0ffH
+$L_517d78 DWORD 019930520h   ;== 
+          DWORD 000000002h   ;0x517d7c 
+          DWORD $L_517d68    ;0x517d80  <- 在文件 src\data.S:2091 找到这个标签定义: $L_517d68
+          DWORD 000000000h   ;0x517d84 
+          DWORD 000000000h   ;0x517d88 
+          DWORD 000000000h   ;0x517d8c 
+          DWORD 000000000h   ;0x517d90 
+$L_517d94           BYTE 0ffH ;==
           BYTE 0ffH
           BYTE 0ffH
           BYTE 0ffH
@@ -2166,191 +2139,74 @@ $L_517de8           BYTE 020H
           BYTE 000H
           DWORD $L_517dd8
           DB 16 DUP(0)
-$L_517e04           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 040H
-          BYTE 05cH
-          BYTE 051H
-          BYTE 000H
-$L_517e0c           BYTE 020H
-          BYTE 005H
-          BYTE 093H
-          BYTE 019H
-          BYTE 001H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_517e04
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          DWORD $L_515c60
-          DB 4 DUP(0)
-          DWORD $L_515c7b
-          BYTE 001H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515c89
-          BYTE 002H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515c97
-          BYTE 003H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515ca5
-          BYTE 004H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515cb3
-          BYTE 005H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515cc1
-          BYTE 006H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515ccf
-          BYTE 007H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515cdd
-          BYTE 008H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515ceb
-$L_517e78           BYTE 020H
-          BYTE 005H
-          BYTE 093H
-          BYTE 019H
-          BYTE 00aH
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 028H
-          BYTE 07eH
-          BYTE 051H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-$L_517e94           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          DWORD $L_515d10
-          DB 4 DUP(0)
-          DWORD $L_515d2e
-          BYTE 001H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515d3f
-          BYTE 002H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515d50
-          BYTE 003H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515d61
-          BYTE 004H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515d72
-          BYTE 005H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515d83
-          BYTE 006H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515d94
-          BYTE 007H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515da5
-          BYTE 008H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515db6
-          BYTE 009H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515dc7
-          BYTE 009H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515dd5
-          BYTE 009H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515de0
-          BYTE 009H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515deb
-          BYTE 009H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515df6
-          BYTE 009H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_515e01
+$L_517e04 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_515c40    ;0x517e08 
+$L_517e0c DWORD 019930520h   ;== 
+          DWORD 000000001h   ;0x517e10 
+          DWORD $L_517e04    ;0x517e14 
+          DWORD 000000000h   ;0x517e18 
+          DWORD 000000000h   ;0x517e1c 
+          DWORD 000000000h   ;0x517e20 
+          DWORD 000000000h   ;0x517e24 
+$L_517e28 DWORD 0FFFFFFFFh   ;0x517e28 ==
+          DWORD $L_515c60    ;0x517e2c 
+          DWORD 000000000h   ;0x517e30 
+          DWORD $L_515c7b    ;0x517e34 
+          DWORD 000000001h   ;0x517e38 
+          DWORD $L_515c89    ;0x517e3c 
+          DWORD 000000002h   ;0x517e40 
+          DWORD $L_515c97    ;0x517e44 
+          DWORD 000000003h   ;0x517e48 
+          DWORD $L_515ca5    ;0x517e4c 
+          DWORD 000000004h   ;0x517e50 
+          DWORD $L_515cb3    ;0x517e54 
+          DWORD 000000005h   ;0x517e58 
+          DWORD $L_515cc1    ;0x517e5c 
+          DWORD 000000006h   ;0x517e60 
+          DWORD $L_515ccf    ;0x517e64 
+          DWORD 000000007h   ;0x517e68 
+          DWORD $L_515cdd    ;0x517e6c 
+          DWORD 000000008h   ;0x517e70 
+          DWORD $L_515ceb    ;0x517e74 
+$L_517e78 DWORD 019930520h   ;== 
+          DWORD 00000000Ah   ;0x517e7c 
+          DWORD $L_517e28    ;0x517e80  <- 
+          DWORD 000000000h   ;0x517e84 
+          DWORD 000000000h   ;0x517e88 
+          DWORD 000000000h   ;0x517e8c 
+          DWORD 000000000h   ;0x517e90 
+$L_517e94 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_515d10    ;0x517e98  <- 
+          DWORD 000000000h   ;0x517e9c 
+          DWORD $L_515d2e    ;0x517ea0 
+          DWORD 000000001h   ;0x517ea4 
+          DWORD $L_515d3f    ;0x517ea8 
+          DWORD 000000002h   ;0x517eac 
+          DWORD $L_515d50    ;0x517eb0  <- 
+          DWORD 000000003h   ;0x517eb4 
+          DWORD $L_515d61    ;0x517eb8 
+          DWORD 000000004h   ;0x517ebc 
+          DWORD $L_515d72    ;0x517ec0 
+          DWORD 000000005h   ;0x517ec4 
+          DWORD $L_515d83    ;0x517ec8 
+          DWORD 000000006h   ;0x517ecc 
+          DWORD $L_515d94    ;0x517ed0  <- 
+          DWORD 000000007h   ;0x517ed4 
+          DWORD $L_515da5    ;0x517ed8 
+          DWORD 000000008h   ;0x517edc 
+          DWORD $L_515db6    ;0x517ee0 
+          DWORD 000000009h   ;0x517ee4 
+          DWORD $L_515dc7    ;0x517ee8 
+          DWORD 000000009h   ;0x517eec 
+          DWORD $L_515dd5    ;0x517ef0 
+          DWORD 000000009h   ;0x517ef4 
+          DWORD $L_515de0    ;0x517ef8  <- 
+          DWORD 000000009h   ;0x517efc 
+          DWORD $L_515deb    ;0x517f00 
+          DWORD 000000009h   ;0x517f04 
+          DWORD $L_515df6    ;0x517f08 
+          DWORD 000000009h   ;0x517f0c 
+          DWORD $L_515e01    ;0x517f10 
 $L_517f14           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -2361,14 +2217,8 @@ $L_517f14           BYTE 020H
           BYTE 000H
           DWORD $L_517e94
           DB 16 DUP(0)
-$L_517f30           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 020H
-          BYTE 05eH
-          BYTE 051H
-          BYTE 000H
+$L_517f30 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_515e20    ;0x517f34  <- 
 $L_517f38           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -2379,14 +2229,8 @@ $L_517f38           BYTE 020H
           BYTE 000H
           DWORD $L_517f30
           DB 16 DUP(0)
-$L_517f54           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 040H
-          BYTE 05eH
-          BYTE 051H
-          BYTE 000H
+$L_517f54 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_515e40    ;0x517f58  <- 
 $L_517f5c           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -2397,14 +2241,8 @@ $L_517f5c           BYTE 020H
           BYTE 000H
           DWORD $L_517f54
           DB 16 DUP(0)
-$L_517f78           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 060H
-          BYTE 05eH
-          BYTE 051H
-          BYTE 000H
+$L_517f78 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_515e60    ;0x517f7c  <- 
 $L_517f80           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -2430,7 +2268,7 @@ $L_517fa4           BYTE 020H
           BYTE 000H
           DWORD $L_517f9c
           DB 16 DUP(0)
-$L_517fc0           BYTE 0ffH
+$L_517fc0           BYTE 0ffH;==
           BYTE 0ffH
           BYTE 0ffH
           BYTE 0ffH
@@ -2449,7 +2287,7 @@ $L_517fd8           BYTE 020H
           BYTE 000H
           DWORD $L_517fc0
           DB 16 DUP(0)
-$L_517ff4           BYTE 0ffH
+$L_517ff4           BYTE 0ffH ;==
           BYTE 0ffH
           BYTE 0ffH
           BYTE 0ffH
@@ -2481,14 +2319,8 @@ $L_518028           BYTE 020H
           BYTE 000H
           DWORD $L_518020
           DB 16 DUP(0)
-$L_518044           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 020H
-          BYTE 05fH
-          BYTE 051H
-          BYTE 000H
+$L_518044 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_515f20    ;0x518048  <- 
 $L_51804c           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -2499,14 +2331,8 @@ $L_51804c           BYTE 020H
           BYTE 000H
           DWORD $L_518044
           DB 16 DUP(0)
-$L_518068           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 040H
-          BYTE 05fH
-          BYTE 051H
-          BYTE 000H
+$L_518068 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_515f40    ;0x51806c 
 $L_518070           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -2517,14 +2343,8 @@ $L_518070           BYTE 020H
           BYTE 000H
           DWORD $L_518068
           DB 16 DUP(0)
-$L_51808c           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 060H
-          BYTE 05fH
-          BYTE 051H
-          BYTE 000H
+$L_51808c DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_515f60    ;0x518090  <- 
 $L_518094           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -2580,7 +2400,7 @@ $L_518100           BYTE 020H
           BYTE 000H
           DWORD $L_5180f8
           DB 16 DUP(0)
-$L_51811c           BYTE 0ffH
+$L_51811c           BYTE 0ffH ;==
           BYTE 0ffH
           BYTE 0ffH
           BYTE 0ffH
@@ -2612,22 +2432,10 @@ $L_518150           BYTE 020H
           BYTE 000H
           DWORD $L_518148
           DB 16 DUP(0)
-$L_51816c           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 020H
-          BYTE 060H
-          BYTE 051H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 028H
-          BYTE 060H
-          BYTE 051H
-          BYTE 000H
+$L_51816c DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_516020    ;0x518170  <- 
+          DWORD 000000000h   ;0x518174 
+          DWORD $L_516028    ;0x518178  <- 
 $L_51817c           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -2638,14 +2446,8 @@ $L_51817c           BYTE 020H
           BYTE 000H
           DWORD $L_51816c
           DB 16 DUP(0)
-$L_518198           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 040H
-          BYTE 060H
-          BYTE 051H
-          BYTE 000H
+$L_518198 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_516040    ;0x51819c  <- 
 $L_5181a0           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -2656,14 +2458,8 @@ $L_5181a0           BYTE 020H
           BYTE 000H
           DWORD $L_518198
           DB 16 DUP(0)
-$L_5181bc           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 060H
-          BYTE 060H
-          BYTE 051H
-          BYTE 000H
+$L_5181bc DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_516060    ;0x5181c0  <- 
 $L_5181c4           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -2749,14 +2545,8 @@ $L_518278           BYTE 020H
           BYTE 000H
           DWORD $L_518270
           DB 16 DUP(0)
-$L_518294           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 020H
-          BYTE 061H
-          BYTE 051H
-          BYTE 000H
+$L_518294 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_516120    ;0x518298  <- 
 $L_51829c           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -2767,14 +2557,8 @@ $L_51829c           BYTE 020H
           BYTE 000H
           DWORD $L_518294
           DB 16 DUP(0)
-$L_5182b8           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 040H
-          BYTE 061H
-          BYTE 051H
-          BYTE 000H
+$L_5182b8 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_516140    ;0x5182bc  <- 
 $L_5182c0           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -2785,14 +2569,8 @@ $L_5182c0           BYTE 020H
           BYTE 000H
           DWORD $L_5182b8
           DB 16 DUP(0)
-$L_5182dc           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 060H
-          BYTE 061H
-          BYTE 051H
-          BYTE 000H
+$L_5182dc DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_516160    ;0x5182e0  <- 
 $L_5182e4           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -2803,7 +2581,7 @@ $L_5182e4           BYTE 020H
           BYTE 000H
           DWORD $L_5182dc
           DB 16 DUP(0)
-$L_518300           BYTE 0ffH
+$L_518300           BYTE 0ffH ;==
           BYTE 0ffH
           BYTE 0ffH
           BYTE 0ffH
@@ -2824,7 +2602,7 @@ $L_518320           BYTE 020H
           BYTE 000H
           DWORD $L_518300
           DB 16 DUP(0)
-$L_51833c           BYTE 0ffH
+$L_51833c           BYTE 0ffH ;==
           BYTE 0ffH
           BYTE 0ffH
           BYTE 0ffH
@@ -2871,22 +2649,10 @@ $L_518394           BYTE 020H
           BYTE 000H
           DWORD $L_51838c
           DB 16 DUP(0)
-$L_5183b0           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 020H
-          BYTE 062H
-          BYTE 051H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 028H
-          BYTE 062H
-          BYTE 051H
-          BYTE 000H
+$L_5183b0 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_516220    ;0x5183b4  <- 
+          DWORD 000000000h   ;0x5183b8 
+          DWORD $L_516228    ;0x5183bc  <- 
 $L_5183c0           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -2897,18 +2663,12 @@ $L_5183c0           BYTE 020H
           BYTE 000H
           DWORD $L_5183b0
           DB 16 DUP(0)
-$L_5183dc           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          DWORD $L_516240
-          DB 4 DUP(0)
-          DWORD $L_516248
-          BYTE 001H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_516253
+$L_5183dc DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_516240    ;0x5183e0  <- 
+          DWORD 000000000h   ;0x5183e4 
+          DWORD $L_516248    ;0x5183e8  <- 
+          DWORD 000000001h   ;0x5183ec 
+          DWORD $L_516253    ;0x5183f0 
 $L_5183f4           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -2919,18 +2679,12 @@ $L_5183f4           BYTE 020H
           BYTE 000H
           DWORD $L_5183dc
           DB 16 DUP(0)
-$L_518410           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          DWORD $L_516270
-          DB 4 DUP(0)
-          DWORD $L_516278
-          BYTE 001H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_516283
+$L_518410 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_516270    ;0x518414  <- 
+          DWORD 000000000h   ;0x518418 
+          DWORD $L_516278    ;0x51841c  <- 
+          DWORD 000000001h   ;0x518420 
+          DWORD $L_516283    ;0x518424 
 $L_518428           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -2941,13 +2695,10 @@ $L_518428           BYTE 020H
           BYTE 000H
           DWORD $L_518410
           DB 16 DUP(0)
-$L_518444           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          DWORD $L_5162ab
-          DB 4 DUP(0)
-          DWORD $L_5162a0
+$L_518444 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_5162ab    ;0x518448 
+          DWORD 000000000h   ;0x51844c 
+          DWORD $L_5162a0    ;0x518450  <- 
 $L_518454           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -2958,7 +2709,7 @@ $L_518454           BYTE 020H
           BYTE 000H
           DWORD $L_518444
           DB 16 DUP(0)
-$L_518470           BYTE 0ffH
+$L_518470           BYTE 0ffH ;==
           BYTE 0ffH
           BYTE 0ffH
           BYTE 0ffH
@@ -3003,14 +2754,8 @@ $L_5184b4           BYTE 020H
           BYTE 000H
           DWORD $L_5184ac
           DB 16 DUP(0)
-$L_5184d0           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 030H
-          BYTE 063H
-          BYTE 051H
-          BYTE 000H
+$L_5184d0 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_516330    ;0x5184d4  <- 
 $L_5184d8           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -3021,14 +2766,8 @@ $L_5184d8           BYTE 020H
           BYTE 000H
           DWORD $L_5184d0
           DB 16 DUP(0)
-$L_5184f4           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 050H
-          BYTE 063H
-          BYTE 051H
-          BYTE 000H
+$L_5184f4 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_516350    ;0x5184f8  <- 
 $L_5184fc           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -3039,14 +2778,8 @@ $L_5184fc           BYTE 020H
           BYTE 000H
           DWORD $L_5184f4
           DB 16 DUP(0)
-$L_518518           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 070H
-          BYTE 063H
-          BYTE 051H
-          BYTE 000H
+$L_518518 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_516370    ;0x51851c  <- 
 $L_518520           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -3130,22 +2863,10 @@ $L_5185c8           BYTE 020H
           BYTE 000H
           DWORD $L_5185b8
           DB 16 DUP(0)
-$L_5185e4           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 048H
-          BYTE 064H
-          BYTE 051H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 040H
-          BYTE 064H
-          BYTE 051H
-          BYTE 000H
+$L_5185e4 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_516448    ;0x5185e8  <- 
+          DWORD 000000000h   ;0x5185ec 
+          DWORD $L_516440    ;0x5185f0  <- 
 $L_5185f4           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -3156,24 +2877,12 @@ $L_5185f4           BYTE 020H
           BYTE 000H
           DWORD $L_5185e4
           DB 16 DUP(0)
-$L_518610           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 078H
-          BYTE 064H
-          BYTE 051H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 070H
-          BYTE 064H
-          BYTE 051H
-          BYTE 000H
-$L_518620           BYTE 020H
-$L_518621           BYTE 005H
+$L_518610 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_516478    ;0x518614  <- 
+          DWORD 000000000h   ;0x518618 
+          DWORD $L_516470    ;0x51861c  <- 
+$L_518620 BYTE 020H
+          BYTE 005H
           BYTE 093H
           BYTE 019H
           BYTE 002H
@@ -3252,14 +2961,8 @@ $L_5186b4           BYTE 020H
           BYTE 000H
           DWORD $L_5186ac
           DB 16 DUP(0)
-$L_5186d0           BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 0ffH
-          BYTE 020H
-          BYTE 065H
-          BYTE 051H
-          BYTE 000H
+$L_5186d0 DWORD 0FFFFFFFFh   ;== 
+          DWORD $L_516520    ;0x5186d4  <- 
 $L_5186d8           BYTE 020H
           BYTE 005H
           BYTE 093H
@@ -3970,7 +3673,7 @@ $L_518714           BYTE 020H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_5189c2           BYTE 000H
+$L_5189c2           BYTE 000H ;== 没有使用过
           BYTE 000H
           BYTE 036H
           BYTE 08dH
@@ -5632,7 +5335,7 @@ $L_5189c2           BYTE 000H
           BYTE 064H
           BYTE 000H
           BYTE 000H
-$L_519064           BYTE 088H
+$L_519064           BYTE 088H ;==
           BYTE 000H
           BYTE 06dH
           BYTE 06dH
@@ -5644,7 +5347,7 @@ $L_519064           BYTE 088H
           BYTE 063H
           BYTE 065H
           BYTE 06eH
-          DWORD 0
+          DWORD 0a30064h
 ;           : WARNING:0: no symbol for address 0xa30064 
           BYTE 074H
           BYTE 069H
@@ -6803,24 +6506,18 @@ $L_51a000           DB 4 DUP(0)
           DWORD $L_508ea0
           DWORD $L_50a8e0
 $L_51a038           DB 4 DUP(0)
-$L_51a03c           DB 4 DUP(0)
+$L_51a03c           DB 4 DUP(0) ;==
           DWORD $L_50d11b
           DWORD $L_50d5df
           DWORD $L_51293a
           DWORD FUN_5146d8
           DWORD $L_513337
 $L_51a054           DB 4 DUP(0)
-$L_51a058           DB 4 DUP(0)
+$L_51a058           DB 4 DUP(0) ;==
           DWORD $L_5129df
 $L_51a060           DB 4 DUP(0)
-$L_51a064           BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 048H
-          BYTE 033H
-          BYTE 051H
-          BYTE 000H
+$L_51a064 DWORD 000000000h   ;== 
+          DWORD $L_513348    ;0x51a068  <- 
 $L_51a06c           DB 4 DUP(0)
 $L_51a070                     DB 'there is no match error code at present. DDErrorRoutine'
           BYTE 000H
@@ -9066,7 +8763,7 @@ $L_51f248                     DB 'the Bits was invalid. FlatSpr'
           BYTE 000H
 
           DB 2 DUP(0)
-$L_51f268           BYTE 000H
+$L_51f268           BYTE 000H ;== TODO:不确定其中的引用或是常量
           BYTE 000H
           BYTE 000H
           BYTE 005H
@@ -14324,7 +14021,7 @@ $L_522ef4                     DB 'pl%d\voice\stage%d\v%03d.sap'
 $L_522f18           DWORD $L_523984
 $L_522f1c           BYTE 00eH
           BYTE 001H
-$L_522f1e           BYTE 00dH
+$L_522f1e           BYTE 00dH ;== 这是跳转表不要修正
           BYTE 000H
           DWORD $L_523978
           BYTE 0a2H
@@ -15844,7 +15541,7 @@ $L_523a90           BYTE 010H
           BYTE 0e0H
           BYTE 001H
           BYTE 000H
-$L_523a9f           BYTE 000H
+$L_523a9f           BYTE 000H ;==就是常量
           BYTE 000H
           BYTE 001H
           BYTE 001H
@@ -20769,7 +20466,7 @@ $L_524dd8           BYTE 010H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_524ddc           DWORD $L_7c007e
+$L_524ddc           DWORD $L_7c007e ;==
 $L_524de0           BYTE 0feH
           BYTE 0feH
           BYTE 000H
@@ -20865,13 +20562,13 @@ $L_524e7c           BYTE 0ffH
 $L_524e7d           BYTE 0ffH
 $L_524e7e           BYTE 001H
 $L_524e7f           BYTE 001H
-$L_524e80           BYTE ($L_504ea8-$L_504e6c)/4
+$L_524e80           BYTE 0fH
 $L_524e81           BYTE 001H
-          BYTE ($L_504e6c-$L_504e6c)/4
-          BYTE ($L_504e6c-$L_504e6c)/4
-$L_524e84           BYTE ($L_504e6c-$L_504e6c)/4
-          BYTE ($L_504e6c-$L_504e6c)/4
-          BYTE ($L_504e6c-$L_504e6c)/4
+          BYTE 0
+          BYTE 0
+$L_524e84           BYTE 0
+          BYTE 0
+          BYTE 0
           BYTE 02eH
           BYTE 021H
           BYTE 030H
@@ -21457,7 +21154,7 @@ $L_525178           BYTE 002H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_525180           DWORD $L_525124
+$L_525180           DWORD $L_525124 ;==
           DWORD $L_525124
           DWORD $L_525124
           DWORD $L_525124
@@ -21833,7 +21530,7 @@ $L_5253dc           BYTE 0feH
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_5253e0           DWORD $L_525248
+$L_5253e0           DWORD $L_525248 ;==
           DWORD $L_52525f
           DWORD $L_525275
           DWORD $L_5253dc
@@ -22334,77 +22031,77 @@ $L_525588           BYTE 0ffH
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_525610           BYTE 000H
+$L_525610           BYTE 000H;==
           BYTE 000H
           BYTE 002H
           BYTE 000H
-          DWORD 0
+          DWORD $L_b40020
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 001H
           BYTE 002H
           BYTE 000H
-          DWORD 0
+          DWORD $L_b40020
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 000H
           BYTE 002H
           BYTE 001H
-          DWORD 0
+          DWORD $L_b40020
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 001H
           BYTE 002H
           BYTE 001H
-          DWORD 0
+          DWORD $L_b40020
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 000H
           BYTE 002H
           BYTE 002H
-          DWORD 0
+          DWORD $L_b40020
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 001H
           BYTE 002H
           BYTE 002H
-          DWORD 0
+          DWORD $L_b40020
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 000H
           BYTE 002H
           BYTE 003H
-          DWORD 0
+          DWORD $L_b40020
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 001H
           BYTE 002H
           BYTE 003H
-          DWORD 0
+          DWORD $L_b40020
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 000H
           BYTE 002H
           BYTE 004H
-          DWORD 0
+          DWORD $L_b40020
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 001H
           BYTE 002H
           BYTE 004H
-          DWORD 0
+          DWORD $L_b40020
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 000H
           BYTE 002H
           BYTE 005H
-          DWORD 0
+          DWORD $L_b40020
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 001H
           BYTE 002H
           BYTE 005H
-          DWORD 0
+          DWORD $L_b40020
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 010H
@@ -22973,7 +22670,7 @@ $L_525a42           BYTE 030H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_525a52           BYTE 090H
+$L_525a52           BYTE 090H ;==
           BYTE 065H
           BYTE 064H
           BYTE 000H
@@ -23003,32 +22700,14 @@ $L_525aa8                     DB 'common\data\parts.tim'
           BYTE 000H
 
           DB 2 DUP(0)
-$L_525ac0           BYTE 0b4H
-          BYTE 000H
-          BYTE 05fH
-          BYTE 000H
-          DWORD $L_5a000a
-          BYTE 091H
-          BYTE 000H
-          BYTE 091H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 054H
-          BYTE 000H
-          BYTE 051H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_5a0000
-          BYTE 05fH
-          BYTE 000H
-          BYTE 064H
-          BYTE 000H
-          BYTE 00aH
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
+$L_525ac0 DWORD $L_5f00b4    ;==  <- 找不到标签定义: $L_5f00b4
+          DWORD $L_5a000a    ;0x525ac4 
+          DWORD 000910091h   ;0x525ac8 
+          DWORD $L_540000    ;0x525acc  <- 
+          DWORD 000000051h   ;0x525ad0 
+          DWORD $L_5a0000    ;0x525ad4  <- 
+          DWORD 00064005Fh   ;0x525ad8 
+          DWORD 00000000Ah   ;0x525adc 
 $L_525ae0           BYTE 0b8H
           BYTE 00bH
           BYTE 000H
@@ -24659,7 +24338,7 @@ $L_526214           BYTE 002H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_526218           BYTE 000H
+$L_526218           BYTE 000H ;==
           BYTE 000H
           BYTE 006H
           BYTE 000H
@@ -24689,17 +24368,17 @@ $L_526218           BYTE 000H
           DWORD $L_770071
           DWORD $L_84007e
           DWORD $L_90008a
-          DWORD 0
+          DWORD 09d0097h
 ;           : WARNING:0: no symbol for address 0x9d0097 
-          DWORD 0
+          DWORD 0aa00a3h
 ;           : WARNING:0: no symbol for address 0xaa00a3 
-          DWORD 0
+          DWORD 0b600b0h
 ;           : WARNING:0: no symbol for address 0xb600b0 
-          DWORD 0
+          DWORD 0c300bch
 ;           : WARNING:0: no symbol for address 0xc300bc 
-          DWORD 0
+          DWORD 0cf00c9h
 ;           : WARNING:0: no symbol for address 0xcf00c9 
-          DWORD 0
+          DWORD 0dc00d6h
 ;           : WARNING:0: no symbol for address 0xdc00d6 
           BYTE 0e2H
           BYTE 000H
@@ -27614,206 +27293,176 @@ $L_526e60           BYTE 0beH
           BYTE 000H
           BYTE 04eH
           BYTE 080H
-$L_526e7c           BYTE 08cH
-          BYTE 000H
-          BYTE 032H
-          BYTE 080H
-          BYTE 096H
-          BYTE 000H
-          BYTE 03eH
-          BYTE 080H
-          BYTE 096H
-          BYTE 000H
-          BYTE 048H
-          BYTE 080H
-          BYTE 06eH
-          BYTE 000H
-          BYTE 046H
-          BYTE 080H
-          BYTE 078H
-          BYTE 000H
-          BYTE 04aH
-          BYTE 080H
-          BYTE 0b4H
-          BYTE 000H
-          BYTE 022H
-          BYTE 080H
-          BYTE 06eH
-          BYTE 000H
-          BYTE 034H
-          BYTE 080H
-          BYTE 0c8H
-          BYTE 000H
-          BYTE 042H
-          BYTE 080H
-          BYTE 0b4H
-          BYTE 000H
-          BYTE 042H
-          BYTE 080H
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 76 DUP(0)
-          DWORD $L_457790
-          BYTE 060H
-          BYTE 06cH
-          BYTE 045H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_457790
-          BYTE 030H
-          BYTE 061H
-          BYTE 045H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_457790
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_457790
-          BYTE 060H
-          BYTE 06cH
-          BYTE 045H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_457790
-          BYTE 030H
-          BYTE 061H
-          BYTE 045H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_457790
-          BYTE 030H
-          BYTE 061H
-          BYTE 045H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_457790
-          DWORD FUN_456130
-          DWORD FUN_456130
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DWORD FUN_456130
-          DWORD FUN_456130
-          DWORD FUN_456130
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DWORD FUN_456130
-          DWORD FUN_456130
-          DWORD FUN_456130
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DWORD $L_457790
-          DWORD $L_4573f0
-          DB 4 DUP(0)
-          DWORD $L_457790
-          DWORD $L_4573f0
-          DB 4 DUP(0)
-          DWORD $L_457790
-          DWORD $L_4573f0
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_458130
-          DWORD $L_458130
-          DB 4 DUP(0)
-          DWORD $L_458130
-          DWORD $L_458130
-          DB 4 DUP(0)
-          DWORD $L_458130
-          DWORD $L_458130
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 4 DUP(0)
-          DWORD $L_455a80
-          DWORD $L_455a80
-          DB 40 DUP(0)
-          DWORD $L_458130
-          DWORD $L_458130
-          DB 4 DUP(0)
-          DWORD $L_458130
-          DWORD $L_458130
-          DB 4 DUP(0)
-          DWORD $L_458130
-          DWORD $L_458130
+$L_526e7c DWORD 08032008Ch   ;== 
+          DWORD 0803E0096h   ;0x526e80 
+          DWORD 080480096h   ;0x526e84 
+          DWORD 08046006Eh   ;0x526e88 
+          DWORD 0804A0078h   ;0x526e8c 
+          DWORD 0802200B4h   ;0x526e90 
+          DWORD 08034006Eh   ;0x526e94 
+          DWORD 0804200C8h   ;0x526e98 
+          DWORD 0804200B4h   ;0x526e9c 
+          DWORD $L_455a80    ;0x526ea0  <- 
+          DWORD $L_455a80    ;0x526ea4  <- 
+          DWORD 000000000h   ;0x526ea8 
+          DWORD $L_455a80    ;0x526eac  <- 
+          DWORD $L_455a80    ;0x526eb0  <- 
+          DWORD 000000000h   ;0x526eb4 
+          DWORD $L_455a80    ;0x526eb8  <- 
+          DWORD $L_455a80    ;0x526ebc  <- 
+          DWORD 000000000h   ;0x526ec0 
+          DWORD $L_455a80    ;0x526ec4  <- 
+          DWORD $L_455a80    ;0x526ec8  <- 
+          DWORD 000000000h   ;0x526ecc 
+          DWORD $L_455a80    ;0x526ed0  <- 
+          DWORD $L_455a80    ;0x526ed4  <- 
+          DWORD 000000000h   ;0x526ed8 
+          DWORD $L_455a80    ;0x526edc  <- 
+          DWORD $L_455a80    ;0x526ee0  <- 
+          DWORD 000000000h   ;0x526ee4 
+          DWORD $L_455a80    ;0x526ee8  <- 
+          DWORD $L_455a80    ;0x526eec  <- 
+          DWORD 000000000h   ;0x526ef0 
+          DWORD $L_455a80    ;0x526ef4  <- 
+          DWORD $L_455a80    ;0x526ef8  <- 
+          DWORD 000000000h   ;0x526efc 
+          DWORD $L_455a80    ;0x526f00  <- 
+          DWORD $L_455a80    ;0x526f04  <- 
+          DWORD 000000000h   ;0x526f08 
+          DWORD $L_455a80    ;0x526f0c  <- 
+          DWORD $L_455a80    ;0x526f10  <- 
+          DWORD 000000000h   ;0x526f14 
+          DWORD $L_455a80    ;0x526f18  <- 
+          DWORD $L_455a80    ;0x526f1c  <- 
+          DWORD 000000000h   ;0x526f20 
+          DWORD $L_455a80    ;0x526f24  <- 
+          DWORD $L_455a80    ;0x526f28  <- 
+          DWORD 000000000h   ;0x526f2c 
+          DWORD 000000000h   ;0x526f30 
+          DWORD 000000000h   ;0x526f34 
+          DWORD 000000000h   ;0x526f38 
+          DWORD 000000000h   ;0x526f3c 
+          DWORD 000000000h   ;0x526f40 
+          DWORD 000000000h   ;0x526f44 
+          DWORD 000000000h   ;0x526f48 
+          DWORD 000000000h   ;0x526f4c 
+          DWORD 000000000h   ;0x526f50 
+          DWORD 000000000h   ;0x526f54 
+          DWORD 000000000h   ;0x526f58 
+          DWORD 000000000h   ;0x526f5c 
+          DWORD 000000000h   ;0x526f60 
+          DWORD 000000000h   ;0x526f64 
+          DWORD 000000000h   ;0x526f68 
+          DWORD 000000000h   ;0x526f6c 
+          DWORD 000000000h   ;0x526f70 
+          DWORD 000000000h   ;0x526f74 
+          DWORD $L_457790    ;0x526f78  <- 
+          DWORD $L_456c60    ;0x526f7c  <- 
+          DWORD 000000000h   ;0x526f80 
+          DWORD $L_457790    ;0x526f84  <- 
+          DWORD FUN_456130   ;0x526f88  <- 
+          DWORD 000000000h   ;0x526f8c 
+          DWORD $L_457790    ;0x526f90  <- 
+          DWORD $L_455a80    ;0x526f94  <- 
+          DWORD 000000000h   ;0x526f98 
+          DWORD $L_457790    ;0x526f9c  <- 
+          DWORD $L_456c60    ;0x526fa0  <- 
+          DWORD 000000000h   ;0x526fa4 
+          DWORD $L_457790    ;0x526fa8  <- 
+          DWORD FUN_456130   ;0x526fac  <- 
+          DWORD 000000000h   ;0x526fb0 
+          DWORD $L_457790    ;0x526fb4  <- 
+          DWORD FUN_456130   ;0x526fb8  <- 
+          DWORD 000000000h   ;0x526fbc 
+          DWORD $L_457790    ;0x526fc0  <- 
+          DWORD FUN_456130   ;0x526fc4  <- 
+          DWORD FUN_456130   ;0x526fc8  <- 
+          DWORD $L_455a80    ;0x526fcc  <- 
+          DWORD $L_455a80    ;0x526fd0  <- 
+          DWORD $L_455a80    ;0x526fd4  <- 
+          DWORD $L_455a80    ;0x526fd8  <- 
+          DWORD $L_455a80    ;0x526fdc  <- 
+          DWORD $L_455a80    ;0x526fe0  <- 
+          DWORD FUN_456130   ;0x526fe4  <- 
+          DWORD FUN_456130   ;0x526fe8  <- 
+          DWORD FUN_456130   ;0x526fec  <- 
+          DWORD $L_455a80    ;0x526ff0  <- 
+          DWORD $L_455a80    ;0x526ff4  <- 
+          DWORD $L_455a80    ;0x526ff8  <- 
+          DWORD $L_455a80    ;0x526ffc  <- 
+          DWORD $L_455a80    ;0x527000  <- 
+          DWORD $L_455a80    ;0x527004  <- 
+          DWORD FUN_456130   ;0x527008  <- 
+          DWORD FUN_456130   ;0x52700c  <- 
+          DWORD FUN_456130   ;0x527010  <- 
+          DWORD $L_455a80    ;0x527014  <- 
+          DWORD $L_455a80    ;0x527018  <- 
+          DWORD $L_455a80    ;0x52701c  <- 
+          DWORD $L_455a80    ;0x527020  <- 
+          DWORD $L_455a80    ;0x527024  <- 
+          DWORD $L_455a80    ;0x527028  <- 
+          DWORD $L_457790    ;0x52702c  <- 
+          DWORD $L_4573f0    ;0x527030  <- 
+          DWORD 000000000h   ;0x527034 
+          DWORD $L_457790    ;0x527038  <- 
+          DWORD $L_4573f0    ;0x52703c  <- 
+          DWORD 000000000h   ;0x527040 
+          DWORD $L_457790    ;0x527044  <- 
+          DWORD $L_4573f0    ;0x527048  <- 
+          DWORD 000000000h   ;0x52704c 
+          DWORD $L_455a80    ;0x527050  <- 
+          DWORD $L_455a80    ;0x527054  <- 
+          DWORD 000000000h   ;0x527058 
+          DWORD $L_455a80    ;0x52705c  <- 
+          DWORD $L_455a80    ;0x527060  <- 
+          DWORD 000000000h   ;0x527064 
+          DWORD $L_455a80    ;0x527068  <- 
+          DWORD $L_455a80    ;0x52706c  <- 
+          DWORD 000000000h   ;0x527070 
+          DWORD $L_455a80    ;0x527074  <- 
+          DWORD $L_455a80    ;0x527078  <- 
+          DWORD 000000000h   ;0x52707c 
+          DWORD $L_455a80    ;0x527080  <- 
+          DWORD $L_455a80    ;0x527084  <- 
+          DWORD 000000000h   ;0x527088 
+          DWORD $L_455a80    ;0x52708c  <- 
+          DWORD $L_455a80    ;0x527090  <- 
+          DWORD 000000000h   ;0x527094 
+          DWORD $L_458130    ;0x527098  <- 
+          DWORD $L_458130    ;0x52709c  <- 
+          DWORD 000000000h   ;0x5270a0 
+          DWORD $L_458130    ;0x5270a4  <- 
+          DWORD $L_458130    ;0x5270a8  <- 
+          DWORD 000000000h   ;0x5270ac 
+          DWORD $L_458130    ;0x5270b0  <- 
+          DWORD $L_458130    ;0x5270b4  <- 
+          DWORD 000000000h   ;0x5270b8 
+          DWORD $L_455a80    ;0x5270bc  <- 
+          DWORD $L_455a80    ;0x5270c0  <- 
+          DWORD 000000000h   ;0x5270c4 
+          DWORD $L_455a80    ;0x5270c8  <- 
+          DWORD $L_455a80    ;0x5270cc  <- 
+          DWORD 000000000h   ;0x5270d0 
+          DWORD $L_455a80    ;0x5270d4  <- 
+          DWORD $L_455a80    ;0x5270d8  <- 
+          DWORD 000000000h   ;0x5270dc 
+          DWORD 000000000h   ;0x5270e0 
+          DWORD 000000000h   ;0x5270e4 
+          DWORD 000000000h   ;0x5270e8 
+          DWORD 000000000h   ;0x5270ec 
+          DWORD 000000000h   ;0x5270f0 
+          DWORD 000000000h   ;0x5270f4 
+          DWORD 000000000h   ;0x5270f8 
+          DWORD 000000000h   ;0x5270fc 
+          DWORD 000000000h   ;0x527100 
+          DWORD $L_458130    ;0x527104  <- 
+          DWORD $L_458130    ;0x527108  <- 
+          DWORD 000000000h   ;0x52710c 
+          DWORD $L_458130    ;0x527110  <- 
+          DWORD $L_458130    ;0x527114  <- 
+          DWORD 000000000h   ;0x527118 
+          DWORD $L_458130    ;0x52711c  <- 
+          DWORD $L_458130    ;0x527120  <- 
 $L_527124           DB 4 DUP(0)
           DWORD $L_457be0
           DWORD $L_457be0
@@ -27893,167 +27542,131 @@ $L_52716c           DWORD $L_457be0
           DWORD $L_458680
           DWORD $L_458680
           DB 4 DUP(0)
-$L_527218           DWORD $L_457790
-          DWORD FUN_459330
-          DB 4 DUP(0)
-          DWORD $L_457790
-          DWORD FUN_459330
-          DB 4 DUP(0)
-          DWORD $L_457790
-          DWORD FUN_459330
-          DB 4 DUP(0)
-          DWORD $L_457790
-          DWORD FUN_459330
-          DB 4 DUP(0)
-          DWORD $L_457790
-          DWORD FUN_459330
-          DB 4 DUP(0)
-          DWORD $L_457790
-          DWORD FUN_459330
-          DB 4 DUP(0)
-          DWORD $L_457790
-          BYTE 060H
-          BYTE 06cH
-          BYTE 045H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_457790
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_457790
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_457790
-          DWORD $L_458c10
-          DB 4 DUP(0)
-          DWORD $L_457790
-          BYTE 050H
-          BYTE 096H
-          BYTE 045H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_457790
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_457790
-          DWORD $L_458c10
-          DWORD $L_458c10
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          DWORD $L_458680
-          BYTE 050H
-          BYTE 096H
-          BYTE 045H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_458680
-          BYTE 050H
-          BYTE 096H
-          BYTE 045H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_458680
-          BYTE 050H
-          BYTE 096H
-          BYTE 045H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_458680
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_458680
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_458680
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_458680
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_458680
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_458680
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_458680
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_458680
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_458680
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_458680
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_458680
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_458680
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_457790
-          DWORD $L_458c10
-          DB 4 DUP(0)
-          DWORD $L_457790
-          BYTE 050H
-          BYTE 096H
-          BYTE 045H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          DWORD $L_457790
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_458680
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_458680
-          DWORD $L_458680
-          DB 4 DUP(0)
-          DWORD $L_458680
-          DWORD $L_458680
+$L_527218 DWORD $L_457790   ;==  <- 
+          DWORD FUN_459330   ;0x52721c  <- 
+          DWORD 000000000h   ;0x527220 
+          DWORD $L_457790    ;0x527224  <- 
+          DWORD FUN_459330   ;0x527228  <- 
+          DWORD 000000000h   ;0x52722c 
+          DWORD $L_457790    ;0x527230  <- 
+          DWORD FUN_459330   ;0x527234  <- 
+          DWORD 000000000h   ;0x527238 
+          DWORD $L_457790    ;0x52723c  <- 
+          DWORD FUN_459330   ;0x527240  <- 
+          DWORD 000000000h   ;0x527244 
+          DWORD $L_457790    ;0x527248  <- 
+          DWORD FUN_459330   ;0x52724c  <- 
+          DWORD 000000000h   ;0x527250 
+          DWORD $L_457790    ;0x527254  <- 
+          DWORD FUN_459330   ;0x527258  <- 
+          DWORD 000000000h   ;0x52725c 
+          DWORD $L_457790    ;0x527260  <- 
+          DWORD $L_456c60    ;0x527264  <- 
+          DWORD 000000000h   ;0x527268 
+          DWORD $L_457790    ;0x52726c  <- 
+          DWORD $L_458680    ;0x527270  <- 
+          DWORD 000000000h   ;0x527274 
+          DWORD $L_457790    ;0x527278  <- 
+          DWORD $L_458680    ;0x52727c  <- 
+          DWORD 000000000h   ;0x527280 
+          DWORD $L_457790    ;0x527284  <- 
+          DWORD $L_458c10    ;0x527288  <- 
+          DWORD 000000000h   ;0x52728c 
+          DWORD $L_457790    ;0x527290  <- 
+          DWORD Fun_459650   ;0x527294  <- 
+          DWORD 000000000h   ;0x527298 
+          DWORD $L_457790    ;0x52729c  <- 
+          DWORD $L_458680    ;0x5272a0  <- 
+          DWORD 000000000h   ;0x5272a4 
+          DWORD $L_457790    ;0x5272a8  <- 
+          DWORD $L_458c10    ;0x5272ac  <- 
+          DWORD $L_458c10    ;0x5272b0  <- 
+          DWORD $L_458680    ;0x5272b4  <- 
+          DWORD $L_458680    ;0x5272b8  <- 
+          DWORD $L_458680    ;0x5272bc  <- 
+          DWORD $L_458680    ;0x5272c0  <- 
+          DWORD $L_458680    ;0x5272c4  <- 
+          DWORD $L_458680    ;0x5272c8  <- 
+          DWORD $L_458680    ;0x5272cc  <- 
+          DWORD $L_458680    ;0x5272d0  <- 
+          DWORD $L_458680    ;0x5272d4  <- 
+          DWORD $L_458680    ;0x5272d8  <- 
+          DWORD $L_458680    ;0x5272dc  <- 
+          DWORD $L_458680    ;0x5272e0  <- 
+          DWORD $L_458680    ;0x5272e4  <- 
+          DWORD $L_458680    ;0x5272e8  <- 
+          DWORD $L_458680    ;0x5272ec  <- 
+          DWORD $L_458680    ;0x5272f0  <- 
+          DWORD $L_458680    ;0x5272f4  <- 
+          DWORD $L_458680    ;0x5272f8  <- 
+          DWORD $L_458680    ;0x5272fc  <- 
+          DWORD $L_458680    ;0x527300  <- 
+          DWORD $L_458680    ;0x527304  <- 
+          DWORD $L_458680    ;0x527308  <- 
+          DWORD $L_458680    ;0x52730c  <- 
+          DWORD $L_458680    ;0x527310  <- 
+          DWORD $L_458680    ;0x527314  <- 
+          DWORD Fun_459650   ;0x527318  <- 
+          DWORD 000000000h   ;0x52731c 
+          DWORD $L_458680    ;0x527320  <- 
+          DWORD Fun_459650   ;0x527324  <- 
+          DWORD 000000000h   ;0x527328 
+          DWORD $L_458680    ;0x52732c  <- 
+          DWORD Fun_459650   ;0x527330  <- 
+          DWORD 000000000h   ;0x527334 
+          DWORD $L_458680    ;0x527338  <- 
+          DWORD $L_458680    ;0x52733c  <- 
+          DWORD 000000000h   ;0x527340 
+          DWORD $L_458680    ;0x527344  <- 
+          DWORD $L_458680    ;0x527348  <- 
+          DWORD 000000000h   ;0x52734c 
+          DWORD $L_458680    ;0x527350  <- 
+          DWORD $L_458680    ;0x527354  <- 
+          DWORD 000000000h   ;0x527358 
+          DWORD $L_458680    ;0x52735c  <- 
+          DWORD $L_458680    ;0x527360  <- 
+          DWORD 000000000h   ;0x527364 
+          DWORD $L_458680    ;0x527368  <- 
+          DWORD $L_458680    ;0x52736c  <- 
+          DWORD 000000000h   ;0x527370 
+          DWORD $L_458680    ;0x527374  <- 
+          DWORD $L_458680    ;0x527378  <- 
+          DWORD 000000000h   ;0x52737c 
+          DWORD $L_458680    ;0x527380  <- 
+          DWORD $L_458680    ;0x527384  <- 
+          DWORD 000000000h   ;0x527388 
+          DWORD $L_458680    ;0x52738c  <- 
+          DWORD $L_458680    ;0x527390  <- 
+          DWORD 000000000h   ;0x527394 
+          DWORD $L_458680    ;0x527398  <- 
+          DWORD $L_458680    ;0x52739c  <- 
+          DWORD 000000000h   ;0x5273a0 
+          DWORD $L_458680    ;0x5273a4  <- 
+          DWORD $L_458680    ;0x5273a8  <- 
+          DWORD 000000000h   ;0x5273ac 
+          DWORD $L_458680    ;0x5273b0  <- 
+          DWORD $L_458680    ;0x5273b4  <- 
+          DWORD 000000000h   ;0x5273b8 
+          DWORD $L_458680    ;0x5273bc  <- 
+          DWORD $L_458680    ;0x5273c0  <- 
+          DWORD 000000000h   ;0x5273c4 
+          DWORD $L_457790    ;0x5273c8  <- 
+          DWORD $L_458c10    ;0x5273cc  <- 
+          DWORD 000000000h   ;0x5273d0 
+          DWORD $L_457790    ;0x5273d4  <- 
+          DWORD Fun_459650   ;0x5273d8  <- 
+          DWORD 000000000h   ;0x5273dc 
+          DWORD $L_457790    ;0x5273e0  <- 
+          DWORD $L_458680    ;0x5273e4  <- 
+          DWORD 000000000h   ;0x5273e8 
+          DWORD $L_458680    ;0x5273ec  <- 
+          DWORD $L_458680    ;0x5273f0  <- 
+          DWORD 000000000h   ;0x5273f4 
+          DWORD $L_458680    ;0x5273f8  <- 
+          DWORD $L_458680    ;0x5273fc  <- 
+          DWORD 000000000h   ;0x527400 
+          DWORD $L_458680    ;0x527404  <- 
+          DWORD $L_458680    ;0x527408  <- 
 $L_52740c           DB 4 DUP(0)
           DWORD $L_458ac0
           DWORD $L_458ac0
@@ -28087,7 +27700,7 @@ $L_52747c           DWORD FUN_45af40
 $L_527484                     DB 'BUG'
           BYTE 000H
 
-$L_527488           DWORD $L_550077
+$L_527488           DWORD $L_550077 ;==
           DWORD $L_550055
                     DB 'w'
           BYTE 000H
@@ -28462,7 +28075,7 @@ $L_52777c           DWORD FUN_45f2c0
 $L_52778d           BYTE 002H
           BYTE 00cH
           BYTE 000H
-$L_527790           BYTE 000H
+$L_527790           BYTE 000H ;==
           BYTE 001H
           BYTE 000H
           BYTE 000H
@@ -28591,14 +28204,11 @@ $L_527810           DWORD FUN_45fc20
 $L_527820           DWORD FUN_462300
           DB 8 DUP(0)
           DWORD $L_4625f0
-$L_527830           DWORD FUN_45ff20
+$L_527830           DWORD FUN_45ff20 ;==
           DWORD FUN_47e3b0
           DWORD FUN_47e3b0
           DWORD FUN_47e3b0
-          BYTE 040H
-          BYTE 006H
-          BYTE 046H
-          BYTE 000H
+          DWORD $L_460640
           DWORD $L_4607d0
           DWORD $L_460900
           DWORD FUN_47e3b0
@@ -28624,24 +28234,21 @@ $L_52786c           DWORD FUN_45ffb0
           DWORD $L_461150
           DWORD $L_461360
           DWORD $L_461510
-$L_5278a8           DWORD FUN_45ff20
-          DWORD FUN_47e3b0
-          DWORD FUN_47e3b0
-          DWORD FUN_47e3b0
-          BYTE 040H
-          BYTE 006H
-          BYTE 046H
-          BYTE 000H
-          DWORD $L_4607d0
-          DWORD $L_460900
-          DWORD FUN_47e3b0
-          DWORD $L_460ca0
-          DWORD FUN_47e3b0
-          DWORD FUN_47e3b0
-          DWORD $L_460f90
-          DWORD $L_461140
-          DWORD $L_461310
-          DWORD $L_461500
+$L_5278a8 DWORD FUN_45ff20   ;==  <- 
+          DWORD FUN_47e3b0   ;0x5278ac  <- 
+          DWORD FUN_47e3b0   ;0x5278b0  <- 
+          DWORD FUN_47e3b0   ;0x5278b4  <- 
+          DWORD $L_460640    ;0x5278b8  <- 
+          DWORD $L_4607d0    ;0x5278bc  <- 
+          DWORD $L_460900    ;0x5278c0  <- 
+          DWORD FUN_47e3b0   ;0x5278c4  <- 
+          DWORD $L_460ca0    ;0x5278c8  <- 
+          DWORD FUN_47e3b0   ;0x5278cc  <- 
+          DWORD FUN_47e3b0   ;0x5278d0  <- 
+          DWORD $L_460f90    ;0x5278d4  <- 
+          DWORD $L_461140    ;0x5278d8  <- 
+          DWORD $L_461310    ;0x5278dc  <- 
+          DWORD $L_461500    ;0x5278e0  <- 
 $L_5278e4           DWORD FUN_45ffb0
           DWORD $L_460290
           DWORD $L_4602f0
@@ -28685,87 +28292,34 @@ $L_527978           DWORD $L_462610 ;++
           DWORD $L_462a40
 $L_527988           DWORD $L_463100 ;++
           DB 4 DUP(0)
-$L_527990           DWORD $L_650057
-                    DB 'Q'
-          BYTE 000H
-
-                    DB 'K'
-          BYTE 000H
-
-          DWORD $L_73006e
-          DWORD $L_650063
-          DWORD $L_630065
-          DWORD $L_650051
-          DWORD $L_6e0073
-          DWORD $L_650057
-$L_5279b0           DWORD $L_410041
-                    DB 'F'
-          BYTE 000H
-
-                    DB 'F'
-          BYTE 000H
-
-                    DB 'K'
-          BYTE 000H
-
-                    DB 'E'
-          BYTE 000H
-
-          DWORD $L_5a003e
-                    DB 'P'
-          BYTE 000H
-
-                    DB 'K'
-          BYTE 000H
-
-          DWORD $L_610052
-          DWORD $L_650059
-          DWORD $L_64005a
-          BYTE 02cH
-          BYTE 001H
-          BYTE 02cH
-          BYTE 001H
-          BYTE 0faH
-          BYTE 000H
-          BYTE 0c2H
-          BYTE 001H
-          BYTE 02cH
-          BYTE 001H
-          BYTE 02cH
-          BYTE 001H
-          BYTE 0dcH
-          BYTE 000H
-          BYTE 02cH
-          BYTE 001H
-          BYTE 090H
-          BYTE 001H
-          BYTE 02cH
-          BYTE 001H
-          BYTE 090H
-          BYTE 001H
-          BYTE 05eH
-          BYTE 001H
-          BYTE 0b4H
-          BYTE 000H
-          BYTE 054H
-          BYTE 001H
-          BYTE 0dcH
-          BYTE 000H
-          BYTE 0f0H
-          BYTE 000H
-          BYTE 0afH
-          BYTE 000H
-          BYTE 0f0H
-          BYTE 000H
-          BYTE 036H
-          BYTE 001H
-          BYTE 0f0H
-          BYTE 000H
-          BYTE 036H
-          BYTE 001H
-          BYTE 02cH
-          BYTE 001H
-          DWORD $L_c800fa
+$L_527990 DWORD $L_650057   ;== 
+          DWORD 0004B0051h   ;0x527994 
+          DWORD $L_73006e    ;0x527998 
+          DWORD $L_650063    ;0x52799c 
+          DWORD $L_630065    ;0x5279a0 
+          DWORD $L_650051    ;0x5279a4 
+          DWORD $L_6e0073    ;0x5279a8 
+          DWORD $L_650057    ;0x5279ac 
+$L_5279b0 DWORD $L_410041   ;== 
+          DWORD 000460046h   ;0x5279b4 
+          DWORD 00045004Bh   ;0x5279b8 
+          DWORD $L_5a003e    ;0x5279bc 
+          DWORD 0004B0050h   ;0x5279c0  <- 找不到标签定义: $L_4b0050
+          DWORD $L_610052    ;0x5279c4 
+          DWORD $L_650059    ;0x5279c8 
+          DWORD $L_64005a    ;0x5279cc 
+          DWORD 0012C012Ch   ;0x5279d0 
+          DWORD 001C200FAh   ;0x5279d4 
+          DWORD 0012C012Ch   ;0x5279d8 
+          DWORD 0012C00DCh   ;0x5279dc 
+          DWORD 0012C0190h   ;0x5279e0 
+          DWORD 0015E0190h   ;0x5279e4 
+          DWORD 0015400B4h   ;0x5279e8 
+          DWORD 000F000DCh   ;0x5279ec 
+          DWORD 000F000AFh   ;0x5279f0 
+          DWORD 000F00136h   ;0x5279f4 
+          DWORD 0012C0136h   ;0x5279f8 
+          DWORD $L_c800fa    ;0x5279fc 
 $L_527a00           BYTE 000H
           BYTE 000H
           BYTE 000H
@@ -29529,7 +29083,7 @@ $L_527d78           DWORD FUN_467fb0
           DWORD $L_4682b0
 $L_527d90           BYTE 02cH
           BYTE 001H
-$L_527d92           BYTE 02cH
+$L_527d92           BYTE 02cH ;==
           BYTE 001H
           BYTE 0faH
           BYTE 000H
@@ -30147,7 +29701,7 @@ $L_527f68           BYTE 01cH
           BYTE 001H
           BYTE 02cH
           BYTE 001H
-$L_52806c           DWORD $L_5a0082
+$L_52806c           DWORD $L_5a0082 ;==
           DWORD $L_740060
           DWORD $L_66007d
           DWORD $L_7d0072
@@ -30972,7 +30526,7 @@ $L_528434           DWORD FUN_46eca0
           BYTE 001H
           BYTE 02cH
           BYTE 001H
-$L_528454           DWORD $L_630063
+$L_528454           DWORD $L_630063 ;==
           DWORD $L_630063
           DWORD $L_630077
           DWORD $L_770063
@@ -30980,7 +30534,7 @@ $L_528454           DWORD $L_630063
           DWORD $L_770063
           DWORD $L_590063
           DWORD $L_630063
-$L_528474           DWORD $L_59004f
+$L_528474           DWORD $L_59004f ;==
                     DB 'c'
           BYTE 000H
 
@@ -31530,10 +31084,9 @@ $L_528820           DWORD $L_473730
           DWORD $L_473a90
           DWORD $L_473b70
           DWORD $L_473c80
-$L_528834           DWORD FUN_4738b0
-          BYTE 0a0H
-          BYTE 039H
-          BYTE 047H
+
+$L_528834 DWORD FUN_4738b0   ;==  <- 
+          DWORD $L_4739a0    ;0x528838  <- 
 $L_52883b           BYTE 000H
           BYTE 000H
           BYTE 000H
@@ -31557,7 +31110,7 @@ $L_52883b           BYTE 000H
           BYTE 000H
 $L_528850           BYTE 000H
           BYTE 019H
-$L_528852           BYTE 000H
+$L_528852           BYTE 000H ;==
           BYTE 000H
           BYTE 000H
           BYTE 010H
@@ -31673,7 +31226,7 @@ $L_5288fc           DWORD $L_4763c0
           DWORD $L_4766a0
           DWORD $L_4766a0
           DWORD $L_4766a0
-$L_528948 DWORD $L_476b60 ;++
+$L_528948 DWORD $L_476b60 ;++ ==
           BYTE 000H
           BYTE 000H
           BYTE 000H
@@ -32040,7 +31593,7 @@ $L_528d2c           DWORD FUN_47c270
           DWORD $L_47caa0
 $L_528d40           DWORD FUN_47cd40
           DWORD $L_47cea0
-$L_528d48           BYTE 008H
+$L_528d48           BYTE 008H ;==
           BYTE 000H
           BYTE 0f5H
           BYTE 000H
@@ -32096,7 +31649,7 @@ $L_528d48           BYTE 008H
           BYTE 007H
           BYTE 062H
           BYTE 00dH
-          DWORD 0
+          DWORD 000CF0001h
 ;           : WARNING:0: no symbol for address 0xcf0001 
           DWORD $L_5aff57
           BYTE 042H
@@ -32119,7 +31672,7 @@ $L_528d48           BYTE 008H
           BYTE 008H
           BYTE 01eH
           BYTE 00bH
-          DWORD 0
+          DWORD 0b60001h
 ;           : WARNING:0: no symbol for address 0xb60001 
           BYTE 000H
           BYTE 000H
@@ -32301,7 +31854,7 @@ $L_528d48           BYTE 008H
           BYTE 007H
           BYTE 0bfH
           BYTE 003H
-          DWORD 0
+          DWORD 0a30002h
 ;           : WARNING:0: no symbol for address 0xa30002 
           BYTE 0f2H
           BYTE 0ffH
@@ -32415,7 +31968,7 @@ $L_528d48           BYTE 008H
           BYTE 000H
           BYTE 008H
           BYTE 000H
-          DWORD 0
+          DWORD 0e2ff2ah
 ;           : WARNING:0: no symbol for address 0xe2ff2a 
           BYTE 021H
           BYTE 002H
@@ -32504,7 +32057,7 @@ $L_528f2e           BYTE 0f0H
           BYTE 000H
 $L_528f30           BYTE 036H
           BYTE 001H
-$L_528f32           BYTE 02cH
+$L_528f32           BYTE 02cH ;==
           BYTE 001H
           DWORD $L_c800fa
 $L_528f38           BYTE 000H
@@ -32696,7 +32249,7 @@ $L_528fc0           BYTE 000H
           BYTE 000H
           BYTE 000H
           DWORD $L_528f38
-$L_528ff8           BYTE 015H
+$L_528ff8           BYTE 015H ;==
           BYTE 000H
           BYTE 000H
           BYTE 010H
@@ -33219,7 +32772,7 @@ $L_529218           BYTE 0c8H
           BYTE 0ffH
           BYTE 000H
           BYTE 040H
-$L_529220           DB 1 DUP(0)
+$L_529220           DB 1 DUP(0) ;==
           BYTE 000H
           BYTE 000H
           BYTE 000H
@@ -33292,7 +32845,7 @@ $L_529220           DB 1 DUP(0)
           BYTE 000H
           BYTE 000H
           BYTE 000H
-          DWORD 0
+          DWORD 0c800c8h
 ;           : WARNING:0: no symbol for address 0xc800c8 
           BYTE 09cH
           BYTE 0ffH
@@ -33338,7 +32891,7 @@ $L_529220           DB 1 DUP(0)
           BYTE 000H
           BYTE 000H
           BYTE 000H
-          DWORD 0
+          DWORD 0c8012ch
 ;           : WARNING:0: no symbol for address 0xc8012c 
           BYTE 064H
           BYTE 000H
@@ -34049,7 +33602,7 @@ $L_529618           DWORD $L_4805c0 ;++
           DWORD $L_480720
           DWORD $L_47fb20
           DB 4 DUP(0)
-$L_529628           DWORD $L_5a0001
+$L_529628           DWORD $L_5a0001 ;==
           BYTE 0c8H
           BYTE 000H
           BYTE 000H
@@ -35050,7 +34603,7 @@ $L_529930           BYTE 000H
           BYTE 0ffH
           BYTE 000H
           BYTE 000H
-$L_529a56           BYTE 000H
+$L_529a56           BYTE 000H ;==
           BYTE 030H
           BYTE 005H
           BYTE 000H
@@ -35256,7 +34809,7 @@ $L_529a56           BYTE 000H
           BYTE 001H
           BYTE 02cH
           BYTE 001H
-$L_529b24           DWORD $L_c800fa
+$L_529b24           DWORD $L_c800fa ;==
 $L_529b28           DWORD FUN_480a90
           DWORD $L_480c00
           DWORD $L_4820c0
@@ -35283,7 +34836,7 @@ $L_529b80           DWORD FUN_4825e0
           DWORD $L_482610
           DWORD $L_482680
 $L_529b8c           DWORD $L_4826d0
-$L_529b90           DWORD $L_4833e0 ;++
+$L_529b90           DWORD $L_4833e0 ;++==
           DWORD $L_483590
           DWORD $L_483a40
           BYTE 02cH
@@ -35406,7 +34959,7 @@ $L_529ca8           DWORD $L_4848e0 ;++
           DWORD $L_4848e0
           DWORD $L_4848e0
           DB 4 DUP(0)
-$L_529ccc           DWORD $L_484a50 ;++
+$L_529ccc           DWORD $L_484a50 ;++==
           DWORD $L_484a50
           DWORD $L_484a50
           DWORD $L_484a50
@@ -35459,7 +35012,7 @@ $L_529ccc           DWORD $L_484a50 ;++
           BYTE 02cH
           BYTE 001H
           DWORD $L_c800fa
-$L_529d10           DWORD $L_770061
+$L_529d10           DWORD $L_770061 ;==
           DWORD $L_5a0061
           DWORD $L_5a0061
           DWORD $L_610077
@@ -35814,7 +35367,7 @@ $L_529f88           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 018H
-$L_529fca           BYTE 000H
+$L_529fca           BYTE 000H ;==
           BYTE 000H
           BYTE 000H
           BYTE 000H
@@ -36102,7 +35655,7 @@ $L_52a150           BYTE 011H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_52a184           BYTE 001H
+$L_52a184           BYTE 001H ;==
           BYTE 002H
           BYTE 00dH
           BYTE 000H
@@ -36455,7 +36008,7 @@ $L_52a364           BYTE 00aH
 $L_52a370           DWORD $L_47bba0
           DWORD $L_47bba0
 $L_52a378           DWORD $L_48f660
-$L_52a37c           DWORD FUN_47e3b0 ;++
+$L_52a37c           DWORD FUN_47e3b0 ;++==
           DWORD $L_48fba0
           DWORD $L_48fc90
           BYTE 02cH
@@ -36723,7 +36276,7 @@ $L_52a500 DWORD FUN_47e3b0 ;++
           BYTE 001H
           BYTE 02cH
           BYTE 001H
-$L_52a53c           DWORD $L_c800fa
+$L_52a53c           DWORD $L_c800fa ;==
 $L_52a540           BYTE 00dH
           BYTE 000H
           BYTE 0a4H
@@ -37181,7 +36734,7 @@ $L_52a7bc           DWORD $L_49a750
 $L_52a7c4           DWORD $L_49a9b0
           DWORD $L_49aa70
           DWORD $L_49aad0
-$L_52a7d0           BYTE 000H
+$L_52a7d0           BYTE 000H ;==
           BYTE 001H
           BYTE 000H
           BYTE 000H
@@ -37492,7 +37045,7 @@ $L_52a923           DB 1 DUP(0)
 $L_52a924           DB 2 DUP(0)
 $L_52a926           DB 2 DUP(0)
 $L_52a928           DB 2 DUP(0)
-$L_52a92a           DB 2 DUP(0)
+$L_52a92a           DB 2 DUP(0) ;==
           DWORD $L_52a8e8
           DWORD $L_52a8ec
           BYTE 010H
@@ -37510,7 +37063,7 @@ $L_52a93f           DB 1 DUP(0)
 $L_52a940           DB 2 DUP(0)
 $L_52a942           DB 2 DUP(0)
 $L_52a944           DB 2 DUP(0)
-$L_52a946           DB 2 DUP(0)
+$L_52a946           DB 2 DUP(0) ;==
           DWORD $L_52a8fc
           DWORD $L_6896b8
           BYTE 005H
@@ -38023,7 +37576,7 @@ $L_52ab08                     DB '7'
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_52abfc           BYTE 00aH
+$L_52abfc           BYTE 00aH ;==
           BYTE 01aH
           BYTE 03dH
           BYTE 000H
@@ -39278,7 +38831,7 @@ $L_52b160           DWORD FUN_4a7290
           DWORD $L_4a7a10
           DWORD $L_4a7ce0
           DWORD $L_4a7f60
-$L_52b178           BYTE 0f1H
+$L_52b178           BYTE 0f1H ;==
           BYTE 0ffH
           BYTE 0e2H
           BYTE 0ffH
@@ -39295,7 +38848,7 @@ $L_52b178           BYTE 0f1H
           BYTE 01fH
           BYTE 000H
           DWORD $L_630040
-          DWORD 0
+          DWORD 0af0088h
 ;           : WARNING:0: no symbol for address 0xaf0088 
           BYTE 0d7H
           BYTE 000H
@@ -39445,9 +38998,9 @@ $L_52b178           BYTE 0f1H
           BYTE 001H
           BYTE 0f0H
           BYTE 000H
-          DWORD 0
+          DWORD 0ca00deh
 ;           : WARNING:0: no symbol for address 0xca00de 
-          DWORD 0
+          DWORD 0a800b7h
 ;           : WARNING:0: no symbol for address 0xa800b7 
           DWORD $L_870096
           DWORD $L_5f006e
@@ -39511,7 +39064,7 @@ $L_52b178           BYTE 0f1H
           BYTE 001H
           BYTE 05eH
           BYTE 001H
-$L_52b270           BYTE 0b4H
+$L_52b270           BYTE 0b4H ;==
           BYTE 000H
           BYTE 054H
           BYTE 001H
@@ -39589,13 +39142,10 @@ $L_52b2d0           DWORD FUN_47e3b0
           DWORD FUN_47e3b0
           DWORD FUN_47e3b0
           DWORD FUN_47e3b0
-$L_52b310           DWORD FUN_4a8d50
+$L_52b310           DWORD FUN_4a8d50 ;==
           DWORD $L_4a8da0
           DWORD $L_4a8f60
-          BYTE 080H
-          BYTE 094H
-          BYTE 04aH
-          BYTE 000H
+          DWORD $L_4a9480
           DWORD $L_4a97b0
           DWORD $L_4a98a0
           DWORD $L_4a9990
@@ -40234,7 +39784,7 @@ $L_52b598                     BYTE 00bH
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_52b5d8           BYTE 002H
+$L_52b5d8           BYTE 002H ;==
           BYTE 003H
           BYTE 010H
           BYTE 000H
@@ -40693,7 +40243,7 @@ $L_52b8dc           BYTE 001H ;++
           DWORD FUN_47e3b0
           DWORD FUN_47e3b0
           DB 4 DUP(0)
-$L_52bb64           DWORD $L_47bba0 ;++
+$L_52bb64           DWORD $L_47bba0 ;++==
           DWORD $L_47bba0
           BYTE 000H
           BYTE 000H
@@ -42370,7 +41920,7 @@ $L_52c470           BYTE 019H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_52c594           BYTE 000H
+$L_52c594           BYTE 000H ;==
           BYTE 001H
           BYTE 049H
           BYTE 000H
@@ -43592,7 +43142,7 @@ $L_52c950           BYTE 005H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_52ca74           BYTE 000H
+$L_52ca74           BYTE 000H ;==
           BYTE 001H
           BYTE 049H
           BYTE 000H
@@ -43725,7 +43275,7 @@ $L_52cb07                     DB 'BNKI'
           BYTE 001H
           BYTE 0feH
           BYTE 000H
-$L_52cb18           DWORD $L_48481d
+$L_52cb18           DWORD $L_48481d ;==
           BYTE 04bH
           BYTE 042H
           BYTE 000H
@@ -44091,75 +43641,75 @@ $L_52ccc8           BYTE 000H
           BYTE 000H
           BYTE 002H
           BYTE 000H
-          DWORD 0
+          DWORD 00b40020h
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 001H
           BYTE 002H
           BYTE 000H
-          DWORD 0
+          DWORD 00b40020h
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 000H
           BYTE 002H
           BYTE 001H
-          DWORD 0
+          DWORD 00b40020h
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 001H
           BYTE 002H
           BYTE 001H
-          DWORD 0
+          DWORD 00b40020h
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 000H
           BYTE 002H
           BYTE 002H
-          DWORD 0
+          DWORD 00b40020h
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 001H
           BYTE 002H
           BYTE 002H
-          DWORD 0
+          DWORD 00b40020h
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 000H
           BYTE 002H
           BYTE 003H
-          DWORD 0
+          DWORD 00b40020h
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 001H
           BYTE 002H
           BYTE 003H
-          DWORD 0
+          DWORD 00b40020h
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 000H
           BYTE 002H
           BYTE 004H
-          DWORD 0
+          DWORD 00b40020h
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 001H
           BYTE 002H
           BYTE 004H
-          DWORD 0
+          DWORD 00b40020h
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 000H
           BYTE 002H
           BYTE 005H
-          DWORD 0
+          DWORD 0b40020h
 ;           : WARNING:0: no symbol for address 0xb40020 
           BYTE 000H
           BYTE 001H
           BYTE 002H
           BYTE 005H
-          DWORD 0
+          DWORD 00b40020h
 ;           : WARNING:0: no symbol for address 0xb40020 
-$L_52cd28           DWORD $L_52cab0
+$L_52cd28           DWORD $L_52cab0 ;==
           DWORD $L_52cc34
           DWORD $L_52cac4
           DWORD $L_52cadd
@@ -45097,42 +44647,19 @@ $L_52ceb9           BYTE 00eH
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_52d120           BYTE 000H
-          BYTE 000H
-          BYTE 00aH
-          BYTE 010H
-          BYTE 020H
-          BYTE 000H
-          BYTE 05aH
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 00aH
-          BYTE 011H
-          DWORD $L_610020
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 020H
-          BYTE 00aH
-          BYTE 012H
-          DWORD 0
-;           : WARNING:0: no symbol for address 0xb40020 
-          DWORD $L_808080
-          BYTE 000H
-          BYTE 020H
-          BYTE 00aH
-          BYTE 013H
-          DWORD 0
-;           : WARNING:0: no symbol for address 0xb40020 
-          DWORD $L_808080
-$L_52d150           BYTE 000H
+$L_52d120 DWORD 0100A0000h   ;== 
+          DWORD 0005A0020h   ;0x52d124  <- 找不到标签定义: $L_5a0020
+          DWORD 000000000h   ;0x52d128 
+          DWORD 0110A0000h   ;0x52d12c 
+          DWORD $L_610020    ;0x52d130  <- 
+          DWORD 000000000h   ;0x52d134 
+          DWORD 0120A2000h   ;0x52d138 
+          DWORD $L_b40020    ;0x52d13c 
+          DWORD $L_808080    ;0x52d140  <- 
+          DWORD 0130A2000h   ;0x52d144 
+          DWORD $L_b40020    ;0x52d148 
+          DWORD $L_808080    ;0x52d14c  <- 
+$L_52d150           BYTE 000H ;== 0004C00F0h 跳转到代码中间
           BYTE 000H
           BYTE 00aH
           BYTE 007H
@@ -45204,7 +44731,7 @@ $L_52d198           BYTE 000H
           BYTE 003H
           DWORD $L_6c00e0
           DB 4 DUP(0)
-$L_52d1a4           BYTE 000H
+$L_52d1a4           BYTE 000H ;==
           BYTE 000H
           BYTE 00aH
           BYTE 004H
@@ -45262,7 +44789,7 @@ $L_52d1c4           BYTE 000H
           BYTE 000H
           BYTE 00aH
           BYTE 00dH
-          DWORD 0
+          DWORD 0ac001eh
 ;           : WARNING:0: no symbol for address 0xac001e 
           BYTE 000H
           BYTE 000H
@@ -45297,7 +44824,7 @@ $L_52d20c           BYTE 000H
           BYTE 00aH
           BYTE 01dH
           DWORD $L_5000d8
-$L_52d218           BYTE 000H
+$L_52d218           BYTE 000H ;==
           BYTE 000H
           BYTE 000H
           BYTE 000H
@@ -45326,21 +44853,21 @@ $L_52d218           BYTE 000H
           BYTE 000H
           BYTE 00aH
           BYTE 00fH
-          DWORD 0
+          DWORD 080047h
 ;           : WARNING:0: no symbol for address 0xc80047 
           DWORD $L_808080
           BYTE 000H
           BYTE 020H
           BYTE 00aH
           BYTE 014H
-          DWORD 0
+          DWORD 0b40020h
 ;           : WARNING:0: no symbol for address 0xb40020 
           DWORD $L_808080
           BYTE 000H
           BYTE 020H
           BYTE 00aH
           BYTE 014H
-          DWORD 0
+          DWORD 00b40020h
 ;           : WARNING:0: no symbol for address 0xb40020 
           DWORD $L_808080
           BYTE 000H
@@ -45368,14 +44895,14 @@ $L_52d218           BYTE 000H
           BYTE 020H
           BYTE 00aH
           BYTE 019H
-          DWORD 0
+          DWORD 0b40020h
 ;           : WARNING:0: no symbol for address 0xb40020 
           DWORD $L_808080
           BYTE 000H
           BYTE 020H
           BYTE 00aH
           BYTE 01aH
-          DWORD 0
+          DWORD 0b40020h
 ;           : WARNING:0: no symbol for address 0xb40020 
           DWORD $L_808080
 $L_52d294           BYTE 000H
@@ -45384,7 +44911,7 @@ $L_52d294           BYTE 000H
           BYTE 01eH
           DWORD $L_6c00e0
           DB 4 DUP(0)
-$L_52d2a0           BYTE 000H
+$L_52d2a0           BYTE 000H ;=
           BYTE 000H
           BYTE 00aH
           BYTE 01fH
@@ -46439,14 +45966,14 @@ $L_52d9d8                     DB 'common\data\gw2.adt'
           BYTE 000H
 
           DB 4 DUP(0)
-$L_52d9f0           BYTE 01eH
+$L_52d9f0           BYTE 01eH ;==
           BYTE 000H
           BYTE 03bH
           BYTE 000H
           DWORD $L_720057
-          DWORD 0
+          DWORD 0a5008ch
 ;           : WARNING:0: no symbol for address 0xa5008c 
-          DWORD 0
+          DWORD 0d400bdh
 ;           : WARNING:0: no symbol for address 0xd400bd 
           BYTE 0eaH
           BYTE 000H
@@ -47545,7 +47072,7 @@ $L_52db10           BYTE 0b4H
           BYTE 0feH
           BYTE 000H
           BYTE 000H
-$L_52dec8           BYTE 000H
+$L_52dec8           BYTE 000H ;==
           BYTE 000H
           BYTE 008H
           BYTE 000H
@@ -47560,9 +47087,9 @@ $L_52dec8           BYTE 000H
           DWORD $L_570041
           DWORD $L_7f006b
           DWORD $L_880083
-          DWORD 0
+          DWORD 0ab009fh
 ;           : WARNING:0: no symbol for address 0xab009f 
-          DWORD 0
+          DWORD 0c500b8h
 ;           : WARNING:0: no symbol for address 0xc500b8 
           BYTE 0d4H
           BYTE 000H
@@ -49122,7 +48649,7 @@ $L_52e4d0           DWORD $L_46bc02
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_52e528           BYTE 0f7H
+$L_52e528           BYTE 0f7H ;==
           BYTE 0b0H
           BYTE 0d4H
           BYTE 0e4H
@@ -50390,7 +49917,7 @@ $L_52e528           BYTE 0f7H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_52ea28           BYTE 000H
+$L_52ea28           BYTE 000H ;==
           BYTE 000H
           BYTE 001H
           BYTE 000H
@@ -50414,13 +49941,13 @@ $L_52ea28           BYTE 000H
           DWORD $L_6e0069
           DWORD $L_830078
           DWORD $L_96008b
-          DWORD 0
+          DWORD 0aa00a2h
 ;           : WARNING:0: no symbol for address 0xaa00a2 
           DWORD 0
 ;           : WARNING:0: no symbol for address 0xb900b0 
-          DWORD 0
+          DWORD 0cd00c5h
 ;           : WARNING:0: no symbol for address 0xcd00c5 
-          DWORD 0
+          DWORD 0da00d2h
 ;           : WARNING:0: no symbol for address 0xda00d2 
           BYTE 0e1H
           BYTE 000H
@@ -53258,12 +52785,12 @@ $L_52f2b8           BYTE 0fcH
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_52f590           BYTE 000H
+$L_52f590           BYTE 000H ;==
           BYTE 000H
           BYTE 039H
           BYTE 000H
           DWORD $L_860074
-          DWORD 0
+          DWORD 0bb00abh
 ;           : WARNING:0: no symbol for address 0xbb00ab 
           BYTE 0c9H
           BYTE 000H
@@ -54274,7 +53801,7 @@ $L_52f590           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_52f990           BYTE 003H
+$L_52f990           BYTE 003H ;==
           BYTE 0f9H
           BYTE 001H
           BYTE 0f8H
@@ -55984,7 +55511,7 @@ $L_53003d           BYTE 000H
           BYTE 0dcH
           BYTE 0fcH
           BYTE 06cH
-$L_530050           BYTE 0eeH
+$L_530050           BYTE 0eeH ;==
           BYTE 022H
           BYTE 0eeH
           BYTE 023H
@@ -58974,7 +58501,7 @@ $L_530050           BYTE 0eeH
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_530c70           BYTE 000H
+$L_530c70           BYTE 000H ;==
           BYTE 000H
           BYTE 01cH
           BYTE 000H
@@ -65572,7 +65099,7 @@ $L_532568           BYTE 035H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_532648           BYTE 000H
+$L_532648           BYTE 000H ;==
           BYTE 000H
           BYTE 005H
           BYTE 000H
@@ -65726,7 +65253,7 @@ $L_5326c8           BYTE 058H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_532718           BYTE 04eH
+$L_532718           BYTE 04eH ;==
           BYTE 003H
           BYTE 032H
           BYTE 000H
@@ -65795,7 +65322,7 @@ $L_532718           BYTE 04eH
           BYTE 0ffH
           BYTE 000H
           BYTE 000H
-$L_532760           DWORD $L_670063
+$L_532760           DWORD $L_670063 ;==
           DWORD $L_4100cd
           BYTE 018H
           BYTE 001H
@@ -115942,6 +115469,7 @@ $L_5f0000           DB 107 DUP(0)
 $L_5f006b           DB 3 DUP(0)
 $L_5f006e           DB 16 DUP(0)
 $L_5f007e           DB 56 DUP(0)
+$L_5f00b4           DB 2 DUP(0)
 $L_5f00b6           DB 5 DUP(0)
 $L_5f00bb           DB 12 DUP(0)
 $L_5f00c7           DB 24 DUP(0)
@@ -120031,6 +119559,7 @@ $L_c800fa DB 0B3h,01Ch,0FFh,0FCh,045h,07Ah,043h,005h ; 0xc800fa (8 bytes)
           DB 09Ah,0B6h,0A1h,037h,061h,0EEh,0EFh,0C0h ; 0xc80222 (304 bytes)
           DB 0D1h,0D0h,0CEh,08Eh,0CAh,078h,012h,016h ; 0xc8022a (312 bytes)
           DB 023h,0B2h,0A1h,037h,067h,08Fh,070h,024h ; 0xc80232 (320 bytes)
+$L_b40020 DB 4 DUP(0)
 ;===================================
 _DATA ENDS
 ;===================================

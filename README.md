@@ -59,3 +59,5 @@ Snippets from the disassembler
 Search for data definitions within functions (and vice versa).
 `python defining_contradiction.py > test.txt`
 
+Find floating code
+`python defining_contradiction.py -j > floating_code.txt`

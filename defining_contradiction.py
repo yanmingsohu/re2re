@@ -123,6 +123,8 @@ def what_code(code, lineInf=""):
     if label in _MNEMONICS:
       act = _NORM_CODE
       _type = _NO_CHG
+      args = cmds.split(' ')
+      cmd = label
       break
     if cmd in _DATA_DIRECTIVES:
       act = _NEW_LABEL
@@ -148,7 +150,7 @@ def show_code(lines, i):
     numst = ' ' * (8-len(num))
     commst = ''
     if lcomm:
-      commst = ' '* (60 - len(lcode)) +';'
+      commst = ' '* (40 - len(lcode)) +';'
     thisline = ' '
     if j == i:
       thisline = '>'
@@ -224,8 +226,15 @@ def show_fix(data, st_label, label_map, comm_map={}):
     else:
       insert(hh(x), comm)
 
+def skip_label_notalign(st_label, last_log):
+  lnum = num(st_label)
+  if not lnum or lnum%4 != 0:
+    last_log.append(f" - 警告: 标签地址不是4字节对齐, 忽略 {st_label}")
+    return True
+  return False
 
-def check_misplaced_tokens(lines, _fix_mix=True):
+
+def check_misplaced_tokens(lines, _fix_mix=True, not_limit=False):
   status = _WAIT
   st_label = None
   st_label_index = 0
@@ -266,6 +275,10 @@ def check_misplaced_tokens(lines, _fix_mix=True):
         last_log.append(f"跳过明确的字符串定义 {_code}")
         return
       next_index = label_map[st_index]['next']
+      if not (next_index and st_index):
+        print(f" -- 标签 {st_label}:{st_index} 没有 next 索引 {label_map[st_index]} 跳过")
+        return
+      # print('>', next_index, st_index)
       count = next_index - st_index
       # print("read", hex(st_index), hex(next_index), get_section_name(pe, st_index))
       data = read_bytes_from_exe(exefile, st_index, count, pe)
@@ -277,7 +290,7 @@ def check_misplaced_tokens(lines, _fix_mix=True):
           mayberef.append((xaddr, x, _SECTION_MP[sn]))
     
     if len(mayberef) != ref_var:
-      print('='*80)
+      section()
       comm_map = {}
       # print(ref_var, mayberef)
       for o, v, t in mayberef:
@@ -314,7 +327,7 @@ def check_misplaced_tokens(lines, _fix_mix=True):
     last_err_label = label
     last_err_line = i + 10
     limit -= 1
-    if limit < 0:
+    if limit < 0 and not not_limit:
       raise OSError(" !! 还有更多修正未完成, 在以上修正完成后继续...")
     return False
 
@@ -327,9 +340,10 @@ def check_misplaced_tokens(lines, _fix_mix=True):
     def msg(s, cb=None):
       if check_duplicate_output():
         return
-      print()
-      print('='*80)
+      section()
       print(s, f'\n{filename}:{no}:[{st_label}]')
+      if skip_label_notalign(st_label, last_log):
+        return
       show_code(lines, i)
       if cb != None:
         cb()
@@ -339,8 +353,9 @@ def check_misplaced_tokens(lines, _fix_mix=True):
       continue
     if ctype == _NEW_LABEL:
       # 尝试修复之前数据标签的外部引用
-      if status == _DATA and not donot_msg:
+      if status == _DATA and not donot_msg and not skip_label_notalign(st_label, last_log):
         try_fixed_ref(lines, i)
+
       status = test_st
       st_label = label
       st_label_index = i
@@ -361,7 +376,7 @@ def check_misplaced_tokens(lines, _fix_mix=True):
 
     elif status == _PROGRAM:
       if test_st == _DATA:
-        if not '090H' in sp:
+        if not '090H' in args:
           msg(" -- 错误: 在函数中检测到数据定义")
 
     elif status == _DATA:
@@ -380,14 +395,58 @@ def check_misplaced_tokens(lines, _fix_mix=True):
 
     else:
       raise Error("无效状态")
+  section()
+  print("调试信息")
   print('\n'.join(last_log))
 
 
+def section():
+  print()
+  print('='*80)
+
+
+def find_floating_code(lines):
+  print("正则检查悬空代码", file=sys.stderr)
+  ct_label = None
+  status = None
+
+  for i, (code, comm, filename, no) in enumerate(tqdm(lines)):
+    ok, label, cmd, args, act, _t = what_code(code)
+    if not ok:
+      continue
+
+    def check():
+      if ct_label == None and status == _PROGRAM:
+        section()
+        print(f" - 错误: 在文件 {filename}:{no} 代码段结束, 但代码没有对应的标签")
+        show_code(lines, i)
+
+    if act == _NEW_LABEL:
+    #   if status == _PROGRAM:
+    #     check()
+      if _t == _PROGRAM:
+        status = _PROGRAM
+        ct_label = label
+      if _t == _DATA:
+        status = _SKIP
+        ct_label = None
+
+    # if act == _END_PROC:
+    #   check()
+
+    if act == _NORM_CODE:
+      if cmd == 'jmp':
+        check()
+        ct_label = None
+
+
+
 if __name__ == '__main__':
-  if len(sys.argv) > 1:
-    lines = []
-    readfile(sys.argv[1], lines, True)
+  lines = read_all_files(structured=True) 
+
+  if has_args('-j'):
+    find_floating_code(lines)
   else:
-    lines = read_all_files(structured=True) 
-  fix_mix = has_args('-f1')
-  check_misplaced_tokens(lines, fix_mix) 
+    fix_mix = has_args('-f1')
+    not_limit = has_args('-nl')
+    check_misplaced_tokens(lines, fix_mix, not_limit) 

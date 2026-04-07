@@ -141,10 +141,15 @@ def read_bytes_from_exe(exe_path: str, va: int, count: int, pe: pefile.PE) -> by
     # 超出磁盘实际数据 → 全0（和 Loader 行为一致）
     if offset_in_sec >= section.SizeOfRawData:
         return b'\x00' * count
+
+    can_read = section.SizeOfRawData - offset_in_sec
+    read_len = min(count, can_read)
         
-    data = pe.get_data(rva, count)
-    if len(data) != count:
-      raise Exception(f"数据不足 {len(data)} 预期 {count}")
+    data = pe.get_data(rva, read_len)
+    if len(data) < count:
+        data += b'\x00' * (count - len(data))
+    # if len(data) != count:
+    #   raise Exception(f"数据不足 {len(data)} 预期 {count}, 读取 {hex(va)}")
     return data 
 
 def pe_va_scope(pe):
