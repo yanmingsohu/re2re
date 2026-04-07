@@ -23,4 +23,19 @@ Include src/script.S
 Include src/entry.S
 Include src/unorganized.S
 
+;===================================
+_TEXT ENDS
+;===================================
 
+
+;===================================
+_RDATA SEGMENT READ 'DATA'
+;===================================
+
+Include src/data.S
+Include src/user_data.S
+
+;===================================
+_DATA ENDS
+;===================================
+END

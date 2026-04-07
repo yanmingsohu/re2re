@@ -5,6 +5,62 @@
 #include "stdio.h"
 
 
+void debug() {
+  unsigned int _eax, _ebx, _ecx, _edx, _esi, _edi, _ebp, _esp, _eflags;
+  static int i = 0;
+  static char c[] = "-/|\\";
+
+  __asm {
+      // 1. 保存当前所有通用寄存器到栈 (EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI)
+      pushad 
+      // 2. 保存标志寄存器
+      pushfd
+      pop _eflags
+
+      // 3. 从栈中提取刚才保存的值（注意 pushad 的压栈顺序）
+      // pushad 压栈顺序: EAX, ECX, EDX, EBX, original ESP, EBP, ESI, EDI
+      mov eax, [esp + 28] // EAX 是第一个压进去的，在最高处
+      mov _eax, eax
+      mov eax, [esp + 24] // ECX
+      mov _ecx, eax
+      mov eax, [esp + 20] // EDX
+      mov _edx, eax
+      mov eax, [esp + 16] // EBX
+      mov _ebx, eax
+      mov eax, [esp + 12] // ESP
+      mov _esp, eax
+      mov eax, [esp + 8]  // EBP
+      mov _ebp, eax
+      mov eax, [esp + 4]  // ESI
+      mov _esi, eax
+      mov eax, [esp]      // EDI
+      mov _edi, eax
+
+      // 4. 恢复栈指针（刚才 pushad 压了 8 个 DWORD）
+      popad
+  }
+
+  // 打印所有寄存器，不换行 (末尾使用空格分隔)
+  printf("\r%c EAX=%08X EBX=%08X ECX=%08X EDX=%08X ESI=%08X EDI=%08X EBP=%08X ESP=%08X EFL=%08X", 
+          c[i++&3], _eax, _ebx, _ecx, _edx, _esi, _edi, _ebp, _esp, _eflags);
+}
+
+
+void stack() {
+    unsigned int esp_val;
+    __asm { mov esp_val, esp } // 只用汇编抓取当前的栈顶位置
+
+    unsigned int* ptr = (unsigned int*)esp_val; // 转为指针
+
+    printf(" Current ESP: 0x%08X\n", esp_val);
+    printf("---------------------------\n");
+
+    for (int i = 0; i < 10; i++) {
+        printf(" [%p] -> 0x%08X\n", &ptr[i], ptr[i]);
+    }
+}
+
+
 void open_console() {
   AllocConsole();
 
@@ -22,10 +78,7 @@ void open_console() {
   
   printf(" - Disassembled by yanming.J\n");
   printf(" - SPDX-License-Identifier: MIT\n");
-  printf(" - https://github.com/yanmingsohu\n");
-}
-
-
-void on_winmain_call() {
-  open_console();
+  printf(" - https://github.com/yanmingsohu\n\n");
+  // stack();
+  // debug();
 }

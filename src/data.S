@@ -2,9 +2,6 @@
 ; SPDX-License-Identifier: MIT
 ; https://github.com/yanmingsohu/
 
-;===================================
-_RDATA SEGMENT READ 'DATA'
-;===================================
 
 ALIGN 16
 $L_517000           BYTE 080H
@@ -11928,7 +11925,8 @@ $L_521ffc                     DB 'object number you specified is invalid...%d TM
           BYTE 000H
 
           DB 2 DUP(0)
-$L_52203c                     DB '!"#$.'
+; Page Up / Page Down / End / Home / Delete
+$L_52203c                     DB '!"#$.' 
           BYTE 000H
 
           DB 2 DUP(0)
@@ -116138,7 +116136,7 @@ $L_68910c           DB 4 DUP(0)
 $L_689110           DB 8 DUP(0)
 $L_689118           DB 540 DUP(0)
 $L_689334           DB 4 DUP(0)
-$L_689338           DB 4 DUP(0)
+$L_689338           DB 4 DUP(0) ; 存储了按下的按键
 $L_68933c           DB 4 DUP(0)
 $L_689340           DB 12 DUP(0)
 $L_68934c           DB 4 DUP(0)
@@ -119560,8 +119558,3 @@ $L_c800fa DB 0B3h,01Ch,0FFh,0FCh,045h,07Ah,043h,005h ; 0xc800fa (8 bytes)
           DB 0D1h,0D0h,0CEh,08Eh,0CAh,078h,012h,016h ; 0xc8022a (312 bytes)
           DB 023h,0B2h,0A1h,037h,067h,08Fh,070h,024h ; 0xc80232 (320 bytes)
 $L_b40020 DB 4 DUP(0)
-;===================================
-_DATA ENDS
-;===================================
-
-END

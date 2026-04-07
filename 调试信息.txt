@@ -1,125 +1,17 @@
+__imp__CreateWindowExA
+
+_on_winmain_call
 
 
-FUN_509bb0
-
-res1_buf32 res165
+$L_51f138                     DB 'MarniSystem DirectInput Class'
 
 
-call FUN_50b230
-call FUN_50b3c0
+必须保存寄存器否则....
+pushad
+call _debug
+popad
 
-FUN_50c1f0
-FUN_50c0a0
-FUN_50c060
+pushad
+call _stack
+popad
 
-
-          BYTE 044H
-          BYTE 094H
-          BYTE 004H
-          ...
-          
-          
-          
-          [VirtualAlloc]
-          
-
-            ;add ECX,575472                         ; 8C7F00h                    
-            ;shl ECX,4
-            ;mov DWORD PTR [ECX+ESI*1],EDX          ; 这里崩溃
-            mov DWORD PTR [ESI+$L_8c7F00], EDX
-            
-            
-            
-            FUN_4ec0f0 PROC 
-         
-
-FUN_50c66c PROC
-
-            jmp DWORD PTR __imp__DirectDrawCreate@12 <- 导入错误,修正完成 ok
-FUN_50c66c ENDP
-
-DirectSoundCreate
-
-EXTERN __imp__DirectDrawCreate@12:PROC
-EXTERN _DirectDrawCreate@12:PROC
-EXTERN __imp___DirectSoundCreate@12:PROC
-EXTERN _DirectSoundCreate@12:PROC
-
-
-
-$L_434750:: 需要修正 ok
-mov EAX,DWORD PTR [$L_669ca0]
-0x004ecef9      call    fcn.00434a70 ; fcn.00434a70 需要修正 ok
-
-
-
-fun_4ceee0+198 <- ip跑飞 ok
-
-fun_4ecc70+256 <- 内存非法访问 ok
-FUN_4edd00
-
-
-call FUN_45b740 <- 不存在的函数 ok
-
-
-
-
-fun_50c510 <- 开始画面随机崩溃 ok
-FUN_50bb20 ??
-FUN_50bad0 ??
-
-
-FUN_4ede10 PROC <- 需要修复
-
-崩溃条件
-eip==44b07a
-
-
-ALIGN 16
-
-
-{p:cip} {i:cip} esp={esp} eax={eax} ecx={ecx} eip={eip}
-
-搜索内存: findallmem bio2re, AC A7 45
-
-常用替换: DB 08dh, 049h, 0h ;lea ECX,DWORD PTR [ECX]
-
-需要完成的函数定义: 
-$L_46fb11 ok
-$L_470d90 ok
-$L_476f33 ok
-Fun_4b2960 ok
-
-修复调用这个函数的代码:
-Fun_459650  ok
-FUN_45a750 没有任何调用这个函数
-L_4f7560
-
-$L_53adb8 in 4e4b30? 
-
-
-多字节nop {
-  BYTE 08dH
-  BYTE 049H
-  BYTE 000H ->> LEA ECX, [ECX+0]
-
-    BYTE 08dH\n[\s\t]*BYTE 049H\n[\s\t]*BYTE 000H
-
-  BYTE 08bH
-  BYTE 0ffH --> mov edi, edi ;nop
-
-    BYTE 08bH\n[\s\t]*BYTE 0ffH
-
-  BYTE 08dH
-  BYTE 0a4H
-  BYTE 024H
-  BYTE 000H
-  BYTE 000H
-  BYTE 000H
-  BYTE 000H --> lea esp, [esp + 0x00000000] ;nop
-
-  BYTE 0CCh --> int 3
-}
-
-$L_50cf84:: ; TODO:没有引用
-$L_498d12: TODO: 目标没有设置
