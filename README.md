@@ -6,7 +6,7 @@ Objective: To compile the assembly code so that it can run.
 ![screen](screen/2.png)
 
 
-Current status: |>>>-----------------| 12%
+Current status: |>>>-----------------| 13%
 * Able to enter the first scene
 * The moving animation is strange
 * open menu
@@ -61,3 +61,6 @@ Search for data definitions within functions (and vice versa).
 
 Find floating code
 `python defining_contradiction.py -j > floating_code.txt`
+
+Functional Dependency Analyzer
+`python defining_contradiction.py -f2 > functions.txt`

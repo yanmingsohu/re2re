@@ -46,6 +46,31 @@ _MNEMONICS = {
     "xlat", "xlatb",
     "lahf", "sahf", "pushf", "popf", "pushfd", "popfd",
 }
+_REG_MAP = {
+    # --- General Purpose Registers (32-bit / 64-bit) ---
+    "EAX": "Accumulator",          "RAX": "64-bit Accumulator",
+    "EBX": "Base Index",           "RBX": "64-bit Base Index",
+    "ECX": "Counter",              "RCX": "64-bit Counter",
+    "EDX": "Data Register",        "RDX": "64-bit Data Register",
+    "ESI": "Source Index",         "RSI": "64-bit Source Index",
+    "EDI": "Destination Index",    "RDI": "64-bit Destination Index",
+    "EBP": "Base Pointer",         "RBP": "64-bit Base Pointer",
+    "ESP": "Stack Pointer",        "RSP": "64-bit Stack Pointer",
+
+    # --- Segment Registers ---
+    "CS":  "Code Segment",         "DS":  "Data Segment",
+    "SS":  "Stack Segment",        "ES":  "Extra Segment",
+    "FS":  "FS Segment (Thread Local)", "GS": "GS Segment (Kernel/TLS)",
+
+    # --- Special / Control Registers ---
+    "EIP": "Instruction Pointer",  "RIP": "64-bit Instruction Pointer",
+    "EFLAGS": "Status Flags",      "RFLAGS": "64-bit Status Flags",
+
+    # --- Floating Point / SIMD (Commonly used in Games/Graphics) ---
+    "ST(0)": "FPU Stack 0",        "XMM0": "SIMD Register 0",
+    "XMM1": "SIMD Register 1",     "XMM2": "SIMD Register 2",
+}
+
 _LABEL_FIRST = { "$", "F", "L",  }
 ok_comm = '=='
 
@@ -117,7 +142,7 @@ def what_code(code, lineInf=""):
       _type = _PROGRAM
       break
     if cmd in _MNEMONICS:
-      act = _NEW_LABEL
+      act = _NORM_CODE
       _type = _PROGRAM
       break
     if label in _MNEMONICS:
@@ -440,12 +465,74 @@ def find_floating_code(lines):
         ct_label = None
 
 
+def parse_call(cmd, args):
+  if cmd == 'call':
+    if args[0] in _REG_MAP:
+      return None, args[0]
+    if args[0].lower() == 'dword':
+      fn = args[2]
+      if fn[0] == '[':
+        return None, fn
+      if fn in _REG_MAP:
+        return None, fn
+      return fn, None
+    return args[0], None
+  return None, None
+
+
+def find_function(lines):
+  print("正在查找函数", file=sys.stderr)
+  func_map = {}
+  call_chain = {}
+  status = _WAIT
+  curr_label = None
+
+  for i, (code, comm, filename, no) in enumerate(tqdm(lines)):
+    ok, label, cmd, args, act, _t = what_code(code)
+    if not ok:
+      continue
+
+    # print(f"{label} {no}")
+
+    if status == _WAIT:
+      if act == _NEW_LABEL and _t == _PROGRAM:
+        if cmd == 'proc':
+          status = _PROGRAM
+          func_map[label] = {'st':i+1, 'ed':-1}
+          call_chain[label] = []
+          curr_label = label
+          print(f'{label} ({len(func_map)}. {filename}:{no})')
+        else:
+          msg = f"检测到函数外的独立代码标签" \
+              + f'\n -- {code} ; ({len(func_map)}. {filename}:{no})'
+          raise Exception(msg)
+      continue
+    if status == _PROGRAM:
+      if act == _END_PROC and cmd == 'endp':
+        func_map[curr_label]['ed'] = i-1
+        curr_label = None
+        status = _WAIT
+      if act == _NEW_LABEL and cmd == 'proc':
+        msg = f"禁止在函数中定义函数 {filename}:{no}:\n -- {code}"
+        raise Exception(msg)
+      if act == _NORM_CODE:
+        fn, reg = parse_call(cmd, args)
+        if fn:
+          call_chain[curr_label].append(fn)
+          print(f"  |-- {fn}")
+    else:
+      continue
+
+  print(f"找到 {len(func_map)} 个函数")
+
 
 if __name__ == '__main__':
   lines = read_all_files(structured=True) 
 
   if has_args('-j'):
     find_floating_code(lines)
+  if has_args('-f2'):
+    find_function(lines)
   else:
     fix_mix = has_args('-f1')
     not_limit = has_args('-nl')

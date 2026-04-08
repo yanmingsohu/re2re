@@ -103,7 +103,7 @@ def readfile(filename, lines, structured):
         for line in f.readlines():
             no += 1
             if comment_end:
-                if line == comment_end:
+                if line.strip() == comment_end:
                     comment_end = None
                 continue
             if r := comment_ret.match(line):

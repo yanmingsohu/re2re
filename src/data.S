@@ -106798,7 +106798,7 @@ $L_5434f8           BYTE 0a6H
           BYTE 000H
           BYTE 0e5H
           BYTE 0a2H
-          DWORD $L_5ba2e8
+          DWORD 05ba2e8h
           BYTE 000H
           BYTE 000H
           BYTE 000H
