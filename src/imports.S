@@ -622,3 +622,6 @@ __imp__mmioRead TEXTEQU <__imp__mmioRead@12>
 _mmioRead TEXTEQU <_mmioRead@12>
 __imp__timeGetTime TEXTEQU <__imp__timeGetTime@0>
 _timeGetTime TEXTEQU <_timeGetTime@0>
+
+EXTERN __imp__puts:PROC
+EXTERN __imp__printf:PROC

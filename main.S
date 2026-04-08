@@ -16,26 +16,32 @@ PUBLIC __EntryPoint
 
 ;===================================
 _TEXT SEGMENT
-;===================================
 
-Include src/FUN_401000_format_err_message.S
-Include src/script.S
-Include src/entry.S
-Include src/unorganized.S
 
-;===================================
+  Include src/FUN_401000_format_err_message.S
+  Include src/script.S
+  Include src/entry.S
+  Include src/unorganized.S
+  Include src/user_func.S
+
+
 _TEXT ENDS
 ;===================================
-
-
-;===================================
 _RDATA SEGMENT READ 'DATA'
-;===================================
 
-Include src/data.S
-Include src/user_data.S
 
+  Include src/rdata.S
+
+
+_RDATA ENDS
 ;===================================
+_DATA SEGMENT
+
+
+  Include src/data.S
+  Include src/user_data.S
+
+
 _DATA ENDS
 ;===================================
 END

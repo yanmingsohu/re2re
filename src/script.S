@@ -5,9 +5,9 @@
 
 
 COMMENT #
-  脚本执行主循环（Script Dispatcher）整体结构初始化全局状态
+  脚本执行主循环(Script Dispatcher)整体结构初始化全局状态
       ↓
-  遍历实体数组（EBX: 3720→5208，步长372）
+  遍历实体数组(EBX: 3720→5208,步长372)
       ↓
     每个实体：取脚本指针 → 派发指令 → 处理返回值
       ↓
@@ -22,14 +22,35 @@ COMMENT #
       [+30]      ESI+2  = 某索引字节
       [+320]     链表/栈指针
       步长 = 372字节/实体
-    范围 3720→5208，步长372 → (5208-3720)/372 = 4个实体槽位
+    范围 3720→5208,步长372 → (5208-3720)/372 = 4个实体槽位
 
-  这是一个脚本调用栈机制：[ESI+320] 维护一个栈，支持脚本子程序的调用与返回，
-  计数器归零前可重复跳转（类似循环次数控制）。
+  这是一个脚本调用栈机制：[ESI+320] 维护一个栈,支持脚本子程序的调用与返回,
+  计数器归零前可重复跳转(类似循环次数控制)。
 
-  这是RE2脚本系统的每帧主调度循环，遍历4个活跃实体槽，对每个实体连续派发脚本
-  指令直到挂起或结束。配合调用栈支持子程序跳转，配合全局中断标志支持紧急退出，
+  这是RE2脚本系统的每帧主调度循环,遍历4个活跃实体槽,对每个实体连续派发脚本
+  指令直到挂起或结束。配合调用栈支持子程序跳转,配合全局中断标志支持紧急退出,
   是整个脚本引擎的心脏。
+
+  struct VMContext
+  {
+      uint8_t pad0[1];
+      uint8_t running;      // +1  🔥(Evt_end 用到)
+      uint8_t callDepth;    // +2
+      uint8_t frameType[];  // +3
+      uint8_t type[];       // +4
+      uint8_t counter[];    // +8
+
+      // do-while
+      uint32_t addrTable[];
+      uint32_t targetTable[];
+      uint8_t  typeTable[];
+
+      // 控制流 frame(32字节一组)
+      uint8_t  frameTable[];   // +196
+      uint8_t* framePtr;       // +320
+      uint32_t retAddr[];      // +324
+      uint8_t* pc;             // +28
+  };
 #
 ALIGN 16
 FUN_450100 PROC
@@ -63,7 +84,7 @@ $L_45012e::
             push ESI
             ; CL  = 操作码 (第一字节)
             mov CL,BYTE PTR [EAX]
-            ; 查操作码跳转表，调用处理函数
+            ; 查操作码跳转表,调用处理函数
             call DWORD PTR [ECX*4+$L_53adb8]
 
             mov EDX,DWORD PTR [$L_68a1b4]
@@ -74,11 +95,11 @@ $L_45012e::
             jne $L_450196
 
             cmp EAX,1
-            ; 返回1 → 继续执行下一条指令（同一实体）
+            ; 返回1 → 继续执行下一条指令(同一实体)
             je $L_45012e
 
             cmp EAX,2
-            ; 返回2 → 此实体本帧结束，处理下一实体
+            ; 返回2 → 此实体本帧结束,处理下一实体
             je $L_450182
             ; 跳转偏移索引
             movsx EAX,BYTE PTR [ESI+2]
@@ -99,7 +120,7 @@ $L_450170::
             mov DWORD PTR [ESI+320],EDX
             ; 取栈顶值
             mov ECX,DWORD PTR [ECX]
-            ; 写回脚本指令指针（跳转）
+            ; 写回脚本指令指针(跳转)
             mov DWORD PTR [EDI],ECX
             mov CL,BYTE PTR [EAX]
             dec CL
@@ -123,9 +144,10 @@ $L_450196::
 FUN_450100 ENDP
 
 
-; 这是一个游戏逻辑 tick 函数，每帧驱动最多10个实体的有限状态机，
-; 每个元素大小为 372 字节，共 10 个元素（3720 / 372 = 10）。
-; 每个实体通过虚函数表执行当前状态行为，支持状态转移和提前中断。
+; 这是一个游戏逻辑 tick 函数,每帧驱动最多10个实体的有限状态机,
+; 每个元素大小为 372 字节,共 10 个元素(3720 / 372 = 10)。
+; 每个实体通过虚函数表执行当前状态行为,支持状态转移和提前中断。
+; VMContext ctx[10];
 ALIGN 16
 FUN_4e41e0 PROC
             push EBX
@@ -156,10 +178,10 @@ $L_4e41fa::
             jne $L_4e4270
 
             cmp EAX,1
-            je $L_4e41fa
+            je $L_4e41fa ; continue
 
             cmp EAX,2
-            je $L_4e424e
+            je $L_4e424e ; break
 
             movsx EAX,BYTE PTR [ESI+2]
             mov CL,BYTE PTR [EAX+ESI*1+4]
@@ -284,7 +306,7 @@ $L_4e4330 PROC
 $L_4e4330 ENDP
 
 
-; 终止指定槽位的协程，把它标记为不活跃，让槽位可以被重新分配。对应 SPAWN 的反操作。
+; 终止指定槽位的协程,把它标记为不活跃,让槽位可以被重新分配。对应 SPAWN 的反操作。
 ; KILL  slot_id
 $L_4e4360 PROC
             mov ECX,DWORD PTR [ESP+4]
@@ -370,7 +392,7 @@ $L_4e4420 PROC
 $L_4e4420 ENDP
 
 
-; 这个虚拟机用的是基于栈的求值模型，每个协程（槽位）有自己的栈空间。
+; 这个虚拟机用的是基于栈的求值模型,每个协程(槽位)有自己的栈空间。
 ; PUSH  stream[2..3]
 $L_4e4450 PROC
             mov EAX,DWORD PTR [ESP+4]
@@ -394,16 +416,16 @@ $L_4e4450 PROC
 $L_4e4450 ENDP
 
 
-; 这是一条循环控制指令，类似 x86 的 LOOP 指令：
+; 这是一条循环控制指令,类似 x86 的 LOOP 指令：
 COMMENT !
 LOOP:
     栈顶值--
     if 栈顶值 == 0:
         弹栈
-        stream += 3    // 跳过循环体，继续往后执行
+        stream += 3    // 跳过循环体,继续往后执行
     else:
-        不移动stream   // 保持在循环入口，下次调度继续执行
-    return 2           // yield，让出执行权
+        不移动stream   // 保持在循环入口,下次调度继续执行
+    return 2           // yield,让出执行权
 !
 $L_4e4490 PROC
             mov EAX,DWORD PTR [ESP+4]
@@ -432,10 +454,10 @@ $L_4e44cf::
 $L_4e4490 ENDP
 
 
-; 只移动栈顶指针，不写入任何值，说明这是：
+; 只移动栈顶指针,不写入任何值,说明这是：
 ; ALLOC  在栈上预留一个空槽位
-; 因为内存本来就可能是0，不需要显式写。
-; 配合 LOOP 使用的话，可以先 ALLOC 占位，之后再由其他指令填值。
+; 因为内存本来就可能是0,不需要显式写。
+; 配合 LOOP 使用的话,可以先 ALLOC 占位,之后再由其他指令填值。
 $L_4e44e0 PROC
             mov EAX,DWORD PTR [ESP+4]
             movsx ECX,BYTE PTR [EAX+2]
@@ -455,10 +477,10 @@ COMMENT !
   这是一条条件性POP/等待指令：
   WAIT_AND_POP:
       if 全局状态未就绪:
-          yield（不动stream，不动栈，下次再试）
+          yield(不动stream,不动栈,下次再试)
       else:
           stream++
-          栈顶--（弹栈）
+          栈顶--(弹栈)
           yield
 !
 $L_4e4510 PROC
@@ -748,7 +770,7 @@ $L_4e4780 ENDP
 
 
 ALIGN 16
-FUN_4e47d0 PROC
+FUN_4e47d0 PROC ; int FUN_4e47d0(uint8_t* stream, int len, Context* ctx);
 
             mov EAX,DWORD PTR [ESP+8]
             push EBX
@@ -757,7 +779,7 @@ FUN_4e47d0 PROC
             push EDI
             mov EDI,DWORD PTR [ESP+16]
             xor ECX,ECX
-            and EBX,255
+            and EBX,255 ; 最大长度 = 255
             mov CL,BYTE PTR [EAX]
             push EDI
             add EBX,EAX
@@ -933,7 +955,7 @@ $L_4e4940 PROC
 $L_4e4940 ENDP
 
 
-; 这个函数很可能是某个字节码解释器 / 虚拟机的指令派发（dispatch）函数
+; 这个函数很可能是某个字节码解释器 / 虚拟机的指令派发(dispatch)函数
 ALIGN 16
 $L_4e4990 PROC
             mov EAX,DWORD PTR [ESP+4]
@@ -960,9 +982,9 @@ $L_4e4990 PROC
             mov BYTE PTR [EAX+2],CL
             add ESI,EDX
             pop EDI
-            ; field_28 像一个 PC（程序计数器）每次 +2，像在读取指令流
+            ; field_28 像一个 PC(程序计数器)每次 +2,像在读取指令流
             ; obj->field_28 = globalTable + globalTable[val];
-            ; 用数据字节查表跳转，典型的 computed goto
+            ; 用数据字节查表跳转,典型的 computed goto
             mov DWORD PTR [EAX+28],ESI
             mov EAX,1
             pop ESI
@@ -1057,11 +1079,9 @@ $L_4e4ac0 PROC
             mov EAX,1
             ret 
 $L_4e4ac0 ENDP
-          BYTE 090H
-          BYTE 090H
-          BYTE 090H
-$L_4e4ae0 PROC
 
+
+$L_4e4ae0 PROC
             mov ECX,DWORD PTR [ESP+4]
             xor EDX,EDX
             push ESI
@@ -1097,7 +1117,7 @@ $L_4e4ae0 PROC
 $L_4e4ae0 ENDP
 
 
-; 虚拟机指令解释器里的一条指令处理函数，专门处理"位写"操作。
+; 虚拟机指令解释器里的一条指令处理函数,专门处理"位写"操作。
 ; opcode (0: 清除位 (AND NOT)) (1: 置位 (OR)) (7: 翻转位 (XOR))
 ALIGN 16
 $L_4e4b30 PROC
@@ -1115,7 +1135,7 @@ $L_4e4b30 PROC
             mov CL,BYTE PTR [EAX+2] ; bitpos
             add EAX,4
             mov EDX,ECX
-            mov DWORD PTR [ESI+28],EAX
+            mov DWORD PTR [ESI+28],EAX          ; 崩溃时 指令码是2d 错误???
             mov EAX,DWORD PTR [EDI*4+$L_53b1c0] ; 崩溃时 EDI=1f 越界访问, EAX=15003f6<-下内存写入断点
             and ECX,31
             sar EDX,5
@@ -1283,7 +1303,7 @@ $L_4e4c50 PROC
 $L_4e4c50 ENDP
 
  
-; 变量表内部的寄存器间传送，var[dst] = var[src]。
+; 变量表内部的寄存器间传送,var[dst] = var[src]。
 $L_4e4c80 PROC
             mov ECX,DWORD PTR [ESP+4]
             xor EDX,EDX
@@ -1736,7 +1756,7 @@ $L_4e5060 ENDP
 
 
 
-; 障碍物，检查物体时的信息，死尸，火, 触发的事件
+; 障碍物,检查物体时的信息,死尸,火, 触发的事件
 $L_4e50b0 PROC
             mov EAX,DWORD PTR [ESP+4]
             xor EDX,EDX
@@ -2276,10 +2296,10 @@ $L_4e5550 ENDP
 
 
 COMMENT #
-  这是 RE2 关卡加载时逐条解析实体表的核心循环体，每次调用处理一个实体，
+  这是 RE2 关卡加载时逐条解析实体表的核心循环体,每次调用处理一个实体,
   处理完后指针后移38字节准备处理下一个。
-  输入：关卡 .RDT 脚本中的原始实体数据（38字节/条目）
-  输出：填充好的运行时 ENTITY_WORK 结构体（504字节），注册进游戏世界
+  输入：关卡 .RDT 脚本中的原始实体数据(38字节/条目)
+  输出：填充好的运行时 ENTITY_WORK 结构体(504字节),注册进游戏世界
 
   流程：读取原始数据 → 定位运行时槽位 → 分派模型资源
         → 写入坐标/碰撞参数 → 版本补丁 → 注册实体
@@ -3067,7 +3087,7 @@ $L_4e5e50 ENDP
 
 
 COMMENT #
-  Speed_set 从脚本流中读取一个速度参数，写入实体的速度数组。
+  Speed_set 从脚本流中读取一个速度参数,写入实体的速度数组。
   int Speed_set(ENTITY_WORK *entity) {
       uint8_t  *script = entity->script_ptr;   // [EDX+28]
       int       index  = script[1];            // 分量索引
@@ -3098,8 +3118,8 @@ $L_4e5f30 ENDP
 
 
 COMMENT #
-  Move_apply（速度→位置）
-  经典二阶欧拉积分，RE2用脚本指令驱动物理更新，飞行的炸弹、
+  Move_apply(速度→位置)
+  经典二阶欧拉积分,RE2用脚本指令驱动物理更新,飞行的炸弹、
   滚落的障碍物、摇摆的吊灯这类需要持续运动的对象都走这套系统。
 #
 $L_4e5f60 PROC
@@ -3137,7 +3157,7 @@ $L_4e5f60 PROC
 $L_4e5f60 ENDP
 
 
-; Accel_apply（加速度→速度）
+; Accel_apply(加速度→速度)
 $L_4e5fd0 PROC
             mov EAX,DWORD PTR [ESP+4]
             mov CX,WORD PTR [EAX+356]
@@ -4350,17 +4370,17 @@ $L_4e6bc0 ENDP
 
 
 COMMENT #
-  Sound_emit（3D音效播放指令）
-  DI=0 → $L_4e6c2f  原点模式     pos = (0,0,0)，无参考实体
+  Sound_emit(3D音效播放指令)
+  DI=0 → $L_4e6c2f  原点模式     pos = (0,0,0),无参考实体
   EDI=1 → $L_4e6c37  玩家1        ECX = $L_98a0ac (Leon/Claire实体指针)
   EDI=2 → $L_4e6c3f  玩家2        ECX = $L_98a0b0 (第二角色实体指针)
   EDI=3 → $L_4e6c47  全局对象表   ECX = $L_98a0b4[ECX>>8] (按高字节索引)
   EDI=4 → $L_4e6c53  实体数组     ECX = &$L_98a5bc[(ECX>>8)*504]
   EDI>4 → $L_4e6c66  调用者实体   ECX = [ESP+36] (自身ENTITY_WORK*)
   
-  这条指令让脚本能把音效锚定在任意实体的世界坐标上，加上XYZ偏移可以精确控制声源位置。
-  五种目标模式覆盖了玩家、NPC、道具、机关等所有实体类型，
-  绝对坐标模式则用于环境背景音（水声、风声、机械运转声等固定位置音源）。
+  这条指令让脚本能把音效锚定在任意实体的世界坐标上,加上XYZ偏移可以精确控制声源位置。
+  五种目标模式覆盖了玩家、NPC、道具、机关等所有实体类型,
+  绝对坐标模式则用于环境背景音(水声、风声、机械运转声等固定位置音源)。
 #
 $L_4e6c00 PROC
 

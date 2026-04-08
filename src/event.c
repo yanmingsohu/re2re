@@ -1,10 +1,10 @@
-void open_console();
+void __cdecl open_console();
 
 
-void on_winmain_call() {
+void __cdecl on_winmain_call() {
 }
 
 
-void on_before_window_show() {
+void __cdecl on_before_window_show() {
   open_console();
 }

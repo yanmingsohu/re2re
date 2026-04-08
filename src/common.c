@@ -5,7 +5,7 @@
 #include "stdio.h"
 
 
-void debug() {
+void __cdecl debug() {
   unsigned int _eax, _ebx, _ecx, _edx, _esi, _edi, _ebp, _esp, _eflags;
   static int i = 0;
   static char c[] = "-/|\\";
@@ -46,7 +46,7 @@ void debug() {
 }
 
 
-void stack() {
+void __cdecl stack() {
     unsigned int esp_val;
     __asm { mov esp_val, esp } // 只用汇编抓取当前的栈顶位置
 
@@ -61,7 +61,7 @@ void stack() {
 }
 
 
-void open_console() {
+void __cdecl open_console() {
   AllocConsole();
 
   // 把控制台窗口推到最后面
