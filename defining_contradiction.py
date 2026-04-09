@@ -6,7 +6,7 @@ import pefile  # pip install pefile
 from utils import \
   read_bytes_from_exe, pe_va_scope, show_pe_info, \
   get_section_name, read_all_files, readfile, isnum, \
-  numtype, is_ok, num, has_args, Messages, err
+  numtype, is_ok, num, has_args, MMessages, err, filter_sum
 from tqdm import tqdm
 from rich.tree import Tree
 from rich import print as rprint
@@ -17,7 +17,6 @@ from rich.panel import Panel
 line_re = re.compile(
   r'\s*(?P<label>[_$a-zA-Z0-9]+)(?P<comma>\:*)\s*(?P<command>.*)?' )
 
-find_sum = re.compile(r"<b\b[^>]*>(.*?)</b>", re.DOTALL)
 
 _DATA_DIRECTIVES = {
   "db", "dw", "dd", "dq", "dt", "real4", "real8", "real10",
@@ -564,7 +563,7 @@ def show_function_chain(lines, fn, useAI=False):
     return '\n'.join(buf)
 
   def make_comment_ai(f):
-    msg = Messages(f)
+    msg = MMessages(f)
     if c := msg.get_cache():
       return c
     code = func_code(f)
@@ -576,15 +575,15 @@ def show_function_chain(lines, fn, useAI=False):
         if ext:
           continue
         # 因为是按照依赖顺序调用, 所以一定会有
-        note = []
-        if comm := comments.get(d, None):
-          note.append(comm)
         if comm := msg.get_cache(d):
-          for m in find_sum.findall(comm):
-            note.append(m)
-        # print("!"*80, d, ext, '\n', comm)
-        comm = '\n'.join(note)
+          comm = filter_sum(comm)  
+        else:
+          comm = comments.get(d, None)
+          t = filter_sum(comm)
+          if t:
+            comm = t
         msg.add(f"这是依赖项 {d} 的说明:\n{comm}")
+        # err("!"*80, d, ext, '\n', comm)
         # err(f' - debug {d} - {note}')
     return msg.call_ai()
 

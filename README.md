@@ -35,6 +35,7 @@ Other targets in `make` are used to disassemble and generate `main.S`; this is t
 
 Install dependencies
 `pip install angr pefile treelib`
+`pip install git+https://github.com/yanmingsohu/ai-dasm.git`
 
 Check the consistency between the data definition label 
 and the source program binary.

@@ -108447,7 +108447,7 @@ $L_66d334           DB 4 DUP(0)
 $L_66d338           DB 4 DUP(0)
 $L_66d33c           DB 4 DUP(0)
 $L_66d340           DB 4 DUP(0)
-$L_66d344           DB 4 DUP(0)
+$L_66d344           DB 4 DUP(0)   ; 上一次有效的输入掩码缓存    
 $L_66d348           DB 8 DUP(0)
 $L_66d350           DB 4 DUP(0)
 $L_66d354           DB 8 DUP(0)

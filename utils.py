@@ -4,7 +4,8 @@ from pathlib import Path
 import argparse
 import os
 import pefile  # pip install pefile
-from ai_dasm import chat_with_stream
+from ai_dasm import chat_with_stream, Messages
+from rich import print as rprint
 
 
 hexstr = '0123456789abcdefABCDEF'
@@ -13,40 +14,19 @@ base_url = 'http://127.0.0.1:7001'
 api_key = 'none'
 system_prompt_file = 'prompt_make_comment.txt'
 cache_dir = 'comment_cache'
-
-os.makedirs(cache_dir, exist_ok=True)
     
 
-class Messages(list):
-    def __init__(self, name, iterable=None):
-        if iterable is None:
-            iterable = []
-        super().__init__(iterable)
-        with open(system_prompt_file, "r", encoding="utf-8") as f:
-            self.append({"role": "system", "content": f.read()})
-        self.path = Path(cache_dir) / f"{name}.txt"
+def MMessages(name):
+    return Messages(name, system_prompt_file, base_url, cache_dir, api_key)
 
-    def add(self, content, role='user'):
-        self.append({ 'role': role, 'content': content })
-    
-    def call_ai(self, msg = ""):
-        succ, think, resp = chat_with_stream(base_url, api_key, self);
-        if not succ:
-            return None
-        with open(self.path, 'w', encoding='utf-8') as f:
-            f.write(msg)
-            f.write(resp)
-        return resp
 
-    def get_cache(self, _name = None):
-        if _name:
-            p = Path(cache_dir) / f"{_name}.txt"
-        else:
-            p = self.path
-        if not p.exists():
-            return None
-        with open(p, 'r', encoding='utf-8') as f:
-            return f.read()
+find_sum = re.compile(r"<b\b[^>]*>(.*?)</b>", re.DOTALL)
+
+def filter_sum(txt):
+    buf = []
+    for m in find_sum.findall(txt):
+        buf.append(m)
+    return '\n'.join(buf)
 
 
 def num(str):
