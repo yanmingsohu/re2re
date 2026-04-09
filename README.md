@@ -68,3 +68,6 @@ Functional Dependency Analyzer
 
 Use AI to build function descriptions on a function dependency tree.
 `python defining_contradiction.py -f2 FUN_50d9da -ai > functions.txt`
+
+
+`python defining_contradiction.py -bd src\data.S > data_cont.txt`

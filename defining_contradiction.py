@@ -6,7 +6,8 @@ import pefile  # pip install pefile
 from utils import \
   read_bytes_from_exe, pe_va_scope, show_pe_info, \
   get_section_name, read_all_files, readfile, isnum, \
-  numtype, is_ok, num, has_args, MMessages, err, filter_sum
+  numtype, is_ok, num, has_args, MMessages, err, filter_sum, \
+  asm_string_len
 from tqdm import tqdm
 from rich.tree import Tree
 from rich import print as rprint
@@ -153,7 +154,7 @@ def what_code(code, lineInf=""):
     if label in _MNEMONICS:
       act = _NORM_CODE
       _type = _NO_CHG
-      args = cmds.split(' ')
+      args = sp
       cmd = label
       break
     if cmd in _DATA_DIRECTIVES:
@@ -163,7 +164,7 @@ def what_code(code, lineInf=""):
     if label in _DATA_DIRECTIVES:
       act = _DEFINE_DATA
       _type = _DATA
-      args = cmd.split(' ')
+      args = sp
       cmd = rlabel
       break
     # raise OSError(f"未知的代码: {code}, {lineInf}")
@@ -647,7 +648,6 @@ def show_function_chain(lines, fn, useAI=False):
 
 def show_function_all(lines):
   func_map, call_chain = find_function(lines)
-
   for f, v in func_map.items():
     i = v['st']
     code, comm, filename, no = lines[i]
@@ -657,7 +657,72 @@ def show_function_all(lines):
         print(f"  |-- {ch}")
 
 
+db_str = re.compile(r"'(.+)'")
+db_dup = re.compile(r"([0-9]+)\s+DUP(\(.+\))")
+db_mul = re.compile(r"([0-9][0-9a-hA-H]+h?),?")
+
+def parse_data(cmd, args, msg):
+  cmd = cmd.upper()
+  if cmd == 'BYTE':
+    return 1
+  if cmd == 'DWORD':
+    return 4
+  if cmd == 'DB':
+    arg = ' '.join(args)
+    if a := db_str.match(arg):
+      return asm_string_len(arg)
+    if a := db_dup.match(arg):
+      return num(a.group(1))
+    if a := db_mul.findall(arg):
+      return len(a)
+  raise Exception(f"无效命令: {cmd} / {args}, {msg}")
+
+
+def find_bad_data_addr(lines):
+  dl = []
+  currlb = None
+  nextlb = None
+  currll = 0
+
+  print("分析数据地址")
+  for i, (code, comm, filename, no) in enumerate(tqdm(lines)):
+    ok, label, cmd, args, act, _t = what_code(code)
+    if not ok:
+      continue
+    if _t == _DATA:
+      if act == _NEW_LABEL:
+        addr = num(label)
+        if not addr:
+          print(f" !- 标签不含地址 {label}")
+          continue
+        if nextlb != None and nextlb != addr:
+          print(f"地址不连续或覆盖: ({filename}:{no}) {label}, {currll}字节")
+          if addr < nextlb:
+            x = nextlb - addr
+            print(f" -- 标签 {label} 覆盖了前一个标签 {currlb}, {x} 个字节")
+          else:
+            x = addr - nextlb
+            print(f" -- 前一个标签 {currlb} 缺少 {x} 个字节")
+        currlb = label
+        nextlb = addr
+        currll = 0
+      db = parse_data(cmd, args, f"{filename}:{no}")
+      currll += db
+      nextlb += db
+      continue
+    if act == _SKIP:
+      continue
+    print(f'无效的代码: ({filename}:{no}) {code} - {act},{_t}')
+
+
 def main():
+  if i := has_args('-bd'):
+    lines = []
+    for j in range(i+1, len(sys.argv), 1):
+      readfile(sys.argv[j], lines, True)
+    find_bad_data_addr(lines)
+    return
+
   lines = read_all_files(structured=True) 
   if has_args('-j'):
     find_floating_code(lines)

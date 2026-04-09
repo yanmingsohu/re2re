@@ -120,6 +120,17 @@ def readfile(filename, lines, structured):
     comment_end = None
     last_multi_comment = []
 
+    def parse_line(line):
+        instr = False
+        for i in range(len(line)-1, 0, -1):
+            if line[i] == "'" or line[i] == '"':
+                instr = not instr
+            if instr:
+                continue
+            if line[i] == ';':
+                return line[0:i], line[i+1:]
+        return line, ''
+
     with open(filename, 'r', encoding='utf-8', errors='replace') as f:
         for line in f.readlines():
             no += 1
@@ -133,8 +144,9 @@ def readfile(filename, lines, structured):
                 continue
 
             if structured:
-                sp = line.split(';')
-                code, comm = (sp[0], ','.join(sp[1:])) if len(sp)>1 else (sp[0], '')
+                # sp = line.split(';')
+                # code, comm = (sp[0], ','.join(sp[1:])) if len(sp)>1 else (sp[0], '')
+                code, comm = parse_line(line)
                 code = code.strip()
                 comm = comm.strip()
                 if not code:
@@ -220,3 +232,34 @@ def open_pe(file):
 
 def err(s):
     print(s, file=sys.stderr)
+
+
+def asm_string_len(s: str) -> int:
+    """
+    计算 MASM 字符串长度（支持 ' 和 "，支持 '' / "" 转义）
+    只处理一个字符串字面量
+    """
+    s = s.strip()
+    if not s:
+        return 0
+
+    quote = s[0]
+    if quote not in ("'", '"'):
+        raise ValueError("不是合法的 asm 字符串")
+
+    if s[-1] != quote:
+        raise ValueError("字符串未正确闭合")
+
+    i = 1
+    n = 0
+    end = len(s) - 1
+
+    while i < end:
+        # 处理 '' 或 ""
+        if i + 1 < end and s[i] == quote and s[i + 1] == quote:
+            n += 1
+            i += 2
+        else:
+            n += 1
+            i += 1
+    return n

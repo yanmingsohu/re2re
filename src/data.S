@@ -14424,8 +14424,8 @@ $L_525024                     DB 'Fatal error.'
           BYTE 000H
 
           DB 3 DUP(0)
-$L_525034  DB 'Installation was not completed correctly.\n'          
-          BYTE 083H
+          ; 这个字符串不知道从哪里来的, 原版没有
+$L_525034 BYTE 083H ; DB 'Installation was not completed correctly.\n'
           BYTE 043H
           BYTE 083H
           BYTE 093H
@@ -14469,8 +14469,7 @@ $L_525034  DB 'Installation was not completed correctly.\n'
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_525060  DB 'F1:'          
-          BYTE 089H
+$L_525060 BYTE 089H ; DB 'F1:' ; 未知的来源
           BYTE 0e6H
           BYTE 096H
           BYTE 0caH
@@ -24595,8 +24594,7 @@ $L_528820           DWORD $L_473730
 
 $L_528834 DWORD FUN_4738b0   ;==  <- 
           DWORD $L_4739a0    ;0x528838  <- 
-$L_52883b           BYTE 000H
-          BYTE 000H
+$L_52883c BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
@@ -112136,11 +112134,7 @@ $L_99ede8           DB 4 DUP(0)
 $L_99edec           DB 4 DUP(0)
 $L_99edf0           DB 4 DUP(0)
 $L_99edf4           DB 4 DUP(0)
-res165              db 32 dup(0)
-BIN165              db "BIN165.bin", 0
-dwBytesRead         dd 0
-data0069340c        DB 4 DUP(0)
-data0069340a        DB 4 DUP(0)
+
 Data_53c580         DB 00h,00h,00h,00h,00h,00h,01h,00h
                     DB 00h,01h,00h,00h,00h,00h,00h,01h
                     DB 00h,00h,00h,00h,00h,01h,00h,00h
