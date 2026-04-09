@@ -6,12 +6,18 @@ import pefile  # pip install pefile
 from utils import \
   read_bytes_from_exe, pe_va_scope, show_pe_info, \
   get_section_name, read_all_files, readfile, isnum, \
-  numtype, is_ok, num, has_args
+  numtype, is_ok, num, has_args, Messages, err
 from tqdm import tqdm
+from rich.tree import Tree
+from rich import print as rprint
+from rich.console import Group
+from rich.panel import Panel
 
 
 line_re = re.compile(
   r'\s*(?P<label>[_$a-zA-Z0-9]+)(?P<comma>\:*)\s*(?P<command>.*)?' )
+
+find_sum = re.compile(r"<b\b[^>]*>(.*?)</b>", re.DOTALL)
 
 _DATA_DIRECTIVES = {
   "db", "dw", "dd", "dq", "dt", "real4", "real8", "real10",
@@ -498,42 +504,175 @@ def find_function(lines):
       if act == _NEW_LABEL and _t == _PROGRAM:
         if cmd == 'proc':
           status = _PROGRAM
-          func_map[label] = {'st':i+1, 'ed':-1}
+          func_map[label] = {'st':i, 'ed':-1}
           call_chain[label] = []
           curr_label = label
-          print(f'{label} ({len(func_map)}. {filename}:{no})')
+          # print(f'{label} ({len(func_map)}. {filename}:{no})')
         else:
-          msg = f"检测到函数外的独立代码标签" \
+          msg = f"错误: 检测到函数外的独立代码标签" \
               + f'\n -- {code} ; ({len(func_map)}. {filename}:{no})'
           raise Exception(msg)
       continue
     if status == _PROGRAM:
       if act == _END_PROC and cmd == 'endp':
-        func_map[curr_label]['ed'] = i-1
+        func_map[curr_label]['ed'] = i+1
         curr_label = None
         status = _WAIT
       if act == _NEW_LABEL and cmd == 'proc':
-        msg = f"禁止在函数中定义函数 {filename}:{no}:\n -- {code}"
+        msg = f"错误: 禁止在函数中定义函数 {filename}:{no}:\n -- {code}"
         raise Exception(msg)
       if act == _NORM_CODE:
         fn, reg = parse_call(cmd, args)
         if fn:
           call_chain[curr_label].append(fn)
-          print(f"  |-- {fn}")
+          # print(f"  |-- {fn}")
     else:
       continue
 
   print(f"找到 {len(func_map)} 个函数")
+  return func_map, call_chain
 
 
-if __name__ == '__main__':
+def show_function_chain(lines, fn, useAI=False):
+  func_map, call_chain = find_function(lines)
+  print(" * 表示没有在源代码中定义, 可能是外部导入")
+  ext = {} # 只用于计数
+  x = []
+  comments = {}
+
+  def process():
+    print(f"\r正在创建树: ..{''.join(x)}", end="", file=sys.stderr, flush=True)
+    if len(x) > 60:
+      x.clear()
+    x.append('.')
+
+  def find_func(f):
+    if not f in func_map:
+      ext[f] = 1
+      return False, f +" (*)"
+    i = func_map[f]['st']
+    return lines[i], False
+
+  def func_code(f):
+    buf = []
+    fi = func_map[f]
+    for i in range(fi['st'], fi['ed'], 1):
+      code, comm, filename, no = lines[i]
+      if comm:
+        buf.append(comm)
+      buf.append(code)
+    return '\n'.join(buf)
+
+  def make_comment_ai(f):
+    msg = Messages(f)
+    if c := msg.get_cache():
+      return c
+    code = func_code(f)
+    msg.add(f'这是函数的源代码:\n{code}')
+
+    if f in call_chain:
+      for d in call_chain[f]:
+        ff, ext = find_func(d)
+        if ext:
+          continue
+        # 因为是按照依赖顺序调用, 所以一定会有
+        note = []
+        if comm := comments.get(d, None):
+          note.append(comm)
+        if comm := msg.get_cache(d):
+          for m in find_sum.findall(comm):
+            note.append(m)
+        # print("!"*80, d, ext, '\n', comm)
+        comm = '\n'.join(note)
+        msg.add(f"这是依赖项 {d} 的说明:\n{comm}")
+        # err(f' - debug {d} - {note}')
+    return msg.call_ai()
+
+  def make_tree_info(f):
+    ff, ext = find_func(f)
+    if ext:
+      return ext
+    __, _, filename, no = ff
+    p = [Panel(comments[f])] if f in comments else []
+    return Group(f"{f} ({filename}:{no})", *(p))
+
+  def _child(skip, r, f):
+    t = r.add(make_tree_info(f))
+    if f in call_chain:
+      if f in skip:
+        return
+      skip[f] = 1
+      for chf in call_chain[f]:
+        _child(skip, t, chf)
+    # return t
+
+  def get_comment_from_code(f):
+    ff, ext = find_func(f)
+    if ext:
+      return ext
+    code, comm, filename, no = ff
+    comm = ''.join(comm)
+    if comm:
+      comments[f] = comm
+    return comm
+
+  def make_order(skip, f, o):
+    c = get_comment_from_code(f)
+    if f in call_chain:
+      if f in skip:
+        return
+      skip[f] = 1
+      for chf in call_chain[f]:
+        make_order(skip, chf, o)
+    o.append(f)
+
+  order = []
+  make_order({}, fn, order)
+  print(f" - {len(ext)} 个外部定义函数")
+  print('\n按依赖顺序\n\t', '\n\t'.join(order))
+
+  if useAI:
+    i = 0
+    for f in order:
+      i += 1
+      # print(f, '??', (not f in comments), (f in func_map))
+      if (not f in comments) and (f in func_map):
+        err(f' - 从 AI 构建说明 {f} - ({i}/{len(order)})')
+        comments[f] = make_comment_ai(f)
+  
+  root = Tree('ROOT')
+  _child({}, root, fn)
+  print('\n依赖树')
+  rprint(root)
+
+
+def show_function_all(lines):
+  func_map, call_chain = find_function(lines)
+
+  for f, v in func_map.items():
+    i = v['st']
+    code, comm, filename, no = lines[i]
+    print(f'{f} ({i}). {filename}:{no})')
+    if f in call_chain:
+      for ch in call_chain[f]:
+        print(f"  |-- {ch}")
+
+
+def main():
   lines = read_all_files(structured=True) 
-
   if has_args('-j'):
     find_floating_code(lines)
-  if has_args('-f2'):
-    find_function(lines)
+  if i := has_args('-f2'):
+    if i+1 < len(sys.argv):
+      fn = sys.argv[i+1]
+      show_function_chain(lines, fn, has_args('-ai'))
+    else:
+      show_function_all(lines)
   else:
     fix_mix = has_args('-f1')
     not_limit = has_args('-nl')
     check_misplaced_tokens(lines, fix_mix, not_limit) 
+
+
+if __name__ == '__main__':
+  main()

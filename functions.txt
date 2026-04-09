@@ -1,0 +1,35 @@
+; read main.S
+; read src\c_ext.S
+; read src\data.S
+; read src\entry.S
+; read src\FUN_401000_format_err_message.S
+; read src\FUN_509160_disk_verification.S
+; read src\imports.S
+; read src\rdata.S
+; read src\script.S
+; read src\unorganized.S
+; read src\user_data.S
+; read src\user_func.S
+找到 3633 个函数
+ * 表示没有在源代码中定义, 可能是外部导入
+ - 4 个外部定义函数
+
+按依赖顺序
+	 __imp__GetModuleFileNameA
+	FUN_510860
+	FUN_512040
+	FUN_514780
+	FUN_510870
+	__imp__LoadLibraryA
+	FUN_5146f4
+	__imp__GetStdHandle
+	__imp__WriteFile
+	FUN_51277d
+	FUN_512744
+	FUN_50d9da
+__imp__GetModuleFileNameA ?? True False
+FUN_510860 ?? True True
+FUN_512040 ?? True True
+FUN_514780 ?? True True
+
+用户中断 (Ctrl+C)，正在退出...

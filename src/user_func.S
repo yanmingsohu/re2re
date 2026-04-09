@@ -3,6 +3,7 @@
 ; https://github.com/yanmingsohu/
 
 
+; 强制设置与分辨率相关的变量
 FUN_FIX_SCREEN PROC
       push EDX
       push ECX

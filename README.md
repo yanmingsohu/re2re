@@ -34,7 +34,7 @@ Other targets in `make` are used to disassemble and generate `main.S`; this is t
 # Tool
 
 Install dependencies
-`pip install angr pefile`
+`pip install angr pefile treelib`
 
 Check the consistency between the data definition label 
 and the source program binary.
@@ -64,3 +64,6 @@ Find floating code
 
 Functional Dependency Analyzer
 `python defining_contradiction.py -f2 > functions.txt`
+
+Use AI to build function descriptions on a function dependency tree.
+`python defining_contradiction.py -f2 FUN_50d9da -ai > functions.txt`

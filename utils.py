@@ -4,10 +4,49 @@ from pathlib import Path
 import argparse
 import os
 import pefile  # pip install pefile
+from ai_dasm import chat_with_stream
 
 
 hexstr = '0123456789abcdefABCDEF'
 decstr = '0123456789'
+base_url = 'http://127.0.0.1:7001'
+api_key = 'none'
+system_prompt_file = 'prompt_make_comment.txt'
+cache_dir = 'comment_cache'
+
+os.makedirs(cache_dir, exist_ok=True)
+    
+
+class Messages(list):
+    def __init__(self, name, iterable=None):
+        if iterable is None:
+            iterable = []
+        super().__init__(iterable)
+        with open(system_prompt_file, "r", encoding="utf-8") as f:
+            self.append({"role": "system", "content": f.read()})
+        self.path = Path(cache_dir) / f"{name}.txt"
+
+    def add(self, content, role='user'):
+        self.append({ 'role': role, 'content': content })
+    
+    def call_ai(self, msg = ""):
+        succ, think, resp = chat_with_stream(base_url, api_key, self);
+        if not succ:
+            return None
+        with open(self.path, 'w', encoding='utf-8') as f:
+            f.write(msg)
+            f.write(resp)
+        return resp
+
+    def get_cache(self, _name = None):
+        if _name:
+            p = Path(cache_dir) / f"{_name}.txt"
+        else:
+            p = self.path
+        if not p.exists():
+            return None
+        with open(p, 'r', encoding='utf-8') as f:
+            return f.read()
 
 
 def num(str):
@@ -94,10 +133,12 @@ def show_code_btw(buf, a, b):
 
 def readfile(filename, lines, structured):
     print(f"; read {filename}")
+    err(f" - 读取文件 {filename}")
     no = 0
     ml = 80
     comment_ret = re.compile(r'^COMMENT\s+(.?)', re.IGNORECASE)
     comment_end = None
+    last_multi_comment = []
 
     with open(filename, 'r', encoding='utf-8', errors='replace') as f:
         for line in f.readlines():
@@ -105,6 +146,7 @@ def readfile(filename, lines, structured):
             if comment_end:
                 if line.strip() == comment_end:
                     comment_end = None
+                last_multi_comment.append(line.strip())
                 continue
             if r := comment_ret.match(line):
                 comment_end = r.group(1)
@@ -113,8 +155,17 @@ def readfile(filename, lines, structured):
             if structured:
                 sp = line.split(';')
                 code, comm = (sp[0], ','.join(sp[1:])) if len(sp)>1 else (sp[0], '')
-                lines.append(( code.strip(), comm.strip(), filename, no ))
+                code = code.strip()
+                comm = comm.strip()
+                if not code:
+                    last_multi_comment.append(comm)
+                    continue
+                elif last_multi_comment:
+                    comm = ';'.join(last_multi_comment + ([comm] if comm else []))
+                    last_multi_comment = []
+                lines.append(( code, comm, filename, no ))
             else:
+                # 非结构方法废弃, 不合并多行注释
                 comm = f"; {filename}:{no}"
                 indent = ' ' * (ml - len(line) - len(comm))
                 nline = line.replace('\n', '') + indent + comm
@@ -185,3 +236,7 @@ def open_pe(file):
   except Exception as e:
       print(f"错误: 无法解析 PE 文件: {e}", file=sys.stderr)
       sys.exit(1)
+
+
+def err(s):
+    print(s, file=sys.stderr)
