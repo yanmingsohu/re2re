@@ -1,0 +1,66 @@
+### <b>函数功能概括</b>
+<b style="color: #e74c3c;">该函数是一个逻辑取反器，具体实现为“字符串不等性校验 (String Inequality Check)”。它通过调用字符串相等性检查函数，并将结果进行位运算取反，从而判断两个字符串是否**不相等**。</b>
+
+---
+
+### 详细分析
+
+#### 1. 伪代码实现
+<code style="display: block; background-color: #f8f9fa; padding: 10px; border-left: 4px solid #2c3e50;">
+// FUN_50c460 (stdcall)
+// 参数: char* str1 (通过栈传递)
+// 返回值: bool (TRUE if not equal, FALSE if equal)
+
+bool StringNotEquals(const char* str1) {
+    // 调用依赖函数进行相等性校验
+    bool isEqual = FUN_50c410(str1); 
+    
+    // 执行逻辑取反操作
+    return !isEqual; 
+}
+</code>
+
+#### 2. 关键指令流程说明
+该函数的精妙之处在于利用了 x86 的算术标志位（Carry Flag）来实现极其高效的布尔取反，而没有使用分支跳转指令（如 `jz` 或 `jnz`），这有助于避免 CPU 分支预测失败带来的性能损失。
+
+| 汇编步骤 | 指令 | 操作逻辑描述 |
+| :--- | :--- | :--- |
+| **1. 取参** | `mov EAX, [ESP+4]` | 从栈中取出第一个参数（字符串指针）存入 `EAX`。 |
+| **2. 调用** | `call FUN_50c410` | 调用相等性校验函数。结果以布尔值形式存在 `AL` 中（$1 = \text{True}, 0 = \text{False}$）。 |
+| **3. 取反(算术)** | `neg AL` | 对 `AL` 执行求补码操作：<br>若 $AL=1 \rightarrow AL=0xFF$，且设置 $\text{CF}=1$<br>若 $AL=0 \rightarrow AL=0x00$，且设置 $\text{CF}=0$ |
+| **4. 展开标志位** | `sbb EAX, EAX` | 使用减法并借位。计算公式为：$EAX = EAX - (EAX + CF)$，即 $EAX = -CF$<br>若 $\text{CF}=1 \rightarrow EAX=0xFFFFFFFF$<br>若 $\text{CF}=0 \rightarrow EAX=0x00000000$ |
+| **5. 修正结果** | `inc EAX` | 将结果加 1：<br>若 $EAX=0xFFFFFFFF \rightarrow EAX=0$<br>若 $EAX=0x00000000 \rightarrow EAX=1$ |
+| **6. 返回** | `ret 4` | 清理栈并返回结果。 |
+
+#### 3. 数值演变追踪表
+通过下表可以清晰看到逻辑是如何翻转的：
+
+| 输入状态 (FUN_50c410) | 执行 `neg AL` 后 (AL, CF) | 执行 `sbb EAX, EAX` 后 (EAX) | 执行 `inc EAX` 后 (最终返回值) | 语义含义 |
+| :--- | :--- | :--- | :--- | :--- |
+| **1** (相等) | $0xFF, \text{CF}=1$ | $0xFFFFFFFF$ | **0** | 不相等 $\rightarrow$ 假 |
+| **0** (不相等) | $0x00, \text{CF}=0$ | $0x00000000$ | **1** | 不相等 $\rightarrow$ 真 |
+
+---
+
+### 与之前分析过的函数对比
+
+| 特性 | `FUN_50c410` (依赖项) | `FUN_50c460` (当前函数) |
+| :--- | :--- | :--- |
+| **核心功能** | 字符串相等性校验 (`==`) | 字符串不等性校验 (`!=`) |
+| **输入输出** | 输入两个字符串 $\rightarrow$ 返回 $1/0$ | 输入一个参数（结合上下文）$\rightarrow$ 返回取反后的结果 |
+| **逻辑复杂度** | 涉及字符遍历与比较 | 仅包含简单的算术位运算 (Branchless) |
+
+---
+
+### 额外洞察或建议
+
+*   **设计模式：无分支优化 (Branchless Programming)**
+    该函数没有使用 `if (!isEqual) return 1; else return 0;` 这种带有跳转指令的代码。在高性能引擎（如游戏渲染器或物理引擎）中，这种写法可以防止 **Pipeline Flush (流水线冲刷)**，提高代码执行的稳定性。
+
+*   **对象结构猜测**
+    由于 `FUN_50c460` 只接收一个参数并将其传递给另一个需要两个参数对比的函数（从 `push EAX` 来看），这暗示了：
+    1.  可能该函数在比较某个**全局变量/单例字符串**与传入的参数。
+    2.  或者，这个函数实际上是某个类的方法，而第一个参数其实是隐式的 `this` 指针或对象内的成员偏移（但在本代码段中表现为直接传递）。
+
+*   **后续分析方向**
+    建议追踪调用 `FUN_50c460` 的上层逻辑。如果它经常被用于比较文件名、资源路径或命令字符串，那么该模块极有可能是系统的 **Resource Loader (资源加载器)** 或 **Command Parser (指令解析器)**。

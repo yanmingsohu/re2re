@@ -1,0 +1,103 @@
+<b style="font-size: 1.5em;">函数分析报告：FUN_50bc10</b>
+
+<b style="color: #2e7d32;">一句话核心功能总结</b>
+该函数是一个**具有 Token 感知能力的流同步/解析对齐函数**。它用于检查数据缓冲区（Stream）的起始字节是否符合特定条件，并根据当前字节是否属于“双字节控制码”（Special Tokens）范围，自动计算并跳转到下一个正确的 Token 起始位置。
+
+---
+
+<b style="color: #2e7d32;">详细分析</b>
+
+<b style="font-size: 1.2em;">1. 逻辑流程图解</b>
+该函数的操作可以分为三个阶段：
+1.  **初始化与校验**：检查缓冲区首字节是否等于目标字符。
+2.  **序列匹配（Pattern Matching）**：如果起始字节匹配，尝试在两个流之间进行连续的 Token 序列比对。
+3.  **步长计算（Step Calculation）**：根据识别出的控制码类型，决定指针应该前进 1 字节还是 2 字节。
+
+<b style="font-size: 1.2em;">2. C 伪代码实现</b>
+
+<code>
+// 定义特殊的 Token 范围
+#define IS_SPECIAL_TOKEN(b) (((b) >= 129 && (b) <= 159) || ((b) >= 224 && (b) <= 252))
+
+int __thiscall StreamParser::SyncToken(char target_char) {
+    // ECX 为 this 指针，ESI = this->buffer_ptr
+    unsigned char* streamA = *(unsigned char**)this;
+    unsigned char* param_val = (unsigned char*)&target_char; // 模拟从栈中取值
+
+    if (streamA[0] == 0) {
+        return -1; // 返回错误码/哨兵值
+    }
+
+    // 第一阶段：检查首字节是否匹配目标
+    if (streamA[0] != target_char) {
+        return -1;
+    }
+
+    unsigned char current_byte = streamA[0];
+    int match_count = 0;
+
+    // 第二阶段：尝试进行序列比对（$L_50bc40）
+    // 注意：汇编中通过 ECX 进行偏移，ECX 在此处充当 index
+    unsigned char* bufferB = ...; // 来自参数或上下文的第二个流
+    int index = 0;
+
+    while (streamA[index] != 0) {
+        // 如果 streamA 的当前字节与 BufferB 不匹配，停止
+        if (streamA[index] != bufferB[index]) break;
+
+        unsigned char valA = streamA[index];
+        // 处理特殊双字节 Token
+        if (IS_SPECIAL_TOKEN(valA)) {
+            // 必须同时满足第二个字节也相等
+            if (streamA[index + 1] != bufferB[index + 1]) break;
+            index += 2; // 跳过两个字节
+        } else {
+            index += 1; // 普通单字节
+        }
+
+        // 如果到达流末尾则退出
+        if (streamA[index] == 0) break;
+    }
+
+    // 第三阶段：计算本次解析应该跳过的步长 ($L_50bc84)
+    // 根据首字符的类型，确定是移动 1 个还是 2 个字节
+    int step = 1;
+    if (IS_SPECIAL_TOKEN(current_byte)) {
+        step = 2;
+    }
+
+    // 更新流指针（实际副作用：增加 ESI）
+    // 此处汇编逻辑表现为移动指针并返回处理结果
+    return match_count; // 返回匹配到的计数或状态
+}
+</code>
+
+<b style="font-size: 1.2em;">3. 关键字段与常量解释</b>
+
+| 常量/偏移 | 含义 | 技术背景推测 |
+| :--- | :--- | :--- |
+| `[ECX]` | 指向数据缓冲区的指针 (`ESI`) | 标准的对象成员访问，`this->data_ptr` |
+| `129 - 159` (0x81-0x9F) | **第一类特殊 Token** | 可能代表“字面量长度”或“控制指令” |
+| `224 - 252` (0xE0-0xFC) | **第二类特殊 Token** | 可能代表“匹配距离”或“压缩窗口偏移” |
+| `ret 4` | 清理一个参数 | 说明该函数接受一个 4 字节的参数（可能是字符值或指针） |
+
+---
+
+<b style="color: #2e7d32;">额外洞察与建议</b>
+
+<b style="font-size: 1.1em;">💡 技术深度观察</b>
+*   **压缩算法特征**：这种根据字节范围判断是否为“双字节指令”的逻辑，是典型的 **LZSS (Lempel-Ziv-Storer-Szymanski)** 或类似变长编码（VLC）解压器的实现方式。在这些算法中，某些字节代表长度/距离信息，它们通常占用比普通字符更多的空间。
+*   **同步机制**：函数通过对比两个流来确保解析器处于相同的“状态”。这在多线程解压或处理损坏的数据包时非常重要，用于寻找下一个可用的同步点（Resync Point）。
+
+<b style="font-size: 1.1em;">🔍 后续分析建议</b>
+1.  **追踪 `ESI` 的来源**：找到是谁分配了 `[ECX]` 指向的内存。如果是一个巨大的缓冲区，那么这几乎确定是解压引擎的一部分。
+2.  **寻找 Token 定义表**：既然函数识别 `129-159` 和 `224-252` 范围，建议在程序中搜索这些数值作为常量出现的其他地方，从而还原出完整的指令集（Instruction Set）。
+3.  **观察调用者**：查看哪个函数频繁调用此函数。如果是在一个循环中不断被调用并移动指针，那么该调用者就是主解压/解析循环。
+
+<b style="font-size: 1.1em;">📂 对象结构体猜测</b>
+<code>
+struct StreamContext {
+    unsigned char* data_buffer; // Offset 0 (ESI)
+    // ... 其他字段可能在偏移更高处
+};
+</code>

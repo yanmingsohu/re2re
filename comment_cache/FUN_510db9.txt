@@ -1,0 +1,72 @@
+<b>函数功能概括</b>
+<b>该函数是一个内存区域查找器（Memory Region Lookup），用于在全局维护的一个结构体列表中，通过遍历的方式寻找哪一个“内存块描述符”包含了指定的地址。它通常用于内存管理系统、对象分配器或物理/虚拟内存映射查询中。</b>
+
+---
+
+<b>详细分析</b>
+
+### 1. 核心逻辑伪代码
+根据汇编指令的执行流，该函数可以翻译为如下 C++ 风格的代码：
+
+<code>
+struct MemoryChunk {
+    char padding[12];      // Offset 0x00 - 0x0B: 未知填充字段
+    uint32_t regionBase;   // Offset 0x0C (12): 该内存块起始地址的基址
+    // 结构体总大小为 20 字节 (0x14)
+};
+
+// 全局变量定义猜测
+extern int g_ChunkCount;       // 地址: $L_99ecb4
+extern MemoryChunk* g_pChunks; // 地址: $L_99ecb8
+
+MemoryChunk* FindChunkByAddress(uint32_t targetAddr) {
+    int count = g_ChunkCount;
+    MemoryChunk* basePtr = g_pChunks;
+    
+    // 计算结束边界指针 (End Pointer): Base + Count * 20
+    // 汇编逻辑: ECX = B + (5 * A) * 4 => B + 20 * A
+    MemoryChunk* endPtr = basePtr + (count * 20);
+
+    for (MemoryChunk* curr = basePtr; curr < endPtr; curr++) {
+        // 计算差值: targetAddr - chunk->regionBase
+        uint32_t diff = targetAddr - curr->regionBase;
+
+        // 判断条件: 如果地址落在 [regionBase, regionBase + 1MB) 范围内
+        // 即: 0 <= (targetAddr - regionBase) < 1,048,576
+        if (diff < 1048576) {
+            return curr; // 返回匹配到的结构体指针
+        }
+    }
+
+    return nullptr; // 未找到匹配的区域
+}
+</code>
+
+### 2. 关键字段与寄存器解释
+
+| 元素 | 类型/值 | 含义说明 |
+| :--- | :--- | :--- |
+| **`$L_99ecb4`** | `int` (Count) | 全局维护的内存块描述符**总数**。 |
+| **`$L_99ecb8`** | `Pointer` (Base) | 存储描述符数组的**起始基地址**。 |
+| **`[ESP+4]`** | `uint32_t` | 输入参数：待查询的目标内存地址。 |
+| **`EAX + 12`** | `offset 0x0C` | 结构体中记录的“区域起始基址”。 |
+| **`add EAX, 20`** | `size = 0x14` | 每个描述符结构体的步长（Size）为 **20 字节**。 |
+| **`1048576`** | `0x100000` (1MB) | 每个内存块覆盖的逻辑大小范围为 **1MB**。 |
+
+### 3. 执行流程说明
+1.  **初始化边界**：首先从全局变量获取元素个数 $A$ 和基地址 $B$。通过巧妙的 `LEA` 指令计算出数组的结束指针 $ECX = B + (5 \times A) \times 4$，即 $End = Base + Count \times 20$。
+2.  **循环遍历**：使用 `EAX` 作为当前迭代指针，从基地址开始逐个检查结构体。
+3.  **范围校验**：对于每一个结构体，计算目标地址与该结构体记录的 `regionBase` 的差值。如果差值为正且小于 $1\text{MB}$（利用无符号减法和 `jb` 跳转实现），则判定该地址属于此块内存。
+4.  **结果返回**：找到匹配项直接返回当前结构体的指针；若遍历结束未命中，则返回 0 (`EAX=0`)。
+
+---
+
+<b>额外洞察与建议</b>
+
+*   **对象结构体推测**：
+    该函数明确揭示了内存描述符的布局。由于 `add EAX, 20` 和偏移量 `12` 的存在，可以确定这是一个紧凑型结构。在逆向其他相关函数时，可以直接将此结构体应用到所有涉及 `[EAX+C]` 或类似操作的代码中。
+*   **潜在用途**：
+    这种逻辑常见于**分段内存管理**。例如，游戏引擎可能将大块内存划分为多个 $1\text{MB}$ 的“池（Pool）”，这个函数的作用就是通过一个随机地址，快速找到它所属的那个管理池对象。
+*   **后续分析方向**：
+    1.  查找对 `$L_99ecb4` 和 `$L_99ecb8` 进行写入操作的代码，这能帮你找到该内存列表是在何时、由哪个模块（如 `MemoryManager::Allocate`）初始化的。
+    2.  观察调用此函数的地方。如果返回值被用于后续的读写，那么这个返回的指针很可能就是管理特定资源块的核心句柄。

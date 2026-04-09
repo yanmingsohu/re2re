@@ -1,0 +1,102 @@
+根据你提供的汇编代码以及对依赖项 `FUN_50e2d6` 的描述，我为你整理了该函数的深度分析报告。
+
+### <b>函数功能概括：缓冲区批量写入流 (WriteBuffer / MemCpyToStream)</b>
+
+<b style="color: #e67e22;">该函数是一个循环包装器，用于将一段连续内存（Source Buffer）中的数据按字节逐个写入到目标流上下文（Stream Context）中。它具备“错误即停止”的机制：如果在写入过程中发现流状态变为异常（如达到文件末尾或发生错误），则立即终止写入并退出。</b>
+
+---
+
+### 详细分析
+
+#### 1. 伪代码实现
+通过对寄存器和栈操作的还原，该函数的逻辑可以翻译为如下 C++ 代码：
+
+<code style="background-color: #2d2d2d; color: #ccc; padding: 10px; display: block; border-radius: 5px;">
+struct StreamContext {
+    int32_t status; // Offset 0: 状态字段，-1 表示错误或 EOF
+    // ... 其他成员
+};
+
+/**
+ * @param pUnused   未使用的参数 (Arg 1)
+ * @param src       源数据缓冲区指针 (Arg 2, ESI)
+ * @param count     待写入的字节数 (Arg 3, EBX/EAX)
+ * @param ctx       流上下文对象指针 (Arg from [ESP+28], EDI)
+ */
+void FUN_50e33c(void* pUnused, const uint8_t* src, size_t count, StreamContext* ctx) {
+    if (count == 0 || src == nullptr || ctx == nullptr) {
+        return;
+    }
+
+    // EBX 被用作循环计数器，EAX 用于暂存剩余长度
+    size_t remaining = count;
+    const uint8_t* current_src = src;
+
+    while (remaining > 0) {
+        uint8_t byte_to_write = *current_src;
+
+        // 调用单字节写入函数
+        // 根据 add ESP, 12 推断，FUN_50e2d6 接收三个参数：(ctx, stream_info/ptr, byte)
+        WriteByte(ctx, byte_to_write);
+
+        // 【关键检查】检查流的状态是否变为 -1 (Error 或 EOF)
+        if (ctx->status == -1) {
+            break; // 立即中断写入流程
+        }
+
+        current_src++;
+        remaining--;
+    }
+}
+</code>
+
+#### 2. 关键字段与寄存器解释
+
+| 寄存器/偏移 | 逻辑含义 | 说明 |
+| :--- | :--- | :--- |
+| **ESI** | `src` (Source Pointer) | 指向待读取的原始内存缓冲区。 |
+| **EBX / EAX** | `count` (Remaining Bytes) | 控制循环次数，每次迭代减 1。 |
+| **EDI** | `ctx` (Context Pointer) | 指向流控制结构体（如 FileStream 或 MemoryStream）。 |
+| **[EDI]** | `status` (Status Field) | **核心状态位**。若值为 `-1` (0xFFFFFFFF)，表示写入失败或已到达边界。 |
+| **[ESP+28]** | `ctx` 参数获取 | 从调用栈中提取上下文指针，传递给循环内部的函数。 |
+
+#### 3. 执行流程说明
+1.  **初始化阶段**：从栈中提取源地址 (`ESI`)、长度 (`EBX`) 和上下文指针 (`EDI`)。如果长度 $\le 0$，直接跳过循环。
+2.  **迭代写入阶段**：
+    *   从 `ESI` 指向的地址读取一个字节。
+    *   通过 `push` 操作将参数压栈，调用 `FUN_50e2d6` (WriteByte)。
+    *   执行 `add ESP, 12` 清理刚才压入的三个参数（符合 Cdecl 调用约定）。
+3.  **状态监控阶段**：在每次写入后，立即检查 `[EDI]` 指向的内容。如果该值变为 `-1`，说明流已损坏或空间不足，函数通过 `je $L_50e370` 提前跳出循环。
+4.  **收尾阶段**：恢复所有被保护的寄存器 (`EBX`, `ESI`, `EDI`) 并返回。
+
+---
+
+### 与之前分析的对比
+
+| 特性 | `FUN_50e2d6` (单字节写入) | `FUN_50e33c` (批量写入) |
+| :--- | :--- | :--- |
+| **操作粒度** | 单个字节 (`uint8_t`) | 内存块 (`void* buffer, size_t len`) |
+| **核心职责** | 执行具体的边界检查与容量扣减 | 管理循环逻辑与整体流程控制 |
+| **错误处理** | 更新 `status` 字段的值 | **监听** `status` 字段的变化并决定是否中止 |
+
+---
+
+### 额外洞察与建议
+
+*   **对象结构体猜测**：
+    由于代码频繁检查 `[EDI] == -1`，可以断定 `StreamContext` 是一个非常核心的对象。其结构可能如下：
+    <code style="background-color: #2d2d2d; color: #ccc; padding: 5px; display: block;">
+    struct Stream {
+        int32_t status;      // 0: OK, -1: Error/EOF
+        void* buffer_ptr;    // 当前缓冲区地址
+        size_t capacity;     // 总容量
+        size_t position;     // 当前写入位置
+    };
+    </code>
+
+*   **性能特征**：
+    该函数采用了“逐字节调用”而非 `memcpy` 风格的批量操作。这通常意味着它不是在做单纯的内存拷贝，而是在进行**序列化 (Serialization)** 或 **流式编码 (Streaming Encoding)**。这种设计允许在写入过程中动态地处理每一个字节（例如加密、压缩或格式校验）。
+
+*   **后续分析方向**：
+    1.  **追踪 `FUN_50e2d6` 的内部实现**：观察它是如何触发 `status = -1` 的，这能帮你找到该引擎的内存溢出保护机制。
+    2.  **寻找调用者**：搜索谁调用了 `FUN_50e33c`。如果调用者传递的是硬编码的字符串或特定的数据结构，你就能定位到这是在写配置文件、存档文件还是网络包。

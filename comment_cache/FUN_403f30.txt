@@ -1,0 +1,105 @@
+---
+# 函数分析报告：`FUN_403f30` —— 窗口与显示模式管理器 (Window & Display Mode Manager)
+
+<b style="color: #2e86c1;">函数功能概括</b>
+<b style="color: #2e86c1;">该函数是图形系统中的核心调度器，负责处理**窗口模式切换（全屏/窗口化）**、**分辨率变更**以及随之而来的**显示状态同步**。它不仅负责更新内部的宽高参数，还会通过调用分发器 (`FUN_401000`)、布局调整器 (`FUN_40ee20`) 和模式设置器 (`FUN_405dd0`) 来确保操作系统窗口与游戏引擎内部渲染尺寸的一致性。</b>
+
+---
+
+<b style="color: #2e86c1;">详细分析</b>
+
+#### 1. 核心逻辑流程
+该函数是一个极其复杂的控制流，根据当前显示状态进入不同的处理分支：
+
+*   **阶段一：模式判定与参数同步 (Mode Detection & Sync)**
+    *   首先检查 `[ESI + L_8c7f04]` 指向的标志位。如果 $\le 0$，则视为**窗口模式**；如果 $> 0$，则视为**全屏模式**。
+    *   从源对象（可能是配置文件或驱动接口）读取原始宽高，并将其更新到当前对象的 `L_8c832c` (Width) 和 `L_8c8330` (Height) 中。
+
+*   **阶段二：指令分发与回调 (Dispatching)**
+    *   调用 `FUN_40f2b0`（对象查询器）。如果获取到有效对象，则通过 `FUN_401000`（命令分发器）执行相关的系统级命令。这通常用于处理模式切换瞬间需要触发的特殊逻辑（如释放显存或重新创建上下文）。
+
+*   **阶段三：窗口布局重算 (Window Layout Re-calculation)**
+    *   在分支 `$L_404005` 中，函数进入深度调整模式。它调用 `FUN_405dd0` 来更新当前的枚举状态（如 8/16/24/32 位模式）。
+    *   随后通过 `FUN_40ee20` 执行 Win32 API 操作 (`AdjustWindowRectEx`, `SetWindowPos`)，确保窗口边框、标题栏与客户区的大小符合预期。
+
+*   **阶段四：比例校准与缩放 (Aspect Ratio & Scaling)**
+    *   在 `$L_404190` 后的逻辑中，函数使用了大量的浮点运算 (`fild`, `fidiv`) 来计算屏幕的宽高比（Aspect Ratio）。这确保了当窗口拉伸时，内部渲染内容的比例不会发生畸变。
+
+#### 2. C++ 伪代码还原
+<code style="display: block; background-color: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 5px; font-family: 'Consolas', monospace;">
+void __thiscall DisplayManager::UpdateDisplayMode(void* new_settings) {
+    // 初始化栈空间并获取 this 指针 (ESI)
+    
+    // 1. 检测模式：全屏 vs 窗口化
+    int mode_flag = this->display_mode_flag; // [ESI + L_8c7f04]
+    if (mode_flag > 0) {
+        this->apply_fullscreen_flags();      // 设置全屏相关的位标志
+    } else {
+        this->apply_windowed_flags();       // 设置窗口化相关的位标志
+    }
+
+    // 2. 同步分辨率参数
+    this->width  = new_settings->width;    // [ESI + L_8c832c]
+    this->height = new_settings->height;   // [ESI + L_8c8330]
+
+    // 3. 处理模式切换相关的命令分发
+    void* context = this->query_context(); // 调用 FUN_40f2b0
+    if (context != nullptr) {
+        CommandDispatcher(context);         // 调用 FUN_401000
+    } else {
+        // 如果查询失败，执行备选的初始化逻辑
+        this->InitializeSubsystems(); 
+    }
+
+    // 4. 处理窗口重绘与布局 (分支路径)
+    if (requires_deep_resize) {
+        this->SetModeEnum();                // 调用 FUN_405dd0
+        WindowLayoutAdjuster(this);         // 调用 FUN_40ee20
+        
+        // 计算宽高比以防止画面拉伸
+        float aspect_ratio = (float)this->width / (float)this->height;
+        this->UpdateProjectionMatrix(aspect_ratio); 
+    }
+
+    // 5. 清理并返回状态
+    this->last_operation_status = 0;
+}
+</code>
+
+#### 3. 关键字段与对象结构映射
+
+| 偏移 (ESI) | 变量名 | 含义说明 |
+| :--- | :--- | :--- |
+| `L_8c7f04` | `m_nDisplayMode` | **显示模式标志** (决定全屏/窗口化逻辑) |
+| `L_8c832c` | `m_nWidth` | **当前渲染宽度** |
+| `L_8c8330` | `m_nHeight` | **当前渲染高度** |
+| `L_8c7ea8` | `m_pContextObject` | **上下文对象指针** (传递给分发器) |
+| `L_8c83f4` | `m_nStatusFlags` | **状态位掩码** (包含 AH 位，用于后续逻辑判断) |
+
+---
+
+<b style="color: #2e86c1;">与之前分析过的函数对比</b>
+
+| 当前函数 (`FUN_403f30`) | 关联依赖项 | 协作关系说明 |
+| :--- | :--- | :--- |
+| **指挥官 (Orchestrator)** | `FUN_401000` | 当显示模式改变时，通过分发器发送“重新初始化”指令。 |
+| **决策者 (Decision Maker)** | `FUN_405dd0` | 决定了当前处于哪种渲染枚举状态（8/16/24/32）。 |
+| **执行者 (Executor)** | `FUN_40ee20` | 将计算出的尺寸应用到真实的 Windows 窗口句柄上。 |
+| **数据源 (Data Provider)** | `FUN_40f130` | 在某些分支下，利用缓冲区初始化机制更新渲染状态。 |
+
+---
+
+<b style="color: #2e86c1;">额外洞察与建议</b>
+
+*   <b style="color: #e67e22;">核心架构模式：命令驱动的 UI 更新</b>
+    该函数体现了典型的**“状态 $\rightarrow$ 指令 $\rightarrow$ 布局”**模型。它不是简单地调用 `SetWindowPos`，而是先通过查询器寻找是否有挂起的命令（Command），如果有，则优先执行业务逻辑，再进行物理窗口调整。这在游戏引擎中非常常见，用于处理切换分辨率时需要重新加载纹理或重建 SwapChain 的需求。
+
+*   <b style="color: #e67e22;">性能观察：浮点数与比例计算</b>
+    函数中出现的 `fild` / `fidiv` 指令序列表明，程序非常在意**长宽比 (Aspect Ratio)** 的精确度。这暗示该模块直接影响到 3D 透视投影矩阵（Projection Matrix）的构建。
+
+*   <b style="color: #e67e22;">后续分析方向建议：</b>
+    1.  **追踪 `L_8c7f04` 的来源**：找出是谁修改了这个标志位，可以确定是用户在设置菜单点击了“应用”，还是程序检测到了分辨率变化（例如从全屏切回桌面）。
+    2.  **分析 `FUN_40ee20` 返回后的后续操作**：观察窗口位置调整后，引擎是否立即进行了缓冲区重分配。这能帮你确定该引擎是使用固定大小的 Buffer 还是动态分配内存。
+    3.  **关注 `AH & 0x20` 的逻辑含义**：这个标志位似乎控制了“快速路径”与“深度处理路径”，理解它的业务意义（例如是否代表“正在进行动画过渡”）将极大提升对显示切换流程的理解。
+
+<b style="color: #27ae60;">结论标签：</b> <b style="color: #27ae60;">[Display Management] [Windowing System] [Mode Switching] [Aspect Ratio Calculation]</b>

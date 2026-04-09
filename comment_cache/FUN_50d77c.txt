@@ -1,0 +1,80 @@
+### <b style="color:#2e86de;">函数分析报告：FUN_50d77c</b></b>
+
+#### 一、一句话核心功能总结
+<b style="color:#2e86de;">该函数是一个根据全局模式（Mode）执行差异化资源释放逻辑的“多态销毁管理器”，它决定了对象是通过高级的对象池回收、计数触发式延迟清理，还是通过系统堆直接释放。</b>
+
+---
+
+#### 二、详细分析
+
+##### 1. 参数与上下文环境
+*   **输入参数 (`ESI`)**: `pObject` —— 指向待处理资源或对象的指针。
+*   **全局变量 (`$L_99ecc4`)**: `g_Mode` —— 全局模式控制变量，决定了当前的内存管理策略。
+*   **全局变量 (`$L_99ecc0`)**: `g_HeapHandle` —— 系统级堆句柄或基础内存地址。
+
+##### 2. 执行流程图解
+函数首先检查指针是否为空，随后读取 `g_Mode` 进入不同的分支逻辑：
+
+| 分支条件 | 处理逻辑描述 | 调用目标 | 最终动作 |
+| :--- | :--- | :--- | :--- |
+| **`g_Mode == 3`** | **立即对象池回收模式**。首先通过查找器定位内存块描述符，若找到则执行复杂的对象池紧缩与释放逻辑。 | `FUN_510db9` (查找) $\rightarrow$ `FUN_510de4` (销毁/紧缩) | 成功后直接退出，不触发系统 HeapFree |
+| **`g_Mode == 2`** | **计数器延迟清理模式**。先校验对象合法性并获取状态值，若通过则更新资源块计数器，可能在达到阈值时触发批量清理。 | `FUN_511b14` (校验) $\rightarrow$ `FUN_511b6b` (计数/批量处理) | 成功后直接退出，不触发系统 HeapFree |
+| **其他 / 失败** | **兜底释放模式**。当模式不匹配、查找失败或校验失败时，执行最后的强制手段。 | `__imp__HeapFree` | 调用系统 API 直接释放全局堆内存 |
+
+##### 3. C 伪代码实现
+<code style="background-color:#f8f9fa; border:1px solid #dee2e6; padding:10px; display:block; font-family:Consolas, Monaco, monospace;">
+void __cdecl ReleaseResource(void* pObject) {
+    if (pObject == NULL) {
+        // 这里的逻辑实际上是由于 test ESI,ESI 后直接跳到 $L_50d7e2，
+        // 但根据汇编结构，$L_50d7e2 是退出点。如果为空则不执行任何操作并返回。
+        return;
+    }
+
+    int mode = g_Mode; // 从 $L_99ecc4 读取
+
+    if (mode == 3) {
+        // --- 模式 3: 对象池管理逻辑 ---
+        void* descriptor = MemoryRegionLookup(pObject); // FUN_510db9
+        if (descriptor != NULL) {
+            ObjectPoolDeallocateAndCompact(descriptor); // FUN_510de4
+            return; // 直接退出
+        }
+    } 
+    else if (mode == 2) {
+        // --- 模式 2: 资源块计数逻辑 ---
+        int statusValue = 0;
+        if (VerifyObjectAndGetStatus(pObject, &statusValue)) { // FUN_511b14
+            UpdateResourceCounterAndCheckThreshold(statusValue, pObject, statusValue); // FUN_511b6b
+            return; // 直接退出
+        }
+    }
+
+    // --- 兜底/错误逻辑: 系统级释放 ---
+    // 如果模式不匹配，或者 Mode 3 的查找失败，或者 Mode 2 的校验失败
+    HeapFree(g_HeapHandle, 0, NULL); // 注意：汇编中传入的是 $L_99ecc0 和 0
+}
+</code>
+
+---
+
+#### 三、与之前分析过的函数对比
+
+| 函数 | 调用关系 | 逻辑角色 | 在本函数中的作用 |
+| :--- | :--- | :--- | :--- |
+| **`FUN_510db9`** | 被调用 (Mode 3) | 内存区域查找器 | 将原始指针转换为管理层可识别的“描述符” |
+| **`FUN_510de4`** | 被调用 (Mode 3) | 对象池回收/紧缩 | 执行真正的、高效率的内存重组与释放 |
+| **`FUN_511b14`** | 被调用 (Mode 2) | 对象状态校验器 | 确保对象在进入计数逻辑前是安全的，并提取其元数据 |
+| **`FUN_511b6b`** | 被调用 (Mode 2) | 批量清理触发器 | 实现“攒够了再释放”的优化策略，减少频繁操作开销 |
+
+---
+
+#### 四、额外洞察与建议
+
+*   <b style="color:#d9534f;">设计模式：</b> 该函数体现了典型的**防御性编程**。它不仅支持高效的内存管理（Mode 2/3），还提供了一个基于 `HeapFree` 的“安全网”。如果高级管理器失效或对象状态异常，程序会尝试通过系统 API 进行兜底释放，防止内存泄漏。
+*   <b style="color:#d9534f;">性能优化线索：</b> 
+    *   **Mode 3 (High Efficiency)**: 适用于生命周期明确、需要频繁重用内存的场景（如渲染命令缓冲、粒子系统）。
+    *   **Mode 2 (Deferred/Batching)**: 适用于大量细碎小对象，通过计数器规避由于频繁分配/释放导致的碎片化问题。
+*   <b style="color:#d9534f;">后续分析建议：</b>
+    1.  **追踪 `g_Mode` 的修改位置**：了解在什么游戏状态（如加载关卡 vs 战斗中）下会切换不同的内存管理模式。
+    2.  **检查 `$L_99ecc0` (HeapHandle) 的来源**：确认这个堆是全局的系统堆，还是引擎自定义的一个大型预分配连续内存池。如果它是自定义池，那么 `HeapFree` 可能被重写了（Hooked）。
+    3.  **关注 Mode 2 的阈值**：结合 `FUN_511b6b` 的说明，可以推算出该系统在处理多少次操作后会发生一次明显的性能波动（由于批量清理触发）。

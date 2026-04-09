@@ -1,0 +1,94 @@
+<b style="color: #2e86c1;">函数功能概括</b>
+
+<b>该函数是一个资源缓冲区（Buffer）的“提交”或“刷新”（Commit/Flush）逻辑。它负责将内存中的数据通过文件写入接口 (`FUN_5101fd`) 写入持久化存储，并在操作完成后重置缓冲区的内部偏移量和状态位。</b>
+
+---
+
+<b style="color: #2e86c1;">详细分析</b>
+
+### 1. 对象结构体推测 (Object Structure)
+根据汇编对 `ESI` 指向地址的偏移访问，可以推断出该对象（可能是 `StreamBuffer` 或 `FileWriterContext`）的内存布局如下：
+
+<code style="background-color: #f8f9fa; border: 1px solid #ddd; padding: 10px; display: block;">
+struct ResourceBuffer {
+    void* pCurrentOffset;      // +0x00 : 当前数据偏移量或指针位置
+    uint32_t status_flags;     // +0x04 : 状态标志位 (在函数结束时会被清零)
+    size_t  data_size;         // +0x08 : 数据总量或缓冲区大小
+    uint32_t control_flags;    // +0x0C : 控制/模式标志位 (包含 Bit 0,1,5,7)
+    void*   pContext;          // +0x10 : 用于写入操作的上下文句柄 (传给 FUN_5101fd)
+};
+</code>
+
+### 2. 逻辑流程说明
+该函数遵循“检查状态 $\rightarrow$ 执行写入 $\rightarrow$ 更新/重置状态”的标准模式：
+
+#### 第一阶段：前置条件检查
+*   **标志位校验**：首先检查 `control_flags` (offset +12) 的低两位。必须满足 `(flags & 3) == 3`，否则直接跳到清理流程。
+*   **写入权限/有效性校验**：通过 `test AX, 264`（即检测 $0x108$ 位）进行进一步的逻辑判断。如果条件不符，跳转至退出。
+*   **边界检查**：计算 `pCurrentOffset - data_size`。只有当当前偏移量大于数据大小时，才认为此次写入是合法的，否则跳过写入步骤。
+
+#### 第二阶段：执行写入 (`FUN_5101fd`)
+如果通过了所有检查，函数会调用依赖项进行实际的 I/O 操作：
+*   **参数传递**：`push EDI (计算出的差值)`, `push EAX (data_size)`, `push [ESI+16] (pContext)`。
+*   **结果校验**：比较写入返回的结果 (`EAX`) 是否等于预期的偏移量差值 (`EDI`)。
+
+#### 第三阶段：状态更新与重置
+*   **成功路径**：如果写入成功，会修改 `control_flags`：
+    *   若 Bit 7 (128) 被设置，则将其清除（通过 `and AL, 253`）。
+    *   设置 Bit 5 (32) 表示操作已完成。
+    *   将返回值 `EBX` 设置为 `-1` ($0xFFFFFFFF$) 以示成功。
+*   **统一清理路径 (`$L_50f7ea`)**：无论写入是否成功，函数都会执行收尾工作：
+    *   清空 `status_flags` (+4)。
+    *   将 `pCurrentOffset` (+0) 重置为 `data_size` (+8)，这通常意味着**缓冲区指针被移至末尾或重置到了新的起始位置**。
+
+### 3. C 伪代码实现
+
+<code style="background-color: #f8f9fa; border: 1px solid #ddd; padding: 10px; display: block;">
+// 返回值: 成功返回 -1 (0xFFFFFFFF), 失败或条件不符返回 0
+int32_t FUN_50f79d(ResourceBuffer* pBuf) {
+    uint32_t result = 0;
+
+    // 1. 校验控制标志位: 要求低两位必须为 11 (binary)
+    if ((pBuf->control_flags & 0x3) == 0x3) {
+        // 检查特定的状态掩码 (AX, 264 -> 0x108)
+        if ((pBuf->control_flags & 0x108) == 0x108) { // 注意：此处根据汇编逻辑理解为条件判断
+            size_t size = pBuf->data_size;
+            void* currentPos = pBuf->pCurrentOffset;
+
+            // 计算边界差值并检查是否大于 0
+            if (currentPos > size) {
+                void* diff = (void*)(currentPos - size); // 此处逻辑对应 sub EDI, EAX
+
+                // 调用文件写入封装函数: FUN_5101fd(Context, Size, Limit/Diff)
+                int32_t writeStatus = FUN_5101fd(pBuf->pContext, size, diff);
+
+                if (writeStatus == (long long)diff) { // 检查写入字节数是否匹配
+                    // 更新控制标志位
+                    if (pBuf->control_flags & 0x80) {
+                        pBuf->control_flags &= ~0x80; // 清除 Bit 7
+                    }
+                    pBuf->control_flags |= 0x20;      // 设置 Bit 5
+                    result = -1;                      // 标记成功
+                }
+            }
+        }
+    }
+
+    // 2. 无论如何都会执行的重置逻辑 (Cleanup)
+    pBuf->status_flags = 0;           // 清空状态
+    pBuf->pCurrentOffset = pBuf->data_size; // 重置指针到 size 位置
+
+    return result;
+}
+</code>
+
+---
+
+<b style="color: #2e86c1;">额外洞察与建议</b>
+
+*   **对象用途猜测**：由于该函数在写入后会将 `pCurrentOffset` 设置为 `data_size`，这极像是一个**流式缓冲区（Streaming Buffer）**。它不是每次从头开始写，而是将当前已有的数据“提交”出去，然后把指针移动到缓冲区的末尾，准备接收下一波数据。
+*   **关键细节**：注意 `or EBX, 4294967295`。在汇编中这等同于 `mov EAX, -1`。这是一种非常典型的用 `-1` 表示 `SUCCESS` 的做法（常见于底层 C/C++ 系统编程）。
+*   **后续分析方向**：
+    1.  **寻找调用者**：查看是谁在填充这个缓冲区。如果有一个函数不断地向 `[ESI+8]` 写入数据并移动 `[ESI]`，那么那个函数就是“生产者”。
+    2.  **关联 `FUN_5101fd`**：既然已知它是文件写入封装，可以观察它如何处理 `pContext`。这会告诉你这个缓冲区是关联到一个具体的文件句柄、内存映射文件（mmap）还是网络 Socket。
+    3.  **标志位含义**：重点分析 `control_flags` 的 Bit 5 和 Bit 7。Bit 7 可能代表“Dirty”（脏数据/未同步状态），而 Bit 5 代表“Flushed”（已刷新）。

@@ -1,0 +1,97 @@
+### 函数功能概括
+
+<b>该函数是一个参数校验器（Validator），用于将传入的三个参数与一组存储在全局静态内存中的“预期值”进行比对。它支持两种模式：当第三个参数为 `-1` 时，仅执行双重校验；否则，执行完整的三重校验。</b>
+
+---
+
+### 详细分析
+
+#### 1. 参数与寄存器映射
+
+根据汇编代码中 `[ESP+offset]` 的用法，可以推断该函数采用栈传递参数（可能是 `__stdcall` 或 `__cdecl`），其参数分布如下：
+
+| 偏移量 | 对应变量 | 类型 (推测) | 说明 |
+| :--- | :--- | :--- | :--- |
+| `[ESP+4]` | `arg1` | `int` / `short` | 第一个校验项 |
+| `[ESP+8]` | `arg2` | `int` / `short` | 第二个校验项 |
+| `[ESP+12]` | `arg3` | `int` | 第三个校验项（作为模式切换标志） |
+
+#### 2. 关键全局数据 (Static Data)
+
+函数从固定地址读取了三个 **16位有符号整数 (Short)** 进行比对：
+*   `0x98eab4`: 预期值 A (`Global_Val1`)
+*   `0x98eab6`: 预期值 B (`Global_Val2`)
+*   `0x98eab8`: 预期值 C (`Global_Val3`)
+
+#### 3. 执行流程说明
+
+1.  **读取参数**：首先将 `arg3` 加载到 `EAX`，将 `arg1` 加载到 `ECX`。
+2.  **模式判断**：检查 `arg3 == -1 (0xFFFFFFFF)`。
+    *   **路径 A (If arg3 == -1)**: 
+        *   取出全局值 `Global_Val1` 与 `arg1` 比对。
+        *   若匹配，再取出 `Global_Val2` 与 `arg2` 比对。
+        *   全部通过则返回 `1` (True)，否则返回 `0` (False)。
+    *   **路径 B (If arg3 != -1)**: 
+        *   执行与路径 A 相同的 `arg1` 和 `arg2` 的比对。
+        *   若前两者均匹配，则额外取出 `Global_Val3` 与 `arg3` 进行比对。
+        *   全部通过则返回 `1` (True)，否则返回 `0` (False)。
+
+#### 4. C 伪代码实现
+
+<code>
+// 定义全局静态数据结构（推测）
+struct StaticConfig {
+    short val1; // 地址 0x98eab4
+    short val2; // 地址 0x98eab6
+    short val3; // 地址 0x98eab8
+};
+
+extern StaticConfig g_Config;
+
+/**
+ * @brief 校验传入的标识符是否与全局配置匹配
+ * @param arg1 待校验 ID 1
+ * @param arg2 待校验 ID 2
+ * @param arg3 待校验 ID 3 (若为 -1 则忽略此项)
+ * @return bool 是否全部匹配
+ */
+bool CheckIdentity(int arg1, int arg2, int arg3) {
+    // 读取全局预设值（使用 movsx 进行符号扩展）
+    short expected1 = g_Config.val1;
+    short expected2 = g_Config.val2;
+    short expected3 = g_Config.val3;
+
+    if (arg3 == -1) {
+        // 双重校验模式
+        if ((short)arg1 == expected1 && (short)arg2 == expected2) {
+            return true;
+        }
+    } else {
+        // 三重校验模式
+        if ((short)arg1 == expected1 && 
+            (short)arg2 == expected2 && 
+            (short)arg3 == expected3) {
+            return true;
+        }
+    }
+
+    return false;
+}
+</code>
+
+---
+
+### 额外洞察与建议
+
+*   **可能的用途**：
+    *   **资源/模型校验**：在加载游戏资源（如 `.mdl` 或 `.tex`）时，检查其 Header 中的版本号或类型 ID 是否符合当前引擎的预期。`-1` 可能代表“忽略特定版本”或“通用匹配”。
+    *   **协议验证**：在网络通信中，校验数据包头部的特征码（Magic Number）。
+    *   **对象识别**：判断某个指针指向的对象是否属于特定的类型簇（Type Cluster）。
+
+*   **结构体猜测**：
+    由于涉及连续的三个 `WORD` (16-bit) 访问，这很可能是一个名为 `IdentityTag` 或 `VersionInfo` 的结构体的一部分。
+
+*   **后续分析建议**：
+    1.  **寻找调用者**：查看是谁在调用 `FUN_4eef40`。如果调用者是在加载文件后立即调用的，那么这极大概率是一个 **资源格式校验函数**。
+    2.  **监控内存地址**：观察 `0x98eab4` 等地址的值是如何被初始化的。如果是从配置文件或硬编码的常量区读取，则可以确定其代表的具体业务含义（例如：版本号、协议 ID）。
+    3.  **关注返回值**：如果校验失败，程序是直接报错退出，还是跳过该对象？这能帮你判断该校验是“致命错误”还是“兼容性处理”。

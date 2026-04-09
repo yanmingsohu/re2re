@@ -1,0 +1,111 @@
+---
+# 函数分析报告：`FUN_403220` —— 场景/配置同步与显示模式切换调度器
+
+<b style="color: #2e86de;">函数功能概括</b>
+<b style="color: #2e86c1;">该函数是一个复杂的“状态检查 $\rightarrow$ 参数更新 $\rightarrow$ 逻辑分发”的协调器。它首先根据特定标志位决定是否执行高精度的比例计算，随后同步分辨率（宽/高）参数，并根据当前的显示模式或有效性判定，通过一系列条件分支来触发不同级别的系统调用（包括重置、窗口调整或状态转换）。</b>
+
+---
+
+<b style="color: #2e86c1;">详细分析</b>
+
+#### 1. 核心逻辑流程
+该函数是一个高度分化的控制流，其执行路径取决于 `[ESI + L_8c83f4]` (Status Flags) 的值：
+
+*   **阶段一：比例计算与参数初始化 (Aspect Ratio & Init)**
+    *   检查标志位 `AH`。若满足特定条件（例如未进行过缩放或处于某种特殊模式），则执行浮点运算 (`fild`, `fidiv`)，通过传入的宽高对当前对象进行**长宽比校准**，并将结果存入 `[ESI + L_8c7ed4]` 等偏移处。
+    *   如果不满足条件（`test AH, 2` 或 `test AH, 32` 为真），则直接跳过比例计算过程。
+
+*   **阶段二：分辨率同步 (Resolution Sync)**
+    *   从栈中获取新的宽度 (`[ESP+20]`) 和高度 (`[ESP+24]`)。
+    *   将这些值存入当前对象的 `m_nWidth` (`L_8c832c`) 和 `m_nHeight` (`L_8c8330`) 中。
+    *   **关键操作**：它还将旧的宽高参数备份到临时字段（如 `L_8c7eb4`, `L_8c7eb8`, `L_8c7ebc`）中，这通常是为了在后续逻辑中进行“新旧值对比”或实现平滑过渡。
+
+*   **阶段三：系统级重置/状态转换 (System Reset / State Transition)**
+    *   调用 `FUN_404fa0` (**系统清理与状态切换函数**)。这是一个极其沉重的操作，会清空实体、释放接口并跳转到新状态。
+    *   紧接着调用 `FUN_403f30` (**显示模式管理器**)，以确保窗口物理尺寸与引擎内部逻辑一致。
+
+*   **阶段四：基于有效性的条件分支 (Conditional Dispatching)**
+    根据 `FUN_403f30` 的返回值 (`EAX`) 进入不同的路径：
+    *   **路径 A (Success/Valid)**: 如果返回非零，则调用 `FUN_402940` (**优先级检索器**)。如果检索成功，会执行一系列通过 `FUN_448300` (Stub) 触发的逻辑（可能原本是某种配置应用）。
+    *   **路径 B (Failure/Invalid)**: 如果上述调用失败，则尝试通过特定的错误处理或备用路径进行恢复，并最终调用 `FUN_404fa0` 再次确保系统状态的一致性。
+
+#### 2. C++ 伪代码还原
+<code style="display: block; background-color: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 5px; font-family: 'Consolas', monospace;">
+void __thiscall DisplayManager::SynchronizeAndApply(int new_width, int new_height, int new_depth) {
+    // 1. Aspect Ratio Calculation (Conditional)
+    uint8_t flags = this->status_flags; // [ESI + L_8c83f4]
+    if (!(flags & 0x02) && !(flags & 0x20)) {
+        this->aspect_ratio_w = (float)new_width / this->divisor_w; // 使用预设除数进行校准
+        this->aspect_ratio_h = (float)new_height / this->divisor_h;
+    }
+
+    // 2. Update Resolution Parameters
+    int old_w = this->m_nWidth;
+    int old_h = this->m_nHeight;
+    int old_d = this->m_nDepth; // [ESP+28]
+
+    this->m_nWidth  = new_width;
+    this->m_nHeight = new_height;
+    // 备份旧值供后续对比 (L_8c7eb4, L_8c7eb8, etc.)
+    this->prev_w = old_w;
+    this->prev_h = old_h;
+    this->prev_d = old_d;
+
+    // 3. Execute Heavyweight System Sync
+    SystemManager::ResetAndTransition(); // 调用 FUN_404fa0
+    DisplayManager::UpdateDisplayMode(this); // 调用 FUN_403f30
+
+    if (DisplayManager::GetLastStatus() != 0) {
+        // 分支: 如果更新成功，尝试检索并应用新的指令/配置
+        if (Object::FindAndDispatch() != 0) { // 调用 FUN_402940
+            // 执行一些预设的命令分发（通过 Stub 函数）
+            CommandExecutor::Execute(ERROR_STRING); 
+        } else {
+            // 如果检索失败，执行备选路径...
+            DisplayManager::UpdateDisplayMode(this); // 重复调用以强制同步
+        }
+    } else {
+        // 分支: 处理异常或重新应用状态
+        if (Object::FindAndDispatch() != 0) { ... }
+    }
+
+    // 最后根据标志位清理状态位，可能是在完成一次切换后重置“正在变更”的标记
+    this->status_flags |= 0x02; // or AH, 2
+}
+</code>
+
+#### 3. 关键字段与对象结构映射
+
+| 内存偏移 (相对于 ESI) | 类型/含义 | 说明 |
+| :--- | :--- | :--- |
+| `L_8c83f4` | `m_nStatusFlags` | **状态位掩码**。控制是否跳过比例计算及后续分支逻辑。 |
+| `L_8c832c/30` | `m_nWidth/Height` | **当前分辨率参数**。 |
+| `L_8c7ed4/28` | `m_aspectRatio` | **校准后的宽高比数据**。 |
+| `L_8c7eb4-bc` | `m_prevParams` | **历史状态缓冲区**。存储切换前的参数，用于差异化更新。 |
+
+---
+
+<b style="color: #2e86c1;">与之前分析过的函数对比</b>
+
+| 当前函数 (`FUN_403220`) | 关联依赖项 | 协作关系说明 |
+| :--- | :--- | :--- |
+| **调度中心 (Orchestrator)** | `FUN_404fa0` | 当分辨率改变需要重置场景时，由当前函数发起大规模系统清理。 |
+| **决策者 (Decision Maker)** | `FUN_403f30` | 当前函数通过调用它来确认显示模式是否已正确应用到 OS 层。 |
+| **检索器 (Searcher)** | `FUN_402940` | 在参数更新后，当前函数利用此函数寻找新的有效操作上下文（如新分辨率下的 UI 布局）。 |
+
+---
+
+<b style="color: #2e86c1;">额外洞察与建议</b>
+
+* **<b style="color: #e67e22;">架构设计：原子性更新 (Atomic Update)</b></b>
+    该函数的设计模式体现了“先清理、后应用”的原则。它不是简单的修改一个变量，而是通过调用 `FUN_404fa0` 这种级别的重置函数来确保旧环境被彻底抹除，再由 `FUN_403f30` 构建新环境。这在处理从**全屏切换到窗口化**这类涉及底层 API（如 DirectX SwapChain 重建）的操作时是必须的。
+
+* **<b style="color: #e67e22;">性能观察：浮点数与状态位</b></b>
+    函数开头的 `test AH, 32` 等逻辑表明，引擎试图通过标志位来避免昂贵的浮点运算和大规模系统调用。这是一个典型的**“快速路径 (Fast Path) vs 深层重置 (Slow Path)”**优化设计。
+
+* **<b style="color: #e67e22;">后续分析方向建议：</b></b>
+    1.  **追踪 `L_8c83f4` 的修改者**：搞清楚是谁在什么时候设置了这些位（例如，是在分辨率调整开始前还是结束后），这将揭示引擎处理“正在进行模式切换”状态的生命周期。
+    2.  **分析 `FUN_403f30` 返回值的业务意义**：如果它返回 0，当前函数会进入极其复杂的错误恢复逻辑（包含多次调用 `FUN_448300` 和 `FUN_404fa0`），这说明显示模式切换失败是一个严重的系统级事件。
+    3.  **关注参数备份逻辑**：研究 `L_8c7eb4` 等偏移处的旧值是如何被使用的，它们可能决定了是否需要进行“平滑缩放”或“重新分配纹理内存”。
+
+<b style="color: #27ae60;">结论标签：</b> <b style="color: #27ae60;">[Display Management] [Scene Synchronization] [Resolution Switching] [System State Orchestration]</b>

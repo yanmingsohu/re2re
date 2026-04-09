@@ -1,0 +1,101 @@
+<b style="color: #e74c3c;">函数功能概括</b>
+
+<b style="color: #2ecc71;">该函数是一个高度复杂的自定义内存池/分段缓冲区管理器。它负责根据请求的大小，在现有的内存节点链表中寻找、插入或通过 `VirtualAlloc` 分配新的物理页面，并维护一个基于页对齐（Page-aligned）的动态增长结构。</b>
+
+---
+
+### 详细分析
+
+<code style="color: #f8f8f2;">
+// 核心逻辑伪代码实现
+void ManageMemoryPool(size_t requestedSize) {
+    Node* currentNode = Global_CurrentNode; // $L_542d78
+
+    if (currentNode != nullptr && currentNode->endOffset != -1) {
+        // --- 第一阶段：尝试在现有节点/分段中寻找插入点或更新空间 ---
+        for (Segment* seg = currentNode->firstSegment; seg != endOfSegments; seg++) {
+            // 使用 FUN_511db8 进行缓冲区重排与数据插入逻辑
+            if (seg->start < requestedSize && seg->end > requestedSize) {
+                bool success = InsertIntoBuffer(seg, requestedSize); 
+                if (!success) break; // 如果插入失败，可能需要扩容
+                // 更新段边界信息...
+            }
+        }
+    }
+
+    // --- 第二阶段：如果当前节点无法满足需求，寻找或创建新节点 ---
+    if (currentNode_is_exhausted || needs_expansion) {
+        Node* newNode = FindAvailableNodeInGlobalList(); // 从 $L_540d58 开始遍历链表
+
+        if (newNode == nullptr) {
+            // 调用 FUN_5118b8 创建全新节点并初始化元数据
+            newNode = CreateNewMemoryNode(); 
+        }
+
+        // --- 第三阶段：物理内存扩容与页面填充 ---
+        if (needs_virtual_allocation) {
+            void* newPage = VirtualAlloc(NULL, PAGE_SIZE, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+            if (newPage != nullptr) {
+                // 高性能填充新内存区域（类似于 memset）
+                FastMemset(newPage, 0, size); // 调用 FUN_513290
+                
+                // 特殊模式初始化：对页面进行“污染”或元数据标记
+                for (int i = 0; i < numPages; i++) {
+                    SetPageMetadataPattern(newPage + (i * 4096)); // 设置 0xFF 或特定字节序列
+                }
+            }
+        }
+
+        // --- 第四阶段：更新全局链表指针与边界 ---
+        UpdateGlobalNodePointers(newNode, requestedSize);
+        Global_CurrentNode = newNode;
+    }
+}
+</code>
+
+#### 关键字段与偏移量解释
+
+根据汇编逻辑，推测该内存管理器的对象结构如下：
+
+| 偏移 (Offset) | 类型 | 含义描述 |
+| :--- | :--- | :--- |
+| `+0` | `Pointer` | 指向下一个节点或链表中的下一项 |
+| `+8` | `Pointer/Size` | 数据段的起始地址或当前有效数据长度 |
+| `+12` | `Size` | 节点的总容量或预留大小 |
+| `+16` | `Int/Offset` | 结束标记（若为 `-1` 表示该节点已耗尽或为空） |
+| `+24` | `Metadata` | 用于计算页索引的基准偏移量 |
+| `+8216` | `Pointer` | 指向预留内存池边界的指针 (用于循环终止检查) |
+
+#### 流程说明
+
+1.  **搜索与插入阶段 ($L_511bbe - $L_511c7b)**：函数首先获取全局当前节点 `$L_542d78`。它会遍历现有的内存段，利用 `FUN_511db8` 尝试在现有缓冲区的空隙中“挤入”新数据。这是一种典型的**碎片整理/动态插入**逻辑。
+2.  **查找复用阶段 ($L_511c6c - $L_511d7f)**：如果当前节点无法承载，它会去全局列表 `$L_540d58` 中寻找是否有已经分配但未使用的“闲置”节点。
+3.  **强制扩容阶段 ($L_511cc8 - $L_511d40)**：如果没有可复用的节点，函数将通过 `FUN_5118b8` 创建新节点，并直接调用 Windows API `VirtualAlloc` 向操作系统申请新的物理内存页。
+4.  **页面特征填充 ($L_511d16)**：这是一个非常有趣的细节。在分配新内存后，它不是简单地清零，而是通过循环将字节设置为 `0xFF` (255)，并设置特定的头部模式（如 `240, 241`）。这通常用于**调试检测（Poisoning）**或为后续的页面表查找提供**特征码**。
+
+---
+
+### 与之前函数对比
+
+| 特性 | `FUN_511db8` (插入器) | `FUN_511bb0` (管理器) |
+| :--- | :--- | :--- |
+| **职责层级** | 底层：处理单个缓冲区的字节移动 | 高层：管理整个内存池的生命周期 |
+| **核心操作** | 内存重排、索引检查、单点插入 | `VirtualAlloc` 调用、节点链表遍历、页面初始化 |
+| **关系** | 被调用者 (Worker) | 调用者 (Manager/Orchestrator) |
+
+---
+
+### 额外洞察与建议
+
+*   **<b style="color: #f1c40f;">内存对齐算法解析</b>**：
+    代码中出现了 `sub EAX, 24; sar EAX, 3; shl EAX, 12`。这是一个非常精妙的计算逻辑：
+    *   它先减去结构体头部的偏移量 (`24`)。
+    *   通过 `sar EAX, 3` (除以 8) 和 `shl EAX, 12` (乘以 4096)，实际上是在将一个**字节地址转换成基于页面的索引/对齐地址**。这表明该引擎的内存管理是严格按照 **4KB Page Size** 进行逻辑划分的。
+
+*   **<b style="color: #f1c40f;">可能的用途</b>**：
+    这种结构常见于**大型开放世界游戏或流式加载器（Streaming Loader）</b>。它允许引擎在不频繁触发标准 `malloc` 的情况下，通过预先分配的大块虚拟内存空间，动态地将纹理、模型数据按需“塞入”已有的内存段中。
+
+*   **<b style="color: #f1c40f;">后续分析方向</b>**：
+    1.  **关注 `FUN_5118b8`**：了解新节点是如何被挂载到全局链表上的，这能帮你还原整个内存池的拓扑结构。
+    2.  **检查 `$L_540d58` 指向的内容**：这是管理所有空闲/已分配节点的“根”，通过它你可以遍历出整个引擎当前的内存占用情况。
+    3.  **观察 `VirtualAlloc` 的调用上下文**：确定该函数是在加载资源（如模型、贴图）时触发，还是在系统初始化阶段进行预分配。
