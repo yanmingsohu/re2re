@@ -16,15 +16,18 @@ system_prompt_file = 'prompt_make_comment.txt'
 cache_dir = 'comment_cache'
     
 
-def MMessages(name):
-    return Messages(name, system_prompt_file, base_url, cache_dir, api_key)
+def MMessages(name, sysfile=system_prompt_file):
+    return Messages(name, sysfile, base_url, cache_dir, api_key)
 
 
-find_sum = re.compile(r"<b\b[^>]*>(.*?)</b>", re.DOTALL)
+find_sum = re.compile(r"<\b[^>]*>(.*?)</b>", re.DOTALL)
+find_call = re.compile(r"<call\b[^>]*>(.*?)</call>", re.DOTALL)
 
 def filter_sum(txt):
     buf = []
     for m in find_sum.findall(txt):
+        buf.append(m)
+    for m in find_call.findall(txt):
         buf.append(m)
     return '\n'.join(buf)
 
@@ -263,3 +266,24 @@ def asm_string_len(s: str) -> int:
             n += 1
             i += 1
     return n
+
+
+db_str = re.compile(r"'(.+)'")
+db_dup = re.compile(r"([0-9]+)\s+DUP(\(.+\))")
+db_mul = re.compile(r"([0-9][0-9a-hA-H]+h?),?")
+
+def parse_data(cmd, args, msg):
+  cmd = cmd.upper()
+  if cmd == 'BYTE':
+    return 1
+  if cmd == 'DWORD':
+    return 4
+  if cmd == 'DB':
+    arg = ' '.join(args)
+    if a := db_str.match(arg):
+      return asm_string_len(arg)
+    if a := db_dup.match(arg):
+      return num(a.group(1))
+    if a := db_mul.findall(arg):
+      return len(a)
+  raise Exception(f"无效命令: {cmd} / {args}, {msg}")
