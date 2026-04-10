@@ -69,5 +69,5 @@ Functional Dependency Analyzer
 Use AI to build function descriptions on a function dependency tree.
 `python defining_contradiction.py -f2 FUN_50d9da -ai > functions.txt`
 
-
+Detect the correspondence between memory addresses and tags in the disassembled data.
 `python defining_contradiction.py -bd src\data.S > data_cont.txt`
