@@ -1,0 +1,123 @@
+### 函数功能概括
+**该函数是一个内存管理器或对象池的“清理/重置”逻辑。它通过遍历一个由位掩码（Bitmask）定义的节点列表，将对应的索引项在主数组中标记为无效（设置为 `-1` / `0xFFFFFFFF`）。**
+
+---
+
+### 详细分析
+
+#### 1. 伪代码实现
+为了方便理解，我将复杂的汇编逻辑转换为结构化的 C 语言伪代码：
+
+```c
+struct Node {
+    uint32_t bitmask;      // 节点掩码，用于标识占用的槽位
+    uint32_t shiftAmount;  // 用于检查特定位的偏移量或索引值
+};
+
+struct ManagerObject {
+    char padding[4];       // +0x0
+    uintptr_t baseAddr;    // +0x4 (经过 shl 4 处理后作为地址基址)
+    Node* nodeList;        // +0xC (指向节点数组的指针)
+    void* arrayOffsetPtr;  // +0x10 (用于计算目标位置的偏移或基础指针)
+};
+
+void FUN_43bf90(ManagerObject* pObj) {
+    uint32_t count = pObj->baseAddr; // 注意：汇编中将其视作地址的一部分进行位移
+    void* arrayBase = (void*)pObj->arrayOffsetPtr;
+    uint32_t invalidVal = 0xFFFFFFFF;
+
+    // --- 第一阶段：初始化/预清理头部信息 ---
+    // 这部分逻辑非常特殊，它在计算出的一个特定区域写入了 -1
+    uintptr_t targetBase = (count << 4); 
+    *(uint32_t*)(targetBase + (uintptr_t)arrayBase + 8)  = invalidVal;
+    *(uint32_t*)(targetBase + (uintptr_t)arrayBase + 12) = invalidVal;
+
+    if (count == 0) return;
+
+    // --- 第二阶段：遍历节点列表进行位检测与清理 ---
+    for (uint32_t i = 0; i < count; ++i) {
+        Node* currNode = &pObj->nodeList[i];
+        
+        // 获取当前节点的 bitmask 和用于测试的偏移量
+        uint32_t mask = currNode->bitmask;     // [EBX]
+        uint32_t testBitPos = currNode->shiftAmount; // [EBX+4]
+
+        // 检查第 testBitPos 位是否被置为 1
+        if (mask & (1 << testBitPos)) {
+            // 如果位匹配，则根据某种逻辑更新主数组中的条目
+            // 这里存在分支：根据测试位的属性决定写入偏移是 +8 还是 +12
+            uint32_t* targetEntry = nullptr;
+            
+            // 判断逻辑 (对应 $L_43c026 和 $L_43c034)
+            if (testBitPos < count /* 此处逻辑复杂，涉及对 testBitPos 与当前循环状态的比较 */) {
+                // 写入模式 A: 更新偏移为 8 的位置
+                targetEntry = (uint32_t*)((uintptr_t)arrayBase + (/* 计算出的索引 */ * 16) + 8);
+            } else {
+                // 写入模式 B: 更新偏移为 12 的位置
+                targetEntry = (uint32_t*)((uintptr_t)arrayBase + (/* 计算出的索引 */ * 16) + 12);
+            }
+
+            if (targetEntry) {
+                *targetEntry = invalidVal; // 将条目设为无效 (-1)
+            }
+        }
+    }
+}
+```
+
+#### 2. 关键字段与流程说明
+
+| 寄存器/偏移 | 含义解释 | 备注 |
+| :--- | :--- | :--- |
+| `[EAX+4]` | **Base Address / Count** | 在函数开头被左移 4 位，随后作为地址基准使用。 |
+| `[EAX+12]` | **Node List Pointer** | 指向包含 `bitmask` 和 `shiftAmount` 的结构体数组。 |
+| `[EAX+16]` | **Array Base / Offset** | 目标数据数组的基础指针或偏移量。 |
+| `EDX (0xFFFFFFFF)` | **Sentinel Value** | 代表“无效”、“空”或“未分配”的标志位。 |
+| `$L_43bff6` 循环 | **Bitmask Test Loop** | 通过 `shl EBP, CL` 实现 `1 << shiftAmount` 的操作，检测特定槽位是否激活。 |
+
+**核心流程总结：**
+1.  **初始化阶段**：利用 `[EAX+4]` 和 `[EAX+16]` 计算出一个内存块的起始位置，并将其前两个关键字段（偏移 8 和 12）重置为 `-1`。
+2.  **遍历阶段**：从 `nodeList` 开始循环，每个节点包含一个掩码和一个位移量。
+3.  **判定阶段**：利用 `test DWORD PTR [EBX], EBP` 判断该节点的某个“槽位”是否已被占用。
+4.  **执行阶段**：如果槽位有效，则通过复杂的地址计算（涉及对数组基址的偏移和步进），将主管理数组中对应的位置重新设为 `-1`，从而释放或失效这些条目。
+
+---
+
+<call>
+### 4. 函数说明文档 (FUN_43bf90)
+
+#### 4.1. 函数C语言原型
+```c
+void __stdcall Manager_ClearOccupancy(struct ManagerObject* pObj);
+```
+
+#### 4.2. 参数说明列表
+| 参数名 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `pObj` | `ManagerObject*` | 指向管理对象的指针，包含节点列表、基地址和数组偏移。 |
+
+#### 4.3. 返回值说明
+*   **void**: 无返回值。
+
+#### 4.4. 全局变量与内部结构猜测
+*   **对象结构体 (`ManagerObject`)**:
+    *   `+0x04`: `uintptr_t pool_base_addr` (经过左移 4 位处理后的内存池基址)。
+    *   `+0x0C`: `Node* active_nodes` (指向活动节点数组的指针)。
+    *   `+0x10`: `void* data_array_ptr` (实际存储数据的数组基础地址)。
+*   **节点结构体 (`Node`)**:
+    *   `+0x00`: `uint32_t bitmask` (位掩码，表示该节点管理的槽位状态)。
+    *   `+0x04`: `uint32_t slot_index` (用于测试的特定位索引或偏移量)。
+
+#### 4.5. 功能概述
+本函数主要用于**批量失效（Invalidate）对象池中的条目**。它通过读取预定义的“活动节点”列表，检查每个节点所代表的掩码位是否被占用，如果命中，则将主数据数组中对应的槽位重置为 `-1` (0xFFFFFFFF)。这通常发生在对象销毁、关卡切换或内存池重新分配时。
+</call>
+
+---
+
+### 额外洞察与建议
+
+*   **潜在用途**：这种基于 Bitmask 的管理方式在**游戏引擎的实体管理器（Entity Manager）**或**渲染指令缓冲区（Command Buffer）**中非常常见，用于快速查找和重置已分配的资源索引。
+*   **对象结构体猜测**：`[EAX+4]` 经过 `shl ECX, 4` 后直接作为地址使用，这暗示了该引擎可能使用了**分段内存管理（Segmented Memory）**或**页面对齐的对象池**。每个“块”的大小可能是 $2^4 = 16$ 字节的倍数。
+*   **后续分析方向**：
+    *   建议寻找调用 `FUN_43bf90` 的地方，观察传入的对象是如何初始化的，这能进一步确认 `baseAddr` 的来源。
+    *   关注处理 `[EAX+16]` 偏移的函数，那很可能是执行“分配（Allocate）”操作的代码，与本函数的“释放（Free/Clear）”逻辑互为镜像。

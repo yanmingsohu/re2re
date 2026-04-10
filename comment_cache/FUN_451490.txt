@@ -1,0 +1,118 @@
+### 函数功能概括
+**该函数是一个基于固定小数点（Fixed-point）运算的坐标/偏移量计算函数，通过缩放因子 `4096` ($2^{12}$) 对多个输入分量进行加权组合，最终将计算出的两个结果（通常代表 X 和 Y 轴偏移）写入目标结构体。**
+
+---
+
+### 详细分析
+
+#### 1. 关键字段与参数解释
+通过对栈偏移 `[ESP+n]` 的追踪，可以推断出该函数的调用约定类似于 `__cdecl` 或带有大量参数的自定义约定。
+
+| 栈偏移 | 类型/含义 | 描述 |
+| :--- | :--- | :--- |
+| `[ESP+4]` | `int*` (pBaseObj) | 基准对象指针，其第一个成员用于计算 |
+| `[ESP+20]` | `struct*` (pDataStruct) | 数据结构指针，包含后续运算所需的偏移量数据 |
+| `[ESP+24]` | `int*` (pValueSrc) | 另一个数值来源对象的指针 |
+| `[ESP+28]` | `short` (val_X) | 有符号短整型，代表 X 方向的原始输入值 |
+| `[ESP+32]` | `short` (val_Y) | 有符号短整型，代表 Y 方向的原始输入值 |
+| `[ESP+36]` | `int*` (pOutStruct) | **输出目标指针**，计算结果将写入此处 |
+
+#### 2. C 伪代码实现
+我们将复杂的汇编逻辑翻译为更易读的数学/结构化表达：
+
+```c
+// 假设 MulDiv 在此处被用作固定小数点缩放函数: (a * b) / 4096 或类似逻辑
+// 但根据汇编 push 顺序，其参数传递方式为: Func(val, factor, 4096)
+extern int ScaledMath(int value, int factor, int scale);
+
+void FUN_451490(
+    int* pBaseObj,        // [ESP+4]
+    DataStruct* pData,    // [ESP+20]
+    int* pValueSrc,       // [ESP+24]
+    short valX,           // [ESP+28]
+    short valY,           // [ESP+32]
+    OutStruct* pOut       // [ESP+36]
+) {
+    int res1, res2, res_x, res_y;
+
+    // --- 第一部分: 计算 X 分量 (或第一个偏移量) ---
+    // 获取基准值: *pBaseObj
+    res1 = ScaledMath(*pBaseObj, valY, 4096); 
+    
+    // 获取来源值: *pValueSrc
+    res2 = ScaledMath(*pValueSrc, valX, 4096);
+    
+    // 合并结果并写入目标结构体的第一个成员 (offset 0)
+    pOut->field_0 = res1 + res2;
+
+    // --- 第二部分: 计算 Y 分量 (或第二个偏移量) ---
+    // 从 pData 中读取 offset+4 的值进行缩放
+    res_x = ScaledMath(pData->field_4, valY, 4096); 
+    
+    // 获取 pValueSrc->field_8 进行缩放并累加到 res_x 上
+    // 注意：汇编中对 [ESP+36] 的操作暗示了某种中间变量的传递或结果覆盖
+    res_y = ScaledMath(pValueSrc->field_8, valX, 4096);
+    
+    // 将最终计算出的 Y 分量存入目标结构体 (offset + offset?)
+    // 根据指令: mov [EBP+8], EDI，其中 EBP 是之前 res1+res2 的结果
+    // 这表明 Y 分量的存储位置是动态的或基于第一个分量的偏移
+    pOut->field_Y = res_x + res_y; 
+}
+```
+
+#### 3. 逻辑流程说明
+1.  **初始化**: 从 `[ESP+4]` 获取基准值，从 `[ESP+28]` 和 `[ESP+32]` 获取 X/Y 缩放因子。
+2.  **X轴合成**: 
+    *   调用第一次数学函数：`BaseValue * valY / 4096`（推测）。
+    *   调用第二次数学函数：`SourceValue * valX / 4096`。
+    *   将两者相加，存入 `pOut->member[0]`。
+3.  **Y轴合成**:
+    *   利用 `pDataStruct` 中的成员与 `valY` 进行缩放运算。
+    *   利用 `pValueSrc` 的后续成员与 `valX` 进行缩放运算。
+    *   将两者相加，存入目标位置（可能是 `pOut->member[1]`）。
+
+---
+
+<call>
+#### 4. 函数说明文档
+
+**4.1. 函数C语言原型**
+```c
+void __cdecl CalculateScaledOffset(int* pBaseObj, void* pDataStruct, int* pValueSrc, short valX, short valY, int* pOutStruct);
+```
+
+**4.2. 参数说明列表**
+| 参数名 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `pBaseObj` | `int*` | 提供初始基准数值的指针。 |
+| `pDataStruct` | `void*` | 包含辅助计算参数的结构体指针（偏移量为4）。 |
+| `pValueSrc` | `int*` | 提供第二个缩放源数值的指针。 |
+| `valX` | `short` | X轴方向的比例因子/增量。 |
+| `valY` | `short` | Y轴方向的比例因子/增量。 |
+| `pOutStruct` | `int*` | 存储计算结果（X, Y 分量）的目标内存地址。 |
+
+**4.3. 返回值说明**
+*   **无返回值 (void)**。结果通过 `pOutStruct` 指向的内存进行写回。
+
+**4.4. 全局变量与对象结构猜测**
+*   `__imp__MulDiv`: 实际上被当作一个通用的缩放计算函数使用，其逻辑极可能是 `(a * b) >> 12`。
+*   `pOutStruct` 内部结构预测：
+    ```c
+    struct OutResult {
+        int x_offset; // offset 0
+        int y_offset; // offset 4 或由 EBP 计算出的动态偏移
+    };
+    ```
+
+**4.5. 功能概述**
+该函数用于执行二维空间的坐标转换或增量计算。它利用固定小数点算术（以 4096 为模）将输入的两个短整型因子作用于多个数据源，并将合成后的 X 和 Y 分量写回指定的输出结构体中。常用于游戏引擎中的摄像机平移、物体相对位移或 UI 元素的比例缩放计算。
+</call>
+
+---
+
+### 额外洞察与建议
+
+*   **数学模型**: 函数使用了典型的 **Fixed-point Arithmetic (固定小数点算术)**。`4096` 是 $2^{12}$，这意味着该系统拥有 12 位的小数精度。这在早期的 3D 引擎或对性能要求极高的移动端/嵌入式渲染器中非常常见，用以避免昂贵的浮点运算（FPU）。
+*   **对象结构猜测**: `pDataStruct` 和 `pValueSrc` 很可能是同一个大对象（例如 `Transform` 或 `Entity`）的不同部分。建议后续重点观察这些对象的内存布局，特别是偏移 `+4` 和 `+8` 的成员类型。
+*   **潜在用途**: 这种“交叉缩放”（X 用 Y 因子计算一部分，Y 用 X 因子计算一部分）的模式常见于 **旋转矩阵分解** 或 **非均匀缩放（Non-uniform Scaling）** 的线性近似实现中。
+*   **后续分析方向**: 建议寻找调用此函数的地方，观察传入的 `valX` 和 `valY` 是从何处获取的（例如是否来自鼠标移动、摇杆输入或摄像机旋转角度），这将直接揭示该函数的具体业务逻辑（是处理玩家移动还是渲染层缩放）。

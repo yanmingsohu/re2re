@@ -1,0 +1,103 @@
+### 向量固定点混合函数 (Vector Fixed-Point Blending)
+
+该函数通过固定点数学（Fixed-point math）对两个源向量的三个分量（X, Y, Z）进行加权求和，并将结果存储到目标地址。其核心逻辑类似于线性插值（LERP），但使用了自定义的比例因子。
+
+---
+
+#### 详细分析
+
+**1. 算法原理**
+函数利用 `MulDiv` 函数（通常为 $\frac{a \times b}{c}$）进行缩放，其中分母固定为 $4096$ ($2^{12}$)。这意味着输入的比例因子和坐标值都是以 $1/4096$ 为单位的定点数。
+计算公式如下：
+$$\text{Result}_{i} = \frac{\text{SrcA}_i \times \text{ScaleA}}{4096} + \frac{\text{SrcB}_i \times \text{ScaleB}}{4096}$$
+
+**2. 伪代码实现**
+
+```c
+// 定义输入结构体（假设为 word 类型的向量）
+typedef struct {
+    int16_t x;
+    int16_t y;
+    int16_t z;
+} Vec3_Fixed;
+
+/**
+ * @param pSrcA   第一个源向量指针
+ * @param unused  未使用的参数 (Stack Offset 8)
+ * @param pSrcB   第二个源向量指针
+ * @param scaleA  第一个缩放因子 (Scale A)
+ * @param scaleB  第二个缩放因子 (Scale B)
+ * @param pOut    结果存储目标地址
+ */
+void Vector_Blend_Fixed(const Vec3_Fixed* pSrcA, void* unused, const Vec3_Fixed* pSrcB, 
+                        int16_t scaleA, int16_t scaleB, int16_t* pOut) {
+    // --- 处理 X 分量 ---
+    int32_t resAx = (pSrcA->x * scaleA) / 4096; // 通过 MulDiv 实现
+    int32_t resBx = (pSrcB->x * scaleB) / 4096;
+    pOut[0] = (int16_t)(resAx + resBx);
+
+    // --- 处理 Y 分量 ---
+    int32_t resAy = (pSrcA->y * scaleA) / 4096; // pSrcA[offset 2]
+    int32_t resBy = (pSrcB->y * scaleB) / 4096; // pSrcB[offset 2]
+    // 注意：汇编中此处通过 EBP 指针偏移进行写入
+    pOut[1] = (int16_t)(resAy + resBy);
+
+    // --- 处理 Z 分量 ---
+    int32_t resAz = (pSrcA->z * scaleA) / 4096; // pSrcA[offset 4]
+    int32_t resBz = (pSrcB->z * scaleB) / 4096; // pSrcB[offset 4]
+    pOut[2] = (int16_t)(resAz + resBz);
+}
+```
+
+**3. 执行流程说明**
+
+*   **初始化阶段**: 从栈中提取 `pSrcA`、`pSrcB` 以及两个缩放因子。
+*   **X分量计算**: 
+    1.  调用 `MulDiv(pSrcA->x, scaleA, 4096)` $\rightarrow$ $Res_A$.
+    2.  调用 `MulDiv(pSrcB->x, scaleB, 4096)` $\rightarrow$ $Res_B$.
+    3.  将两者相加，写入 `pOut[0]`。
+*   **Y分量计算**: 
+    1.  读取 `pSrcA` 的第二个 word (`offset 2`) 并缩放。
+    2.  读取 `pSrcB` 的第二个 word 并缩放。
+    3.  相加后写入 `pOut[1]` (通过对结果指针进行 `+2` 字节偏移)。
+*   **Z分量计算**: 
+    1.  同理处理 `offset 4` 的数据，并将结果写入 `pOut[2]`。
+
+---
+
+#### 函数说明文档
+
+<call>
+### 4.1. 函数C语言原型
+`void __cdecl Vector_Blend_Fixed(const int16_t* pSrcA, void* unused, const int16_t* pSrcB, int16_t scaleA, int16_t scaleB, int16_t* pOut);`
+
+### 4.2. 函数参数说明列表
+| 参数名 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `pSrcA` | `int16_t*` | 第一个源向量（包含 X, Y, Z 三个 word 分量）的指针 |
+| `unused` | `void*` | 栈对齐或保留参数，函数内部未实际使用 |
+| `pSrcB` | `int16_t*` | 第二个源向量的指针 |
+| `scaleA` | `int16_t` | 对第一个向量进行缩放的定点系数 ($Scale \times 2^{-12}$) |
+| `scaleB` | `int16_t` | 对第二个向量进行缩放的定点系数 ($Scale \times 2^{-12}$) |
+| `pOut` | `int16_t*` | 存储混合后结果向量的内存地址 |
+
+### 4.3. 函数返回值说明
+**无返回值 (void)**。计算结果直接写入 `pOut` 指向的内存。
+
+### 4.4. 全局变量引用说明
+该函数不直接引用全局变量，但通过导入表调用了数学库函数 `__imp__MulDiv` 进行乘除运算。
+
+### 4.5. 功能概述
+**向量定点混合器**。用于在两个 3D 定点坐标向量之间进行加权融合。常用于动画补间（Animation Blending）、相机平滑移动或粒子系统中的位置插值计算。
+</call>
+
+---
+
+#### 额外洞察与建议
+
+*   **对象结构体猜测**: 该函数处理的对象极有可能是 `FixedPointVec3` 或类似的渲染/物理引擎内部向量结构，其成员均为 `int16_t` 类型。
+*   **性能特征**: 函数大量使用 `movsx` (Sign-extend) 将 16 位数据扩展为 32 位进行运算，这表明系统为了平衡精度和内存占用，采用了 **16位定点数** 表示法。
+*   **后续分析方向**: 
+    *   寻找调用此函数的地方，可以确定当前场景是在做**骨骼动画插值**还是**摄像机轨迹平滑**。
+    *   观察 `scaleA` 和 `scaleB` 的来源。如果两者之和接近 $4096$ ($1.0$ 在定点数中的表示)，则这明确是一个 **LERP (Linear Interpolation)** 函数。
+    *   检查是否还有类似的函数处理 `float` 类型的向量，以便确认该引擎的数值计算策略（定点 vs 浮点）。

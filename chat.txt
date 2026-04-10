@@ -1,0 +1,36 @@
+﻿以下是2026年4月（当前时间）这些生化危机经典版modding社区的实际热度情况总结（基于最近帖子、回复频率和整体活跃度）：
+1. Resident Evil Modding Boards（residentevilmodding.boards.net）—— 最活跃的主社区
+
+整体热度：中等偏高，是目前经典+重制版modding最主要的聚集地。
+每天都有新帖和回复，最近帖子活跃到2026年4月上旬（例如4月8日、4月5日、4月1日等都有新回复）。
+总帖子量已超过14万，成员超过4.7万。
+讨论范围很广：RE4/RE5/RE6重制版modding依然很热闹，经典RE1/2/3也有零星讨论（包括老工具使用、声音mod、模型替换等）。
+缺点：经典RE2 1998专区不算最热门，更多人集中在RE4 Remake、RE5等较新游戏上，但整体modding氛围很稳定。
+
+2. Tapatalk Resident Evil 1 2 3 Modding Forum（www.tapatalk.com/groups/residentevil123/）—— 低活跃，怀旧向
+
+整体热度：较低。
+经典RE1/2/3专区仍有少量帖子，最后活跃记录在2025年7月~2025年底（如Rusty's Releases、RE2 Mod Information等）。
+总帖子约4800+（RE2部分），但2026年几乎没有明显新活动。
+适合查找老mod存档和历史讨论，但不推荐作为日常交流场所，回复速度很慢。
+
+3. Reddit r/residentevil 和 r/ResidentEvil2Remake
+
+整体热度：很高（尤其是重制版）。
+r/ResidentEvil2Remake 经常有人讨论2026年的mod安装方法、Fluffy Mod Manager、经典风格移植mod等。
+经典RE2 1998的modding讨论相对较少，但偶尔会出现“如何提取经典声音”“老版mod移植到重制版”等帖子。
+整体社区流量大，回复快，但经典纯modding不是主力话题。
+
+4. Nexus Mods（RE2 1998区）
+
+整体热度：较低但稳定。
+RE2 1998只有约41个mod，大部分是老mod，最近更新不多。
+反而是RE2 Remake（2019）区非常活跃（1500+ mod），很多人做“Classic '98 Style”合集，把原版枪声、相机角度等移植过去。
+有专门的“Community Creations Con 2026”等活动，modder社区仍有活力。
+
+总结对比（2026年现状）：
+
+想讨论/求助经典RE2 1998枪械音频、.SAP文件、老mod → 首选 Resident Evil Modding Boards（最可能得到回复）。
+只想找现成mod下载 → Nexus Mods（1998区）+ ModDB。
+想看重制版移植原版声音的mod → Reddit + Nexus Mods（Remake区）更热闹。
+整体趋势：经典版纯modding社区热度在下降，但因为RE2 Remake的“经典风”mod很流行，很多老玩家把精力转移到重制版上做nostalgia项目。

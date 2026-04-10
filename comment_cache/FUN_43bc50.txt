@@ -1,0 +1,116 @@
+### 函数功能概括
+**Bitstream Reader (位流读取器)**：该函数是一个典型的压缩数据或二进制协议的解压/解析核心，用于从内存缓冲区或文件中按指定的 **bit（比特）** 数量提取数值。
+
+---
+
+### 详细分析
+
+#### 1. 逻辑架构
+该函数根据一个全局标志位 `[$L_99da68]` 进入两种不同的工作模式：
+*   **内存模式 (Memory Mode)**: 直接从预定义的内存地址序列中按位读取。
+*   **文件模式 (File/Buffer Mode)**: 当缓存不足时，通过 `ReadFile` 从磁盘读取数据到缓冲区，然后再进行位提取。
+
+#### 2. 核心流程伪代码
+```c
+// 全局状态变量猜测
+extern uint32_t g_SourceFlag;      // $L_99da68: 0 = 文件模式, 非0 = 内存模式
+extern uint32_t g_BitAccumulator;  // $L_6713bc: 当前累积的比特值
+extern int32_t  g_BitsInAccumulator;// $L_6713c4: 累积器中剩余可用的比特数
+
+uint32_t FUN_43bc50(int requestedBits) {
+    uint32_t result = 0;
+    
+    // 判断当前累积器中的比特是否足够满足请求
+    if (requestedBits <= g_BitsInAccumulator) {
+        // 如果够用，直接从现有位流中截取（执行 $L_43bcaf 逻辑）
+        goto extract_from_existing;
+    }
+
+    if (g_SourceFlag != 0) {
+        // --- 【模式 A: 内存读取】 ---
+        // 从 $L_99da40 指向的地址开始，逐字节提取并更新累积器
+        uint8_t* pMem = g_MemPtr; // $L_99da40
+        for (int i = 0; i < neededBytes; ++i) {
+            // 将新读取的字节拼接到全局位流状态中
+            UpdateAccumulator(pMem[i]); 
+        }
+    } else {
+        // --- 【模式 B: 文件读取】 ---
+        // 如果缓冲区数据不足，调用 ReadFile 加载新块
+        if (g_BytesInBuffer < requiredCapacity) {
+            int bytesRead = ReadFile(g_FileHandle, g_BufferPtr, 32768, ...);
+            if (bytesRead <= 0) {
+                CloseHandle(g_FileHandle);
+                return 0;
+            }
+        }
+        // 从文件缓冲区提取字节并更新累积器
+        for (int i = 0; i < neededBytes; ++i) {
+            UpdateAccumulator(g_BufferPtr[i]);
+        }
+    }
+
+extract_from_existing:
+    // --- 【位截取逻辑】 ---
+    // 通过移位(SHL/SHR)和掩码(AND)操作，从累积器中取出请求的 bits
+    result = ExtractBitsFromGlobalState(requestedBits);
+    return result;
+}
+```
+
+#### 3. 关键字段与寄存器解释
+
+| 符号 | 含义猜测 | 说明 |
+| :--- | :--- | :--- |
+| `[ESP+20]` | `nBits` | 函数参数：本次想要读取的比特数。 |
+| `$L_6713bc` | `g_Accumulator` | **全局累积器**：存储当前正在处理的字节片段（Bit Buffer）。 |
+| `$L_6713c4` | `g_BitsLeft` | **剩余有效位数**：记录累积器中还有多少位可读。 |
+| `$L_99da4c` | `g_FileHandle` | 文件句柄，用于 `ReadFile` 和 `CloseHandle`。 |
+| `$L_99da44` | `g_ReadBuffer` | 从文件读取数据的临时缓冲区指针。 |
+| `$L_99da60` | `g_BufferSize` | 缓冲区的最大容量或单次读取上限。 |
+
+---
+
+### 函数说明文档
+
+<call>
+#### 4.1. 函数C语言原型
+```c
+uint32_t Bitstream_ReadBits(int nBits);
+```
+
+#### 4.2. 参数说明
+| 参数名 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `nBits` | `int` | 需要从当前位流中提取的比特数量（通常在 1-32 之间）。 |
+
+#### 4.3. 返回值说明
+*   **成功**: 返回一个 `uint32_t` 类型的值，该值是由连续的 `nBits` 个比特组成的整数。
+*   **失败**: 如果文件读取出错或句柄关闭，可能返回 `0`。
+
+#### 4.4. 全局变量引用说明
+| 变量地址 | 猜测名称 | 用途描述 |
+| :--- | :--- | :--- |
+| `$L_99da68` | `g_IsMemoryMode` | 模式切换标志：0 为文件读取，非 0 为内存读取。 |
+| `$L_6713bc` | `g_BitBuffer` | 当前位流的字节累积值（Bit Accumulator）。 |
+| `$L_6713c4` | `g_BitsAvailable` | 当前累积器中剩余可用的比特数。 |
+| `$L_99da40` | `g_MemSourcePtr` | 内存模式下的数据源指针。 |
+| `$L_99da44` | `g_FileBuffer` | 文件模式下的临时缓冲区起始地址。 |
+| `$L_99da58` | `g_BufReadPos` | 当前已读取到文件缓冲区的偏移量/字节数。 |
+| `$L_99da4c` | `g_hFile` | 打开的数据源文件的句柄。 |
+
+#### 4.5. 功能概述
+该函数是位流解析器的核心逻辑。它负责维护一个全局的比特缓冲区（Accumulator）。当用户请求 $N$ 个比特时，函数首先检查当前缓冲区是否足够；若不足，则根据当前的模式（内存或文件）补充新的字节数据到缓冲区中，最后通过复杂的移位和掩码运算，精准地从连续的比特流中切分出所需的数值并返回。
+</call>
+
+---
+
+### 额外洞察与建议
+
+1.  **对象结构猜测**: 该函数高度依赖全局变量（Static/Singleton），这表明它属于一个单例模式的解压器或位流读取类。在逆向整个模块时，你应该寻找初始化这些全局变量的地方（例如 `InitBitstream` 函数）。
+2.  **潜在用途**: 这种逻辑几乎百分之百出现在以下场景：
+    *   **压缩算法解析**: 如 Huffman Coding, LZSS 或 Deflate 的解码过程。
+    *   **自定义二进制格式**: 游戏引擎中用于存储模型顶点数据、动画关键帧或纹理压缩数据的读取器。
+3.  **后续分析方向**:
+    *   寻找谁调用了 `FUN_43bc50`。如果调用者传入的参数是固定的（例如 `push 8`, `push 12`），那么你可以推断出该数据结构的具体字段宽度。
+    *   观察 `$L_99da68` 的赋值逻辑，确定程序是在什么时候从“内存模式”切换到“文件模式”的。这通常对应着数据的加载阶段（从磁盘 Load 到 Memory）。

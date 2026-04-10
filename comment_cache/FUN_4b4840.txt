@@ -1,0 +1,115 @@
+### 核心功能概括
+**该函数是一个顶点数据重组/展开器（Vertex Data Expander），它将压缩或索引化的原始几何数据（Source Data）根据指定的索引表，转换并填充到目标对象（Destination Object）的多个属性缓冲区（如 Position, Normal, UV 等）中。**
+
+---
+
+### 详细分析
+
+#### 1. 逻辑流程图解
+该函数通过三个连续的循环，分别处理三种不同的顶点属性：
+* **Loop 1 ($L_4b488d):** 处理第一类属性（例如 Position）。从索引表中读取偏移量，从基础数据数组中提取值，加上目标对象的常量偏移，写入第一个缓冲区。
+* **Loop 2 ($L_4b48ed):** 处理第二类属性（例如 Normal/UV）。逻辑与 Loop 1 类似，但使用了不同的目标偏移和源数据索引。
+* **Loop 3 ($L_4b494b):** 处理第三类属性（可能是 Index Buffer 或原始 Data）。这是一个直接的内存拷贝过程。
+
+#### 2. C 伪代码实现
+```c
+struct DestObject {
+    uint16_t padding;      // [ECX+2] -> count (顶点数量)
+    uint32_t* buf_attr0;   // [ECX+4]  -> 属性0缓冲区指针
+    uint32_t* buf_attr1;   // [ECX+16] -> 属性1缓冲区指针
+    uint32_t* buf_attr2;   // [ECX+36] -> 属性2缓冲区指针
+    // ... 其他偏移 ...
+    uint16_t offset0[3];   // [ECX+20, 22, 24] -> 第一类属性的坐标/分量偏置
+    uint16_t offset1[3];   // [ECX+44, 46, 48] -> 第二类属性的坐标/分量偏置
+};
+
+struct SrcData {
+    void* unknown;         // [EAX+0]
+    uint32_t* indexList;   // [EAX+8]  -> 指向索引列表，第一个元素可能是数据基址
+};
+
+void FUN_4b4840(DestObject* dest, SrcData* src) {
+    uint16_t count = dest->count;
+    SrcData* pSrc = src;
+    
+    // 准备阶段：计算缓冲区大小并设置指针
+    // 注意：汇编中通过 EAX+8 获取 ESI (indexList)，然后 EBX = [ESI]
+    uint32_t* indexList = pSrc->indexList; 
+    uint32_t* dataBaseArray = (uint32_t*)indexList[0]; // 根据汇编逻辑猜测 EBX 的来源
+    // ... 省略部分复杂的指针计算过程 ...
+
+    // --- Loop 1: 处理属性 0 (例如 Position) ---
+    uint32_t* destPtr0 = dest->buf_attr0;
+    for (int i = 0; i < count; ++i) {
+        uint32_t index = indexList[i+1]; // 跳过第一个基址元素
+        // 提取三个分量 (X, Y, Z)，每个分量可能是 WORD 类型并加上偏移
+        destPtr0[i].x = dataBaseArray[index] + dest->offset0[0];
+        destPtr0[i].y = dataBaseArray[index+1] + dest->offset0[1]; // 实际汇编中是通过 EBX+EBP*8 实现的偏移寻址
+        destPtr0[i].z = dataBaseArray[index+2] + dest->offset0[2];
+    }
+
+    // --- Loop 2: 处理属性 1 (例如 Normal/UV) ---
+    uint32_t* destPtr1 = dest->buf_attr1;
+    for (int i = 0; i < count; ++i) {
+        uint32_t index = indexList[i+1];
+        destPtr1[i].x = dataBaseArray[index] + dest->offset1[0];
+        // ... 同上 ...
+    }
+
+    // --- Loop 3: 处理属性 2 (例如 Index/Raw Data) ---
+    uint32_t* destPtr2 = dest->buf_attr2;
+    for (int i = 0; i < count; ++i) {
+        destPtr2[i] = indexList[i+1]; // 直接拷贝索引值
+    }
+}
+```
+
+#### 3. 关键字段解释表格
+
+| 偏移/寄存器 | 类型 | 含义猜测 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `[ECX+2]` | `uint16` | **Vertex Count** | 循环执行的次数，即顶点总数 |
+| `[ECX+4]` | `void*` | **Attribute Buffer 0** | 第一类属性（如位置）的存储首地址 |
+| `[ECX+16]` | `void*` | **Attribute Buffer 1** | 第二类属性（如法线/纹理）的存储首地址 |
+| `[ECX+20..24]` | `uint16[3]` | **Attr0 Component Offsets** | 对 X, Y, Z 分量进行补偿的常量值 |
+| `[ECX+44..48]` | `uint16[3]` | **Attr1 Component Offsets** | 对第二类属性分量的补偿值 |
+| `ESI` (Loop) | `uint32*` | **Index Table Pointer** | 存放着“从哪里取数据”的索引表 |
+| `EBX` (Loop) | `void*` | **Data Source Base** | 数据源数组的基地址 |
+
+---
+
+### 函数说明文档
+
+<call>
+#### 4.1. 函数C语言原型
+`void __stdcall ProcessVertexAttributes(DestObject* pDest, SrcDataContainer* pSrc);`
+
+#### 4.2. 函数参数说明
+| 参数名 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `pDest` | `DestObject*` | **目标对象指针**。包含已分配好的缓冲区地址及顶点属性的偏移补偿值。 |
+| `pSrc` | `SrcDataContainer*` | **源数据容器**。包含一个索引表，该表用于从原始数据流中定位并重组顶点信息。 |
+
+#### 4.3. 返回值说明
+* **void**: 无返回值。
+
+#### 4.4. 全局变量与对象结构猜测
+* `pDest->count`: 存储待处理的元素总数 (uint16)。
+* `pDest->buffer_pos`: 指向位置数据的指针，由循环 1 填充。
+* `pDest->buffer_norm`: 指向法线/纹理数据的指针，由循环 2 填充。
+* `pSrc->index_table`: 一个数组，第一个元素为数据基址，后续元素为每个顶点的索引值。
+
+#### 4.5. 功能概述
+该函数执行**顶点展开（Vertex Expansion）**操作。它通过遍历指定的索引表，从原始的数据源中提取经过压缩或非连续存储的属性分量（如 X, Y, Z），应用目标对象定义的偏移补偿，并将这些数据重新排列到内存连续的缓冲区中，以便后续渲染器使用。
+</call>
+
+---
+
+### 额外洞察与建议
+
+1.  **数据精度观察**: 汇编中使用大量的 `WORD PTR` (16位) 进行操作和加法运算（如 `add BP, WORD PTR [ECX+20]`），这强烈暗示该引擎使用了 **Fixed-point (定点数)** 或 **Half-float (半精度浮点数)** 来存储顶点属性。这在早期的 3D 游戏或移动端渲染中非常常见，目的是为了节省带宽和内存。
+2.  **对象结构猜测**: `pDest` 对象很可能是一个 `Mesh` 或 `VertexBufferObject` 的内部管理结构。由于它同时维护了多个缓冲区的指针 (`[ECX+4]`, `[ECX+16]`, `[ECX+36]`)，这符合 **Interleaved** (交错) 或 **Multi-stream** (多流) 顶点缓冲的设计模式。
+3.  **后续分析方向**:
+    *   建议寻找调用此函数的地方，观察传入的 `pSrc` 是如何从磁盘文件（如 `.mdl` 或 `.obj`）中解析出来的。
+    *   重点关注 `[ECX+20]` 等偏移量是如何计算的，这通常涉及到模型缩放 (Scaling) 或坐标系转换 (Coordinate System Conversion)。
+4.  **潜在矛盾**: 在 Loop 1 中，代码使用了 `add EDX, 8` 但写入的是三个 `WORD`（共6字节）。这意味着缓冲区存在 **2字节的对齐空隙 (Padding)**。在分析渲染管线时需注意这种非紧凑的数据布局。

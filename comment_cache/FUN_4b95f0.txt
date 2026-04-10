@@ -1,0 +1,142 @@
+# 函数分析报告：空间向量动态更新函数 (Dynamic Spatial Vector Update)
+
+### 第一部分：核心功能总结
+该函数是一个**基于状态切换的空间变换器**。它根据上下文标志位（`context[25]`）在“直接模式”与“加权插值模式”之间切换，通过 $3 \times 3$ 矩阵对向量进行变换，最终更新对象内部的坐标或增益分量（X, Y, Z）。
+
+---
+
+### 第二部分：详细分析
+
+#### 1. 逻辑流程图解
+函数执行分为四个阶段：**状态同步 $\rightarrow$ 常量加载 $\rightarrow$ 分支计算 $\rightarrow$ 结果回写**。
+
+```mermaid
+graph TD
+    A[开始: 获取 Context] --> B{Bit 3 (0x08) 是否设置?}
+    B -- 是 --> C[将 context+108 数据同步至 context+76]
+    B -- 否 --> D[跳过同步]
+    C --> E[加载静态常量到 $L_699880]
+    D --> E
+    E --> F[更新 Context 内部偏移/索引字段]
+    F --> G{Bit 2 (0x04) 是否设置?}
+    G -- 是 (直接模式) --> H[从 Context 取值并构造输入向量]
+    H --> I[调用 Matrix3x3::MultiplyVector]
+    G -- 否 (加权模式) --> J[调用 FUN_450f80 生成加权中间向量]
+    J --> K[将中间向量作为输入调用 MultiplyVector]
+    I --> L[计算最终结果并回写 context+52/54/56...]
+    K --> L
+    L --> M[结束]
+```
+
+#### 2. C 伪代码实现
+根据汇编逻辑还原的结构化表达：
+
+```c
+struct Context {
+    uint8_t  flags;       // Offset 0x25: Bit3=Sync, Bit2=Mode
+    int16_t  mode_idx;    // Offset 0x34: 用于 FUN_450f80 的索引
+    int16_t  vec_base[?] ; // Offset 0x36...: 输入向量基础数据
+    int32_t  res_x, res_y, res_z; // Offset 0x52/54/56: 结果存储区
+    uint16_t reserved;    // Offset 0x56...
+    // ... 其他字段 ...
+    void*    buffer_76;   // Offset 0x76
+    int32_t  val_108;     // Offset 0x108 (用于同步)
+};
+
+extern Context* g_pContext; // $L_995ac0
+extern int16_t static_data[]; // $L_52d828
+extern int32_t scratchpad[];  // $L_699880, $L_6998a0
+
+void FUN_4b95f0() {
+    Context* ctx = g_pContext;
+
+    // --- 阶段 1: 状态同步 ---
+    if (ctx->flags & 0x08) {
+        memcpy(&ctx->buffer_76, &ctx->val_108, 32); // rep movsd ECX=8
+    }
+
+    // --- 阶段 2: 初始化静态数据与索引更新 ---
+    memcpy(scratchpad, static_data, 32); 
+    ctx->res_x = ctx->some_val_52; // 更新 context[60] (基于偏移逻辑)
+    ctx->res_y = ctx->some_val_56; // 更新 context[64]
+
+    // --- 阶段 3: 核心分支计算 ---
+    if (ctx->flags & 0x04) { 
+        // [模式 B: 直接变换]
+        // 构建输入向量并应用矩阵乘法
+        int16_t src_vec[3]; // 从 context+36 等位置构建
+        int32_t dest_vec[3];
+        Matrix3x3* mat = (Matrix3x3*)ctx; 
+        mat->MultiplyVector(src_vec, dest_vec);
+        // ... 应用偏移后写入 ctx->res_x/y/z ...
+    } else {
+        // [模式 A: 加权变换]
+        int16_t weight_vec[3];
+        // 调用 FUN_450f80 生成加权向量，结果存入 scratchpad ($L_6998a0)
+        FUN_450f80(ctx->mode_idx, weight_vec); 
+
+        int32_t dest_vec[3];
+        Matrix3x3* mat = (Matrix3x3*)ctx;
+        mat->MultiplyVector(weight_vec, dest_vec); // 使用加权后的向量进行变换
+
+        // --- 阶段 4: 结果回写 ---
+        ctx->res_x = dest_vec[0] + scratchpad_offset_x;
+        ctx->res_y = dest_vec[1] + scratchpad_offset_y;
+        ctx->res_z = dest_vec[2] + scratchpad_offset_z;
+    }
+}
+```
+
+---
+
+### 第三部分：对比分析
+
+| 特性 | 模式 A (Bit 2 = 0) | 模式 B (Bit 2 = 1) |
+| :--- | :--- | :--- |
+| **输入来源** | `FUN_450f80` 生成的动态权重向量 | Context 对象内部存储的原始分量 |
+| **计算复杂度** | **高** (需执行参数化信号处理 + 矩阵乘法) | **低** (仅执行矩阵乘法) |
+| **典型用途** | 平滑过渡、距离衰减或受控的增益变化 | 固定位置变换或硬切换状态 |
+
+---
+
+### 第四部分：函数说明文档
+
+<call>
+#### 4.1. 函数 C 语言原型
+```c
+void __thiscall ContextManager::UpdateSpatialParameters(void);
+```
+*(注：根据汇编逻辑，该函数高度依赖全局上下文对象 `g_pContext`)*
+
+#### 4.2. 函数参数说明列表
+| 参数名 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| 无 (Implicit) | `this` | 该函数通过访问全局指针 `$L_995ac0` 获取上下文，而非标准调用约定传递。 |
+
+#### 4.3. 函数返回值说明
+* **void**: 不返回任何值，直接修改全局 Context 对象的状态。
+
+#### 4.4. 全局变量引用说明
+| 变量地址/偏移 | 类型猜测 | 用途描述 |
+| :--- | :--- | :--- |
+| `$L_995ac0` | `Context*` | **核心上下文指针**，存储所有状态、标志位和结果。 |
+| `$L_52d828` | `int16_t[16]` | 静态配置数据/常量矩阵分量。 |
+| `$L_699880` | `int32_t[8]` | 临时缓冲区，用于存放初始化后的状态值。 |
+| `$L_6998a0` | `int16_t[?]` | **中间计算缓冲区**，存储 `FUN_450f80` 生成的加权向量。 |
+| `$L_978030` | `struct { ... }` | 临时栈或全局辅助结构，用于矩阵运算前的参数打包。 |
+
+#### 4.5. 功能概述
+本函数负责根据当前环境状态更新空间位置/增益数据。它首先检查是否需要同步内部缓冲区；随后通过判断标志位决定是使用“预设的静态分量”还是“经由 `FUN_450f80` 计算出的动态加权向量”作为输入，最后利用 $3 \times 3$ 矩阵完成空间坐标变换并写回上下文。
+</call>
+
+---
+
+### 额外洞察与建议
+
+1.  **对象结构猜测**: 这是一个典型的“状态机驱动”的对象模型。`context[25]` 是控制流的核心，决定了系统是在进行**静态渲染/播放**还是**动态插值处理**。
+2.  **潜在用途**:
+    *   **音频引擎**: 计算音源在空间中的增益（Panning/Attenuation）。模式 A 对应于声源移动时的平滑过渡，模式 B 对应于瞬间的位置切换。
+    *   **粒子系统/物理引擎**: 更新粒子的速度或位置向量。
+3.  **后续分析方向**:
+    *   建议重点观察 `FUN_450f80` 的输出如何影响最终的 `res_x/y/z`，这能直接揭示该系统的“插值算法”特征（如线性插值还是指数衰减）。
+    *   检查 `$L_6998a0` 所在内存区域是否被其他线程频繁访问，以判断是否存在多线程同步问题。

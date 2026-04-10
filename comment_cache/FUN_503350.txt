@@ -1,0 +1,131 @@
+# 函数分析报告：FUN_503350
+
+### 核心功能总结
+**该函数是一个基于奇偶校验（Parity）的 ID/状态规范化与合法性验证器。它根据输入的模式将原始 ID 映射到特定的“标准 ID”（Canonical IDs），并判断转换后的 ID 是否属于预定义的合法集合（Mode 0 $\rightarrow \{10\}$; Mode 1 $\rightarrow \{9, 89\}$）。**
+
+---
+
+### 详细分析
+
+#### 1. 伪代码实现
+```c
+int __stdcall ValidateAndNormalizeID(int mode, int input_id) {
+    // EDI = mode (必须为 0 或 1), EBX = input_id
+    if (mode > 1) return 0;
+
+    // 检查输入 ID 的奇偶性是否符合要求的模式
+    // EAX = input_id & 1
+    if ((input_id & 1) != mode) {
+        return 0;
+    }
+
+    int transformed_id = input_id;
+    int is_valid = 0;
+
+    // --- 第一阶段：初步转换 (Initialization/Normalization) ---
+    if (transformed_id < 11) {
+        if (mode == 1) { // Mode 1: 奇数逻辑
+            // 调用 bitmask 工具验证 index 6
+            if (FUN_503040(6, MASK_STR) == SUCCESS) {
+                transformed_id = 9;
+            } else {
+                return 0;
+            }
+        } else { // Mode 0: 偶数逻辑
+            // 调用 index 5 -> 成功后转为 8，再调用 index 15 -> 最终为 10
+            if (FUN_503040(5, MASK_STR) == SUCCESS && 
+                FUN_503040(15, MASK_STR) == SUCCESS) {
+                transformed_id = 10;
+            } else {
+                return 0;
+            }
+        }
+    } else {
+        // --- 第二阶段：大数值范围转换 (High Range Logic) ---
+        if (transformed_id >= 80 && transformed_id < 90) {
+            if ((transformed_id & 1) == 0) { // Even: bit 0 is 0
+                // 调用 index 5 -> 转为 88，再调用 index 15 -> 最终转为 90? 
+                // 注意：根据汇编 L_50341a 的逻辑路径
+                if (FUN_503040(5, MASK_STR) == SUCCESS && 
+                    FUN_503040(15, MASK_STR) == SUCCESS) {
+                    transformed_id = 90; // 这里原本是转换过程，但在后续校验中可能失效
+                }
+            } else { // Odd: bit 0 is 1
+                if (FUN_503040(6, MASK_STR) == SUCCESS) {
+                    transformed_id = 89;
+                } else {
+                    return 0;
+                }
+            }
+        } else if (transformed_id >= 90) {
+            // 如果已经是 90 或更高，直接进入后续校验逻辑
+        } else {
+            return 0; // 不在 [0,11) 或 [80,90] 的范围内
+        }
+    }
+
+    // --- 第三阶段：最终合法性判定 (Final Validation) ---
+    if (mode == 0) {
+        // Mode 0 仅接受被规范化为 10 的 ID
+        if (transformed_id == 10) is_valid = 1;
+    } else {
+        // Mode 1 接受规范化后的 9 或 89
+        if (transformed_id == 9 || transformed_id == 89) {
+            is_valid = 1;
+        }
+    }
+
+    return is_valid;
+}
+```
+
+#### 2. 关键逻辑说明
+
+| 阶段 | 操作内容 | 目的 |
+| :--- | :--- | :--- |
+| **校验入口** | `cmp EAX, EDI` (其中 `EAX = ID & 1`) | **强制要求输入的 ID 奇偶性必须与指定的 Mode 一致**。 |
+| **低值映射** | 若 $ID < 11$，则通过一系列位掩码验证将 ID 归一化为 $9$ 或 $10$。 | 将零散的低位 ID 统一到“基础类”标准 ID 上。 |
+| **高值映射** | 若 $80 \le ID < 90$，根据奇偶性将其转换为 $89$ 或 $90$。 | 处理处于特定范围的高级实体/状态。 |
+| **结果判定** | 根据 `mode` 判断最终的 `transformed_id` 是否在合法集合内。 | **Mode 0 $\rightarrow \{10\}$; Mode 1 $\rightarrow \{9, 89\}$**。 |
+
+---
+
+### 函数说明文档
+
+<call>
+#### 4.1. 函数C语言原型
+`int __stdcall CheckIDByParityMode(int mode, int input_id);`
+
+#### 4.2. 参数说明列表
+| 参数名 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `mode` | `int` | **校验模式**。$0$: 偶数/类型A 模式；$1$: 奇数/类型B 模式。其它值返回 $0$。 |
+| `input_id` | `int` | **待验证的原始 ID**。其最低位（LSB）必须与 `mode` 相匹配。 |
+
+#### 4.3. 返回值说明
+*   **非零 (True)**: 表示该 ID 在指定模式下是合法的，且通过了所有的状态转换校验。
+*   **零 (False)**: 表示 ID 不符合奇偶要求、不在有效范围内，或在位掩码验证中失败。
+
+#### 4.4. 全局变量引用说明
+*   `$L_98ecc4`: 指向一个常量字符串或配置表的指针（推测为 bitmask 的定义描述）。
+*   函数内部未直接修改全局变量，主要依赖于 `FUN_503040` 返回的校验结果。
+
+#### 4.5. 功能概述
+该函数用于在引擎逻辑中验证一个对象的 ID 是否属于特定的“类别”。它不只是简单的范围检查，而是通过 `FUN_503040` 执行了一套复杂的位掩码转换流程（Normalization），将多个可能的原始输入映射到少数几个标准的、具有语义意义的常量 ID 上。
+</call>
+
+---
+
+### 额外洞察与建议
+
+1.  **对象分类猜测**: 
+    从映射结果看，这个函数极大概率用于区分不同类型的游戏实体或渲染状态：
+    *   **Mode 0 (Even)**: 可能代表“静态物体”或“基础环境”，其标准 ID 是 **$10$**。
+    *   **Mode 1 (Odd)**: 可能代表“动态角色”或“交互对象”，其标准 ID 分为两个子类：**$9$** 和 **$89$**。
+
+2.  **状态机性质**: 
+    函数中的 `push 5 -> push 15` 或 `push 6` 的序列，实际上是在执行一种**分层验证**。例如，要成为 ID $10$，必须先满足“基础类型 5”的特征，再通过“高级属性 15”的校验。
+
+3.  **后续分析方向**:
+    *   建议追踪 `FUN_503040` 的具体实现，了解这些索引（$5, 6, 15$）到底对应哪些具体的位掩码特征（例如：是否包含碰撞体、是否具有骨骼动画等）。
+    *   关注调用此函数的地方。如果是在渲染提交阶段被调用，那么它可能在过滤不符合当前渲染 Pass 要求的对象 ID。

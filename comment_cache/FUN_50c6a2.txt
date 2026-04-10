@@ -1,0 +1,77 @@
+### 函数功能概括：ACM 音频流开启接口的跳转存根
+
+该函数是一个典型的**导入地址表（IAT）跳转存根 (Import Stub)**，其本质是直接转发调用请求至 Windows 系统动态链接库中的 `acmStreamOpen` 函数。
+
+---
+
+### 详细分析
+
+#### 1. 伪代码实现
+由于该函数仅包含一条跳转指令，其逻辑等同于对外部 API 的直接包装：
+
+```c
+// 逻辑等价于
+ACMSTATUS acmStreamOpen(
+    PHACMSTREAM hACMStream,
+    ACM_STREAMINFO *pFormat,
+    ACM_MEDIASUBTYPE *pMediaType,
+    DWORD dwReserved,
+    DWORD dwFlags
+);
+```
+
+#### 2. 执行流程说明
+
+| 指令 | 操作对象 | 含义描述 |
+| :--- | :--- | :--- |
+| `jmp` | `DWORD PTR __imp__acmStreamOpen` | **间接跳转**。程序将执行流转移至 IAT（Import Address Table）中存储的 `acmStreamOpen` 函数的实际内存地址。 |
+
+#### 3. 关键字段解释
+* **`__imp__acmStreamOpen`**: 这是编译器/链接器生成的符号，指向导入表中的一个条目。该条目在程序运行时会被加载器（Loader）填充为 `acmStreamOpen` 在 `acmapi.dll` 或相关多媒体 DLL 中的真实地址。
+
+---
+
+### 与之前分析过的函数对比
+*(由于您当前仅提供了这一个函数，暂无对比对象。若后续提供其他音频处理相关的函数，我将为您建立逻辑关联。)*
+
+---
+
+<call>
+#### 4.1. 函数C语言原型
+```c
+ACMSTATUS acmStreamOpen(
+    PHACMSTREAM hACMStream,
+    ACM_STREAMINFO *pFormat,
+    ACM_MEDIASUBTYPE *pMediaType,
+    DWORD dwReserved,
+    DWORD dwFlags
+);
+```
+
+#### 4.2. 函数参数说明列表
+| 参数名 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `hACMStream` | `PHACMSTREAM` | **[out]** 指向接收已打开音频流句柄的指针。 |
+| `pFormat` | `ACM_STREAMINFO*` | **[in]** 指向包含音频格式信息的结构体，定义了压缩/解压所需的参数。 |
+| `pMediaType` | `ACM_MEDIASUBTYPE*` | **[in]** 指向媒体子类型结构的指针（如 PCM, MP3 等）。 |
+| `dwReserved` | `DWORD` | **[in]** 保留参数，必须为 0。 |
+| `dwFlags` | `DWORD` | **[in]** 控制流开启行为的标志位。 |
+
+#### 4.3. 函数返回值说明
+* **返回类型**: `ACMSTATUS` (本质为 `DWORD`)。
+* **含义**: 返回 `ACM_SUCCESS` (0) 表示成功；若失败，则返回特定的错误代码（如内存不足、格式不支持等）。
+
+#### 4.4. 全局变量引用说明
+* **`__imp__acmStreamOpen`**: 指向导入地址表 (IAT) 的偏移量，用于定位外部 API 地址。
+
+#### 4.5. 功能概述
+该函数是程序与 Windows 音频压缩管理器 (ACM) 通讯的入口点，用于初始化一个音频流对象，以便后续进行音频数据的编解码操作。
+</call>
+
+---
+
+### 额外洞察或建议
+
+* **模块用途猜测**: 该函数的出现强烈暗示了当前分析的目标程序具有**音频处理、多媒体播放或录音/压缩功能**。它极有可能正在使用某种特定的音频编解码器（Codec）。
+* **对象结构体预测**: 在后续分析中，请密切关注传递给该函数的第一个参数 `hACMStream` 的赋值位置。这通常是一个指向由系统分配的、用于维护流状态的重要**上下文结构体 (Context Structure)** 的指针。
+* **后续分析方向**: 建议搜索对 `FUN_50c6a2` 的**交叉引用 (Xrefs)**。通过观察调用该函数时传入的 `pFormat` 参数，你可以确定程序具体支持哪些音频格式（例如：是否在处理 `.wav` 文件的压缩）。
