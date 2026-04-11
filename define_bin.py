@@ -1,8 +1,15 @@
 import sys
 import pefile  # pip install pefile
+from tqdm import tqdm
 from utils import \
-  num, is_ok, read_all_files, readfile, has_args, read_bytes_from_exe
-
+  num, is_ok, read_all_files, readfile, has_args, \
+  read_bytes_from_exe, read_all_files
+from asm_parser import \
+  what_code, tname, show_code, hh, dword, make_label, \
+  create_data_label, find_function, find_all_label, \
+  _WAIT, _PROGRAM, _DATA, _NO_CHG, \
+  _END_PROC, _NEW_LABEL, _NORM_CODE, _SKIP, _DEFINE_DATA, \
+  _REG_MAP
 
 def db_writer():
     # 每16个字节一行
@@ -20,19 +27,27 @@ def db_writer():
 
 
 def ref_writer():
+    lines = read_all_files(structured=True)
+    label_addr = find_all_label(lines)
+
     chunks = [bytes_list[i:i+4] for i in range(0, len(bytes_list), 4)]
     total = 0
     for i, chunk in enumerate(chunks):
-        formatted = int(chunk[0], 16) + (int(chunk[1], 16)<<8) \
+        data = int(chunk[0], 16) + (int(chunk[1], 16)<<8) \
                   + (int(chunk[2], 16)<<16) + (int(chunk[3], 16)<<24)
-        formatted = f'$L_{hex(formatted)}'.replace('0x', '')
+        flabel = label_addr.get(data, None)
+        if flabel:
+            formatted = flabel
+        else:
+            formatted = f'{data:09x}H'
         addr = base_addr + i * 4
         total += len(chunk) 
-        comment = f'; case{i} | {",".join(chunk)} ({total} bytes)'
+        comment = f'; {addr:09x} | {" ".join(chunk)} ({i:3} - {total} bytes)'
+        space = " "*(12 - len(formatted))
         if i == 0:
-            print(f'{label} DWORD {formatted} {comment}')
+            print(f'{label} DWORD {formatted}{space}{comment}')
         else:
-            print(f'{indent} DWORD {formatted} {comment}')
+            print(f'{indent} DWORD {formatted}{space}{comment}')
 
 
 if __name__ == '__main__':

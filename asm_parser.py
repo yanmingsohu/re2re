@@ -283,3 +283,17 @@ def find_function(lines):
 
   print(f"找到 {len(func_map)} 个函数")
   return func_map, call_chain
+
+
+def find_all_label(lines):
+  label_addr = {}
+  for i, (code, comm, filename, no) in enumerate(tqdm(lines)):
+    ok, label, cmd, args, act, _t = what_code(code)
+    if not ok:
+      continue
+    if act == _NEW_LABEL:
+      try:
+        label_addr[num(label)] = label
+      except ValueError:
+        print(f" -- 警告: 标签不是虚拟地址: {label}")
+  return label_addr

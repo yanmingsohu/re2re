@@ -115,7 +115,8 @@ def show_code_btw(buf, a, b):
 
 
 def readfile(filename, lines, structured):
-    print(f"; read {filename}")
+    if not sys.stdout.isatty():
+        print(f"; read {filename}")
     err(f" - 读取文件 {filename}")
     no = 0
     ml = 80

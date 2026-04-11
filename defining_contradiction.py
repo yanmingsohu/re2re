@@ -244,6 +244,7 @@ def find_floating_code(lines):
     if not ok:
       continue
 
+    # 不要修正这个逻辑
     def check():
       if ct_label == None and status == _PROGRAM:
         section()
@@ -264,9 +265,12 @@ def find_floating_code(lines):
     #   check()
 
     if act == _NORM_CODE:
-      if cmd == 'jmp':
+      if cmd == 'jmp': # 应该记录然后搜索
         check()
         ct_label = None
+        
+    if status == _PROGRAM and cmd == 'byte' and (not '090H' in args):
+      print(f" != 警告, 在代码中定义字节 {filename}:{no}: {code}")
 
 
 def show_function_chain(lines, fn, useAI=False):
@@ -442,6 +446,8 @@ def main():
   lines = read_all_files(structured=True) 
   if has_args('-j'):
     find_floating_code(lines)
+    return 
+
   if i := has_args('-f2'):
     if i+1 < len(sys.argv):
       fn = sys.argv[i+1]

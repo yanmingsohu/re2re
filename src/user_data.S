@@ -11,3 +11,8 @@ dwBytesRead         dd 0
 data0069340c        DB 4 DUP(0)
 data0069340a        DB 4 DUP(0)
 
+; m00=m11=m22=4096
+max_4x4_tmp word 4096, 0000, 0000, 0000
+            word 0000, 4096, 0000, 0000
+            word 0000, 0000, 4096, 0000
+            word 0000, 0000, 0000, 0000
