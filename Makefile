@@ -43,7 +43,7 @@ build: bio2re.exe
 
 
 copygame: bio2re.exe
-	cp -f bio2re.exe bio2game\
+	cp -f bio2re.exe bio2re.pdb bio2game\
 	
 run: first_target
 	bio2game/bio2re.exe
