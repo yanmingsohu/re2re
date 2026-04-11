@@ -1872,15 +1872,8 @@ $L_4e519f::
             mov EAX,1
             ret 
 $L_4e5180 ENDP
-          BYTE 090H
-          BYTE 090H
-          BYTE 090H
-          BYTE 090H
-          BYTE 090H
-          BYTE 090H
-          BYTE 090H
-          BYTE 090H
-          BYTE 090H
+
+
 $L_4e51d0 PROC
 
             mov ECX,DWORD PTR [ESP+4]
@@ -5118,7 +5111,7 @@ $L_4e72e5::
             jmp $L_4e7324
 $L_4e72f7::
 
-            movzx CX,BYTE PTR [ECX*2+$L_53b221]
+            movzx CX,BYTE PTR [ECX*2+$L_53b220+1]
             jmp $L_4e731d
 $L_4e7302::
 

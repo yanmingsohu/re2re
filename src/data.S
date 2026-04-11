@@ -87844,107 +87844,35 @@ $L_53b1c0           DWORD $L_989e0c
           DWORD $L_98eb0c
           DWORD $L_98eb14
           DWORD $L_98eb34
-$L_53b1e0           DWORD $L_98eb54
-          BYTE 0a4H
-          BYTE 0ebH
-          BYTE 098H
-          BYTE 000H
-          BYTE 078H
-          BYTE 09eH
-          BYTE 098H
-          BYTE 000H
-          BYTE 0ecH
-          BYTE 04fH
-          BYTE 098H
-          BYTE 000H
-          BYTE 08cH
-          BYTE 09eH
-          BYTE 098H
-          BYTE 000H
-          BYTE 0c0H
-          BYTE 0ebH
-          BYTE 098H
-          BYTE 000H
-          BYTE 0d0H
-          BYTE 0ebH
-          BYTE 098H
-          BYTE 000H
-          BYTE 0e0H
-          BYTE 0ebH
-          BYTE 098H
-          BYTE 000H
-          BYTE 0f0H
-          BYTE 0ebH
-          BYTE 098H
-          BYTE 000H
-          BYTE 000H
-          BYTE 0ecH
-          BYTE 098H
-          BYTE 000H
-          BYTE 010H
-          BYTE 0ecH
-          BYTE 098H
-          BYTE 000H
-          BYTE 020H
-          BYTE 0ecH
-          BYTE 098H
-          BYTE 000H
-          BYTE 030H
-          BYTE 0ecH
-          BYTE 098H
-          BYTE 000H
-          BYTE 040H
-          BYTE 0ecH
-          BYTE 098H
-          BYTE 000H
-          BYTE 050H
-          BYTE 0ecH
-          BYTE 098H
-          BYTE 000H
-          BYTE 060H
-          BYTE 0ecH
-          BYTE 098H
-          BYTE 000H
-          BYTE 070H
-$L_53b221           BYTE 0ecH
-          BYTE 098H
-          BYTE 000H
-          BYTE 080H
-          BYTE 0ecH
-          BYTE 098H
-          BYTE 000H
-          BYTE 090H
-          BYTE 0ecH
-          BYTE 098H
-          BYTE 000H
-          BYTE 0a0H
-          BYTE 0ecH
-          BYTE 098H
-          BYTE 000H
-          BYTE 0b0H
-          BYTE 0ecH
-          BYTE 098H
-          BYTE 000H
-          BYTE 0c4H
-          BYTE 0ecH
-          BYTE 098H
-          BYTE 000H
-          BYTE 008H
-          BYTE 09eH
-          BYTE 098H
-          BYTE 000H
-          BYTE 0ccH
-          BYTE 0ecH
-          BYTE 098H
-          BYTE 000H
-          BYTE 0b8H
-          BYTE 0ebH
-          BYTE 098H
-          BYTE 000H
-          BYTE 0bcH
-          BYTE 0ebH
-          BYTE 098H
-          BYTE 000H
+
+$L_53b1e0 DWORD $L_98eb54 ; case0 | 54,eb,98,00 (4 bytes)
+          DWORD $L_98eba4 ; case1 | a4,eb,98,00 (8 bytes)
+          DWORD $L_989e78 ; case2 | 78,9e,98,00 (12 bytes)
+          DWORD $L_984fec ; case3 | ec,4f,98,00 (16 bytes)
+          DWORD $L_989e8c ; case4 | 8c,9e,98,00 (20 bytes)
+          DWORD $L_98ebc0 ; case5 | c0,eb,98,00 (24 bytes)
+          DWORD $L_98ebd0 ; case6 | d0,eb,98,00 (28 bytes)
+          DWORD $L_98ebe0 ; case7 | e0,eb,98,00 (32 bytes)
+          DWORD $L_98ebf0 ; case8 | f0,eb,98,00 (36 bytes)
+          DWORD $L_98ec00 ; case9 | 00,ec,98,00 (40 bytes)
+          DWORD $L_98ec10 ; case10 | 10,ec,98,00 (44 bytes)
+          DWORD $L_98ec20 ; case11 | 20,ec,98,00 (48 bytes)
+          DWORD $L_98ec30 ; case12 | 30,ec,98,00 (52 bytes)
+          DWORD $L_98ec40 ; case13 | 40,ec,98,00 (56 bytes)
+          DWORD $L_98ec50 ; case14 | 50,ec,98,00 (60 bytes)
+          DWORD $L_98ec60 ; case15 | 60,ec,98,00 (64 bytes)
+  ; $L_53b221 这个地址使用 $L_53b220+1
+$L_53b220 DWORD $L_98ec70 ; case0 | 70,ec,98,00 (4 bytes)
+          DWORD $L_98ec80 ; case1 | 80,ec,98,00 (8 bytes)
+          DWORD $L_98ec90 ; case2 | 90,ec,98,00 (12 bytes)
+          DWORD $L_98eca0 ; case3 | a0,ec,98,00 (16 bytes)
+          DWORD $L_98ecb0 ; case4 | b0,ec,98,00 (20 bytes)
+          DWORD $L_98ecc4 ; case5 | c4,ec,98,00 (24 bytes)
+          DWORD $L_989e08 ; case6 | 08,9e,98,00 (28 bytes)
+          DWORD $L_98eccc ; case7 | cc,ec,98,00 (32 bytes)
+          DWORD $L_98ebb8 ; case8 | b8,eb,98,00 (36 bytes)
+          DWORD $L_98ebbc ; case9 | bc,eb,98,00 (40 bytes)
+         
 $L_53b248           DWORD $L_98eb74
           DWORD $L_98eba0
 $L_53b250           DWORD $L_98ee20
@@ -111675,7 +111603,22 @@ $L_98eba0           DB 4 DUP(0)
 $L_98eba4           DB 20 DUP(0)
 $L_98ebb8           DB 4 DUP(0)
 $L_98ebbc           DB 4 DUP(0)
-$L_98ebc0           DB 260 DUP(0)
+$L_98ebc0         DB 16 DUP(0)
+ $L_98ebd0  DB 16 DUP(0)
+ $L_98ebe0  DB 16 DUP(0)
+ $L_98ebf0  DB 16 DUP(0)
+ $L_98ec00  DB 16 DUP(0)
+ $L_98ec10  DB 16 DUP(0)
+ $L_98ec20  DB 16 DUP(0)
+ $L_98ec30  DB 16 DUP(0)
+ $L_98ec40  DB 16 DUP(0)
+ $L_98ec50  DB 16 DUP(0)
+ $L_98ec60  DB 16 DUP(0)
+ $L_98ec70  DB 16 DUP(0)
+ $L_98ec80  DB 16 DUP(0)
+ $L_98ec90  DB 16 DUP(0)
+ $L_98eca0  DB 16 DUP(0)
+ $L_98ecb0  DB 20 DUP(0)
 $L_98ecc4           DB 4 DUP(0)
 $L_98ecc8           DB 4 DUP(0)
 $L_98eccc           DB 4 DUP(0)
