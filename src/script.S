@@ -1164,7 +1164,8 @@ $L_4e4b88::
 
             mov EAX,80000000h
             shr EAX,CL
-            mov ECX,DWORD PTR [EDX] ;崩溃 ECX=9, EDX=98eccc 非法内存访问
+        ;崩溃 ECX=9, EDX=98eccc 非法内存访问
+            mov ECX,DWORD PTR [EDX] 
             or ECX,EAX
             mov EAX,1
             mov DWORD PTR [EDX],ECX

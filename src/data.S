@@ -5609,7 +5609,7 @@ $L_5220f8           DWORD $L_522d74
           DWORD $L_522bdc
           DWORD $L_522bd4
           DWORD $L_522bcc
-$L_5221d0           BYTE 000H
+$L_5221d0 BYTE 000H ; 房间音频映射表 [房间组][偏移]
           BYTE 001H
           BYTE 002H
           BYTE 0ffH
@@ -38614,14 +38614,14 @@ $L_52d3c4                     DB 'common\data\end10.adt'
           BYTE 000H
 
           DB 6 DUP(0)
-$L_52d3e0           DWORD FUN_448300 ;++
+$L_52d3e0 DWORD FUN_448300 ;++
           DWORD FUN_4b9780
           DWORD FUN_4b97f0
           DWORD $L_4b9870
           DWORD $L_4b98b0
           DWORD $L_4b98d0
-          DWORD $L_4b99e0
-          DWORD $L_4b9a10
+          DWORD $L_4b99e0  ; 倒计时清状态
+          DWORD $L_4b9a10  ; 空闸音效
           DWORD $L_4b9a90
           DWORD $L_4b9b60
           DWORD $L_4b9b70
@@ -38633,7 +38633,7 @@ $L_52d3e0           DWORD FUN_448300 ;++
           DWORD FUN_4ba590
           DWORD $L_4ba5f0
           DWORD $L_4ba6a0
-          DWORD $L_4ba6b0
+          DWORD $L_4ba6b0 ; 后坐力衰减
           DWORD $L_4ba860
           DWORD $L_4ba8c0
           DWORD $L_4ba930
@@ -40717,7 +40717,7 @@ $L_52df1e           BYTE 0ffH
           BYTE 003H
           BYTE 0a8H
           BYTE 003H
-$L_52df60           DWORD 0985040h
+$L_52df60           DWORD $L_985040 ; 确定是引用
           BYTE 004H
           BYTE 006H
           BYTE 004H
@@ -61846,7 +61846,7 @@ $L_533868                     DB 'common\data\open00.adt'
           BYTE 010H
           BYTE 000H
           BYTE 040H
-          DWORD 0
+          DWORD 0a000a0h
 ;           : WARNING:0: no symbol for address 0xa000a0 
           BYTE 008H
           BYTE 000H
@@ -78299,7 +78299,7 @@ $L_5382f8           BYTE 00fH
           BYTE 0fcH
           BYTE 0b8H
           BYTE 00bH
-          DWORD 0
+          DWORD 0a1e479h
 ;           : WARNING:0: no symbol for address 0xa1e479 
           BYTE 00aH
           BYTE 01eH
@@ -78377,7 +78377,7 @@ $L_5382f8           BYTE 00fH
           BYTE 0feH
           BYTE 0b8H
           BYTE 00bH
-          DWORD 0
+          DWORD 0a0280ah
 ;           : WARNING:0: no symbol for address 0xa0280a 
           BYTE 00aH
           BYTE 00aH
@@ -78399,7 +78399,7 @@ $L_5382f8           BYTE 00fH
           BYTE 00cH
           BYTE 030H
           BYTE 000H
-          DWORD $L_81020a
+          DWORD 081020ah
           BYTE 048H
           BYTE 0f4H
           BYTE 030H
@@ -78492,8 +78492,8 @@ $L_538478           BYTE 00fH
           BYTE 0f6H
           BYTE 024H
           BYTE 0faH
-          DWORD $L_64f9c0
-          DWORD 0
+          DWORD 064f9c0h
+          DWORD 0e03c10h
 ;           : WARNING:0: no symbol for address 0xe03c10 
           BYTE 014H
           BYTE 01eH
@@ -78507,8 +78507,8 @@ $L_538478           BYTE 00fH
           BYTE 0f3H
           BYTE 050H
           BYTE 0fbH
-          DWORD $L_64fb50
-          DWORD 0
+          DWORD 064fb50h
+          DWORD 0e03c10h
 ;           : WARNING:0: no symbol for address 0xe03c10 
           BYTE 014H
           BYTE 01eH
@@ -78522,8 +78522,8 @@ $L_538478           BYTE 00fH
           BYTE 0f3H
           BYTE 050H
           BYTE 0fbH
-          DWORD $L_64fb50
-          DWORD 0
+          DWORD 064fb50h
+          DWORD 0e03c10h
 ;           : WARNING:0: no symbol for address 0xe03c10 
           BYTE 014H
           BYTE 01eH
@@ -78537,7 +78537,7 @@ $L_538478           BYTE 00fH
           BYTE 0f4H
           BYTE 050H
           BYTE 0fbH
-          DWORD $L_64fbb4
+          DWORD 064fbb4h
           BYTE 0c8H
           BYTE 020H
           BYTE 083H
@@ -78554,7 +78554,7 @@ $L_538478           BYTE 00fH
           BYTE 0f3H
           BYTE 050H
           BYTE 0fbH
-          DWORD $L_64fb50
+          DWORD 064fb50h
           BYTE 02cH
           BYTE 0b1H
           BYTE 0c4H
@@ -78588,7 +78588,7 @@ $L_538478           BYTE 00fH
           BYTE 0f3H
           BYTE 044H
           BYTE 0fdH
-          DWORD $L_64fa24
+          DWORD 064fa24h
           BYTE 02cH
           BYTE 0f1H
           BYTE 080H
@@ -78605,7 +78605,7 @@ $L_538478           BYTE 00fH
           BYTE 0f2H
           BYTE 0a8H
           BYTE 0fdH
-          DWORD $L_64f9c0
+          DWORD 064f9c0h
           BYTE 03cH
           BYTE 0f0H
           BYTE 0f0H
@@ -78626,7 +78626,7 @@ $L_538478           BYTE 00fH
           BYTE 0fcH
           BYTE 0b8H
           BYTE 00bH
-          DWORD 0
+          DWORD 0a0f03ch
 ;           : WARNING:0: no symbol for address 0xa0f03c 
           BYTE 00aH
           BYTE 01eH
@@ -78644,7 +78644,7 @@ $L_538478           BYTE 00fH
           BYTE 0fcH
           BYTE 0b8H
           BYTE 00bH
-          DWORD 0
+          DWORD 0a0f03ch
 ;           : WARNING:0: no symbol for address 0xa0f03c 
           BYTE 00aH
           BYTE 01eH
@@ -78682,7 +78682,7 @@ $L_538478           BYTE 00fH
           BYTE 0feH
           BYTE 0b8H
           BYTE 00bH
-          DWORD 0
+          DWORD 0e03c10h
 ;           : WARNING:0: no symbol for address 0xe03c10 
           BYTE 014H
           BYTE 01eH
@@ -78696,7 +78696,7 @@ $L_538478           BYTE 00fH
           BYTE 0f3H
           BYTE 050H
           BYTE 0fbH
-          DWORD $L_64fb50
+          DWORD 064fb50h
           BYTE 028H
           BYTE 0a0H
           BYTE 080H
@@ -78718,7 +78718,7 @@ $L_538478           BYTE 00fH
           BYTE 0b8H
           BYTE 00bH
           DWORD 0701c07h
-          DWORD $L_81020a
+          DWORD 081020ah
           BYTE 060H
           BYTE 0f0H
           BYTE 010H
@@ -78727,7 +78727,7 @@ $L_538478           BYTE 00fH
           BYTE 0f3H
           BYTE 050H
           BYTE 0fbH
-          DWORD $L_64fb50
+          DWORD 064fb50h
           BYTE 028H
           BYTE 0a0H
           BYTE 080H
@@ -78764,9 +78764,9 @@ $L_538478           BYTE 00fH
           BYTE 0f3H
           BYTE 050H
           BYTE 0fbH
-          DWORD $L_64fb50
+          DWORD 064fb50h
           DWORD 0701c07h
-          DWORD $L_81020a
+          DWORD 081020ah
           BYTE 060H
           BYTE 0f0H
           BYTE 010H
@@ -78775,8 +78775,8 @@ $L_538478           BYTE 00fH
           BYTE 0f3H
           BYTE 050H
           BYTE 0fbH
-          DWORD $L_64fb50
-          DWORD 0
+          DWORD 064fb50h
+          DWORD 0e03c10h
 ;           : WARNING:0: no symbol for address 0xe03c10 
           BYTE 014H
           BYTE 01eH
@@ -78790,7 +78790,7 @@ $L_538478           BYTE 00fH
           BYTE 0f3H
           BYTE 050H
           BYTE 0fbH
-          DWORD $L_64fb50
+          DWORD 064fb50h
           DB 4 DUP(0)
 $L_5385f8           BYTE 005H
           BYTE 000H
@@ -78812,7 +78812,7 @@ $L_5385f8           BYTE 005H
           BYTE 0feH
           BYTE 0c4H
           BYTE 009H
-          DWORD 0
+          DWORD 0e03c10h
 ;           : WARNING:0: no symbol for address 0xe03c10 
           BYTE 014H
           BYTE 00aH
@@ -78830,7 +78830,7 @@ $L_5385f8           BYTE 005H
           BYTE 0feH
           BYTE 0b8H
           BYTE 00bH
-          DWORD 0
+          DWORD 0e03c10h
 ;           : WARNING:0: no symbol for address 0xe03c10 
           BYTE 014H
           BYTE 00aH
@@ -78848,7 +78848,7 @@ $L_5385f8           BYTE 005H
           BYTE 0feH
           BYTE 0b8H
           BYTE 00bH
-          DWORD 0
+          DWORD 0e03c10h
 ;           : WARNING:0: no symbol for address 0xe03c10 
           BYTE 014H
           BYTE 00aH
@@ -78966,7 +78966,7 @@ $L_5385f8           BYTE 005H
           BYTE 0fcH
           BYTE 0b8H
           BYTE 00bH
-          DWORD 0
+          DWORD 0a0f03ch
 ;           : WARNING:0: no symbol for address 0xa0f03c 
           BYTE 00aH
           BYTE 01eH
@@ -78984,7 +78984,7 @@ $L_5385f8           BYTE 005H
           BYTE 0fcH
           BYTE 0b8H
           BYTE 00bH
-          DWORD 0
+          DWORD 0a0f03ch
 ;           : WARNING:0: no symbol for address 0xa0f03c 
           BYTE 00aH
           BYTE 01eH
@@ -79022,7 +79022,7 @@ $L_5385f8           BYTE 005H
           BYTE 0feH
           BYTE 0b8H
           BYTE 00bH
-          DWORD 0
+          DWORD 0e03c10h
 ;           : WARNING:0: no symbol for address 0xe03c10 
           BYTE 014H
           BYTE 00aH
@@ -79061,7 +79061,7 @@ $L_5385f8           BYTE 005H
           BYTE 0b8H
           BYTE 00bH
           DWORD 0701c07h
-          DWORD $L_81020a
+          DWORD 081020ah
           BYTE 048H
           BYTE 0f4H
           BYTE 030H
@@ -79114,9 +79114,9 @@ $L_5385f8           BYTE 005H
           BYTE 0fcH
           BYTE 0b8H
           BYTE 00bH
-          DWORD 0
+          DWORD 0e0380eh
 ;           : WARNING:0: no symbol for address 0xe0380e 
-          DWORD $L_81020a
+          DWORD 081020ah
           BYTE 048H
           BYTE 0f4H
           BYTE 030H
@@ -79129,7 +79129,7 @@ $L_5385f8           BYTE 005H
           BYTE 0feH
           BYTE 0b8H
           BYTE 00bH
-          DWORD 0
+          DWORD 0e03c10h
 ;           : WARNING:0: no symbol for address 0xe03c10 
           BYTE 014H
           BYTE 00aH
@@ -79151,13 +79151,13 @@ $L_5385f8           BYTE 005H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_538778           DWORD 0
+$L_538778           DWORD 0a0280ah
 ;           : WARNING:0: no symbol for address 0xa0280a 
           BYTE 00aH
           BYTE 01eH
           BYTE 08fH
           BYTE 007H
-          DWORD $L_64f448
+          DWORD 064f448h
           BYTE 004H
           BYTE 0f7H
           BYTE 098H
@@ -79308,7 +79308,7 @@ $L_538778           DWORD 0
           BYTE 0fcH
           BYTE 028H
           BYTE 00aH
-          DWORD $L_50f03c
+          DWORD 050f03ch
           BYTE 0daH
           BYTE 01eH
           BYTE 08fH
@@ -79322,7 +79322,7 @@ $L_538778           DWORD 0
           BYTE 0fcH
           BYTE 028H
           BYTE 00aH
-          DWORD 0
+          DWORD 0a14451h
 ;           : WARNING:0: no symbol for address 0xa14451 
           BYTE 0daH
           BYTE 01eH
@@ -79345,7 +79345,7 @@ $L_538778           DWORD 0
           BYTE 000H
           BYTE 000H
           BYTE 000H
-          DWORD $L_64f254
+          DWORD 064f254h
           BYTE 048H
           BYTE 0f4H
           BYTE 060H
@@ -79388,7 +79388,7 @@ $L_538778           DWORD 0
           BYTE 0fcH
           BYTE 028H
           BYTE 00aH
-          DWORD 0
+          DWORD 0d0340dh
 ;           : WARNING:0: no symbol for address 0xd0340d 
           BYTE 00aH
           BYTE 012H
@@ -79478,13 +79478,13 @@ $L_538778           DWORD 0
           BYTE 000H
           BYTE 000H
           BYTE 000H
-$L_5388f8           DWORD 0
+$L_5388f8           DWORD 0a0280ah
 ;           : WARNING:0: no symbol for address 0xa0280a 
           BYTE 00aH
           BYTE 01eH
           BYTE 08fH
           BYTE 007H
-          DWORD $L_64f448
+          DWORD 064f448h
           BYTE 004H
           BYTE 0f7H
           BYTE 098H
@@ -79635,7 +79635,7 @@ $L_5388f8           DWORD 0
           BYTE 0fcH
           BYTE 028H
           BYTE 00aH
-          DWORD $L_50f03c
+          DWORD 050f03ch
           BYTE 0daH
           BYTE 01eH
           BYTE 08fH
@@ -79715,7 +79715,7 @@ $L_538a0b           BYTE 006H
           BYTE 0fcH
           BYTE 028H
           BYTE 00aH
-          DWORD 0
+          DWORD 0d0340dh
 ;           : WARNING:0: no symbol for address 0xd0340d 
           BYTE 00aH
           BYTE 012H
@@ -91599,12 +91599,12 @@ $L_53c4b0                     DB 'common\data\select_b.adt'
           BYTE 000H
           BYTE 023H
           BYTE 000H
-          DWORD $L_690002
+          DWORD 0690002h
           BYTE 013H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-          DWORD $L_560005
+          DWORD 0560005h
           BYTE 025H
           BYTE 000H
           BYTE 003H
@@ -91649,7 +91649,7 @@ $L_53c4b0                     DB 'common\data\select_b.adt'
           BYTE 000H
           BYTE 040H
           BYTE 000H
-          DWORD $L_720003
+          DWORD 0720003h
           BYTE 010H
           BYTE 000H
           BYTE 005H
@@ -91682,7 +91682,7 @@ $L_53c4b0                     DB 'common\data\select_b.adt'
           BYTE 000H
           BYTE 033H
           BYTE 000H
-          DWORD $L_6f0001
+          DWORD 06f0001h
           BYTE 013H
           BYTE 000H
           BYTE 000H
@@ -91691,31 +91691,31 @@ $L_53c4b0                     DB 'common\data\select_b.adt'
           BYTE 000H
           BYTE 000H
           BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 001H
-          BYTE 000H
-          BYTE 000H
-          BYTE 001H
+$L_53c580   BYTE 000H ; 0x0053c580
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 001H
+          BYTE 000H 
+          BYTE 000H ; 0x0053c588
+          BYTE 001H
           BYTE 000H
           BYTE 000H
+          BYTE 000H
+          BYTE 000H
+          BYTE 000H 
+          BYTE 001H
+          BYTE 000H ; 0x0053c590
+          BYTE 000H 
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 001H
           BYTE 000H
           BYTE 000H
-          BYTE 001H
+          BYTE 001H ; 0x0053c598
           BYTE 000H
           BYTE 000H
           BYTE 000H
@@ -91723,13 +91723,7 @@ $L_53c4b0                     DB 'common\data\select_b.adt'
           BYTE 000H
           BYTE 000H
           BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 001H
-          BYTE 000H
-          BYTE 000H
+          BYTE 000H ; 0x0053c5a0
           BYTE 000H
           BYTE 000H
           BYTE 000H
@@ -91737,10 +91731,7 @@ $L_53c4b0                     DB 'common\data\select_b.adt'
           BYTE 000H
           BYTE 000H
           BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
+          BYTE 000H ; 0x0053c5a8
           BYTE 000H
           BYTE 001H
           BYTE 000H
@@ -91748,121 +91739,79 @@ $L_53c4b0                     DB 'common\data\select_b.adt'
           BYTE 000H
           BYTE 000H
           BYTE 000H
-          BYTE 001H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
+          BYTE 000H ; 0x0053c5b0
           BYTE 000H
           BYTE 000H
           BYTE 001H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
+          BYTE 000H 
+          BYTE 000H ; 0x0053c5b8
           BYTE 001H
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
+          BYTE 000H 
+          BYTE 000H ; 0x0053c5c0
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 001H
           BYTE 000H
-          BYTE 000H
-          BYTE 001H
-          BYTE 000H
-          BYTE 000H
-          BYTE 001H
-          BYTE 000H
-          BYTE 000H
-          BYTE 001H
+          BYTE 000H 
+          BYTE 000H ; 0x0053c5c8
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-          BYTE 000H
-          BYTE 000H
+          BYTE 000H 
+          BYTE 000H ; 0x0053c5d0
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 001H
           BYTE 000H
           BYTE 000H
+          BYTE 000H 
+          BYTE 000H ; 0x0053c5d8
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
+          BYTE 000H 
+          BYTE 000H ; 0x0053c5e0
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 001H
-          BYTE 000H
-          BYTE 000H
+          BYTE 000H 
+          BYTE 000H ; 0x0053c5e8
           BYTE 001H
           BYTE 000H
           BYTE 000H
           BYTE 001H
           BYTE 000H
           BYTE 000H
-          BYTE 001H
+          BYTE 001H  
+          BYTE 000H ; 0x0053c5f0
           BYTE 000H
           BYTE 000H
-          BYTE 001H
           BYTE 000H
           BYTE 000H
-          BYTE 001H
           BYTE 000H
           BYTE 000H
-          BYTE 001H
           BYTE 000H
-          BYTE 000H
-          BYTE 001H
-          BYTE 000H
-          BYTE 000H
-          BYTE 001H
-          BYTE 000H
-          BYTE 000H
-          BYTE 001H
-          BYTE 000H
-          BYTE 000H
-          BYTE 001H
+          BYTE 000H ; 0x0053c5f8
           BYTE 000H
           BYTE 000H
           BYTE 001H
@@ -91870,12 +91819,63 @@ $L_53c4b0                     DB 'common\data\select_b.adt'
           BYTE 000H
           BYTE 000H
           BYTE 000H
+          BYTE 000H ; 0x0053c600
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-          BYTE 07fH
+          BYTE 000H
+          BYTE 000H
+          BYTE 000H ; 0x0053c608
+          BYTE 000H
+          BYTE 000H
+          BYTE 000H
+          BYTE 000H
+          BYTE 001H
+          BYTE 000H
+          BYTE 000H
+          BYTE 001H ; 0x0053c610
+          BYTE 000H
+          BYTE 000H
+          BYTE 001H
+          BYTE 000H
+          BYTE 000H
+          BYTE 001H
+          BYTE 000H
+          BYTE 000H ; 0x0053c618
+          BYTE 001H
+          BYTE 000H
+          BYTE 000H
+          BYTE 001H
+          BYTE 000H
+          BYTE 000H
+          BYTE 001H
+          BYTE 000H ; 0x0053c620
+          BYTE 000H
+          BYTE 001H
+          BYTE 000H
+          BYTE 000H
+          BYTE 001H
+          BYTE 000H
+          BYTE 000H
+          BYTE 001H ; 0x0053c628
+          BYTE 000H
+          BYTE 000H
+          BYTE 001H
+          BYTE 000H
+          BYTE 000H
+          BYTE 001H
+          BYTE 000H 
+          BYTE 000H ; 0x0053c630
+          BYTE 000H
+          BYTE 000H
+          BYTE 000H
+          BYTE 000H
+          BYTE 000H
+          BYTE 000H
+          BYTE 000H 
+          BYTE 07fH ; 0x0053c638
           BYTE 07fH
           BYTE 07fH
           BYTE 07fH
@@ -92543,6 +92543,9 @@ $L_53c8f0                     DB 'common\sound\core\core00.   '
           BYTE 000H
 
           DB 3 DUP(0)
+; 武器射击音效的附加变体、空仓挂机声（dry fire / click sounds）、
+; 换弹/上膛声（reload / cocking sounds），
+; 以及一些武器系统的通用或备用音效。
 $L_53c910                     DB 'common\sound\arms\arms00.   '
           BYTE 000H
 
@@ -108111,8 +108114,8 @@ $L_5efb11           DB 1263 DUP(0)
 $L_5f0000           DB 107 DUP(0)
 $L_5f006b           DB 3 DUP(0)
 $L_5f006e           DB 16 DUP(0)
-$L_5f007e           DB 56 DUP(0)
-$L_5f00b4           DB 2 DUP(0)
+$L_5f007e           DB 54 DUP(0)
+$L_5f00b4           DB 2 DUP(0) ; 后添加
 $L_5f00b6           DB 5 DUP(0)
 $L_5f00bb           DB 12 DUP(0)
 $L_5f00c7           DB 24 DUP(0)
@@ -108272,7 +108275,7 @@ $L_64f060           DB 500 DUP(0)
 $L_64f254           DB 300 DUP(0)
 $L_64f380           DB 200 DUP(0)
 $L_64f448           DB 1400 DUP(0)
-$L_64f9c0           DB 3 DUP(0)
+$L__64f9c0           DB 3 DUP(0)
 $L_64f9c3           DB 97 DUP(0)
 $L_64fa24           DB 300 DUP(0)
 $L_64fb50           DB 100 DUP(0)
@@ -108402,7 +108405,7 @@ $L_669ca0           DB 4 DUP(0)
 $L_669ca4           DB 4 DUP(0)
 $L_669ca8           DB 4 DUP(0)
 $L_669cac           DB 4 DUP(0)
-$L_669cb0           DB 4 DUP(0)
+$L_669cb0           DB 4 DUP(0) ; 门音效
 $L_669cb4           DB 4 DUP(0)
 $L_669cb8           DB 4 DUP(0)
 $L_669cbc           DB 4 DUP(0)
@@ -108413,7 +108416,7 @@ $L_669d48           DB 4 DUP(0)
 $L_669d4c           DB 4 DUP(0)
 $L_669d50           DB 192 DUP(0)
 $L_669e10           DB 88 DUP(0)
-$L_669e68           DB 14 DUP(0)
+$L_669e68           DB 14 DUP(0) ; 枪械音效
 $L_669e76           DB 114 DUP(0)
 $L_669ee8           DB 4 DUP(0)
 $L_669eec           DB 4 DUP(0)
@@ -109203,7 +109206,14 @@ $L_68a1a0           DB 4 DUP(0)
 $L_68a1a4           DB 4 DUP(0)
 $L_68a1a8           DB 8 DUP(0)
 $L_68a1b0           DB 4 DUP(0)
+  ; $L_68a1b0  [+0  ~ +3]   4字节    用途待定
+  ; $L_68a1b4  [+0  ~ +11]  12字节   场景控制对象
+  ;                +8   子状态  (byte)
+  ;                +19  退出标志 (byte)  ← +19 = $L_68a1c7，在数组之后
 $L_68a1b4           DB 12 DUP(0)
+  ; $L_68a1c0  [+0  ~ +287] 288字节  回调槽数组 (8 × 36)
+  ;   slot[i].type     (WORD,  偏移 i*36+0)
+  ;   slot[i].func_ptr (DWORD, 偏移 i*36+4)
 $L_68a1c0           DB 40 DUP(0)
 $L_68a1e8           DB 248 DUP(0)
 $L_68a2e0           DB 2 DUP(0)
@@ -111901,7 +111911,7 @@ $L_993dae           DB 3717 DUP(0)
 $L_994c33           DB 69 DUP(0)
 $L_994c78           DB 1474 DUP(0)
 $L_99523a           DB 2058 DUP(0)
-$L_995a44           DB 124 DUP(0)
+$L_995a44           DB 124 DUP(0) ;<-
 $L_995ac0           DB 16 DUP(0)
 $L_995ad0           DB 1 DUP(0)
 $L_995ad1           DB 1 DUP(0)
@@ -112135,29 +112145,6 @@ $L_99edec           DB 4 DUP(0)
 $L_99edf0           DB 4 DUP(0)
 $L_99edf4           DB 4 DUP(0)
 
-Data_53c580         DB 00h,00h,00h,00h,00h,00h,01h,00h
-                    DB 00h,01h,00h,00h,00h,00h,00h,01h
-                    DB 00h,00h,00h,00h,00h,01h,00h,00h
-                    DB 01h,00h,00h,00h,00h,00h,00h,00h
-                    DB 00h,00h,00h,00h,01h,00h,00h,00h
-                    DB 00h,00h,01h,00h,00h,00h,00h,00h
-                    DB 00h,00h,00h,01h,00h,00h,00h,00h
-                    DB 00h,01h,00h,00h,00h,00h,00h,00h
-                    DB 00h,00h,00h,00h,00h,01h,00h,00h
-                    DB 00h,00h,00h,00h,00h,00h,00h,00h
-                    DB 00h,00h,00h,00h,01h,00h,00h,00h
-                    DB 00h,00h,00h,00h,00h,00h,00h,00h
-                    DB 00h,00h,00h,00h,00h,00h,01h,00h
-                    DB 00h,01h,00h,00h,01h,00h,00h,01h
-                    DB 00h,00h,00h,00h,00h,00h,00h,00h
-                    DB 00h,00h,00h,01h,00h,00h,00h,00h
-                    DB 00h,00h,00h,00h,00h,00h,00h,00h
-                    DB 00h,00h,00h,00h,00h,01h,00h,00h
-                    DB 01h,00h,00h,01h,00h,00h,01h,00h
-                    DB 00h,01h,00h,00h,01h,00h,00h,01h
-                    DB 00h,00h,01h,00h,00h,01h,00h,00h
-                    DB 01h,00h,00h,01h,00h,00h,01h,00h
-                    DB 00h,00h,00h,00h,00h,00h,00h,00h
 ; 随意定义了一些数据, 完整长度应该有 4M
 $L_c800fa DB 0B3h,01Ch,0FFh,0FCh,045h,07Ah,043h,005h ; 0xc800fa (8 bytes)
           DB 0F6h,0BCh,0A1h,034h,0D6h,005h,02Dh,059h ; 0xc80102 (16 bytes)
