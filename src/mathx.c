@@ -5,7 +5,7 @@
 
 #include <stdint.h>
 
-
+// FUN_450af0
 void __cdecl mat_3x3_mul(const int16_t* vec, const int16_t* mat, int16_t* out)
 {
   int32_t m0 = mat[0], m1 = mat[1], m2 = mat[2];
@@ -35,4 +35,25 @@ void __cdecl mat_3x3_mul(const int16_t* vec, const int16_t* mat, int16_t* out)
   *(int32_t*)(&out[4]) = ((int32_t)(uint16_t)r12 << 16) | (uint16_t)r11;
   *(int32_t*)(&out[6]) = ((int32_t)(uint16_t)r21 << 16) | (uint16_t)r20;
   out[8] = r22;
+}
+
+
+// FUN_4508e0
+// mat: int16[9]，行优先
+// vec: int32[3]
+// out: int32[3]
+void __cdecl mat_3x3_vec_mul(const int16_t* mat, const int32_t* vec, int32_t* out)
+{
+    int32_t v0 = vec[0];
+    int32_t v1 = vec[1];
+    int32_t v2 = vec[2];
+
+    // 行0点积
+    out[0] = ((int32_t)mat[0]*v0 + (int32_t)mat[1]*v1 + (int32_t)mat[2]*v2) >> 12;
+
+    // 行1点积
+    out[1] = ((int32_t)mat[3]*v0 + (int32_t)mat[4]*v1 + (int32_t)mat[5]*v2) >> 12;
+
+    // 行2点积
+    out[2] = ((int32_t)mat[6]*v0 + (int32_t)mat[7]*v1 + (int32_t)mat[8]*v2) >> 12;
 }

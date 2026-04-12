@@ -15,7 +15,7 @@ EXTERN ___ImageBase:BYTE
 PUBLIC __EntryPoint
 
 ;===================================
-_TEXT SEGMENT
+_TEXT SEGMENT 'TEXT'
 
 
   Include src/FUN_401000_format_err_message.S
@@ -35,7 +35,7 @@ _RDATA SEGMENT READ 'DATA'
 
 _RDATA ENDS
 ;===================================
-_DATA SEGMENT
+_DATA SEGMENT 'RDATA'
 
 
   Include src/data.S

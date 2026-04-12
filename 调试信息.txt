@@ -387,3 +387,8 @@ bio2re.FUN_450af0 和 bio2.00450E30 同时修改缓冲区
     FUN_450af0
   FUN_450f80
   FUN_450f10
+
+
+读取 data\\zmovie\\r200.bin 程序跑飞(大厅安装奖牌)
+  fun_50d823/func_50c300 似乎是读取文件
+  fun_50bb20 很可疑

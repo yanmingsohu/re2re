@@ -3,12 +3,13 @@
 ; https://github.com/yanmingsohu/
 
 ; -- event.c
-EXTERN _on_winmain_call : PROC
-EXTERN _on_before_window_show : PROC
+Extern _on_winmain_call : Proc
+Extern _on_before_window_show : Proc
 
 ; -- common.c
-EXTERN _debug : PROC
-EXTERN _stack : PROC
+Extern _debug : Proc
+Extern _stack : Proc
 
 ; -- mathx.c
-EXTERN _mat_3x3_mul : PROC
+Extern _mat_3x3_mul : Proc
+Extern _mat_3x3_vec_mul : Proc

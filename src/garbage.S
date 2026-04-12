@@ -136,3 +136,54 @@ FUN_450af0 PROC
             add ESP,60
             ret 
 FUN_450af0 ENDP
+
+
+FUN_4508e0 PROC
+        jmp _mat_3x3_vec_mul
+        int 3
+            mov EAX,DWORD PTR [ESP+8]
+            mov ECX,DWORD PTR [ESP+4]
+            push EBX
+            push EBP
+            mov EDX,DWORD PTR [EAX]
+            push ESI
+            mov ESI,DWORD PTR [EAX+4]
+            push EDI
+            mov EDI,DWORD PTR [EAX+8]
+            movsx EBX,WORD PTR [ECX+4]
+            movsx EAX,WORD PTR [ECX+2]
+            imul EBX,EDI
+            imul EAX,ESI
+            add EBX,EAX
+            movsx EAX,WORD PTR [ECX]
+            imul EAX,EDX
+            add EBX,EAX
+            mov EAX,DWORD PTR [ESP+28]
+            sar EBX,12
+            mov DWORD PTR [EAX],EBX
+            movsx EBX,WORD PTR [ECX+10]
+            movsx EBP,WORD PTR [ECX+8]
+            imul EBX,EDI
+            imul EBP,ESI
+            add EBX,EBP
+            movsx EBP,WORD PTR [ECX+6]
+            imul EBP,EDX
+            add EBX,EBP
+            sar EBX,12
+            mov DWORD PTR [EAX+4],EBX
+            movsx EBX,WORD PTR [ECX+16]
+            imul EBX,EDI
+            movsx EDI,WORD PTR [ECX+14]
+            movsx ECX,WORD PTR [ECX+12]
+            imul EDI,ESI
+            imul ECX,EDX
+            add EBX,EDI
+            pop EDI
+            add EBX,ECX
+            pop ESI
+            sar EBX,12
+            mov DWORD PTR [EAX+8],EBX
+            pop EBP
+            pop EBX
+            ret 
+FUN_4508e0 ENDP
