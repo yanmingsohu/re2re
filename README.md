@@ -6,11 +6,12 @@ Objective: To compile the assembly code so that it can run.
 ![screen](screen/2.png)
 
 
-Current status: |>>>-----------------| 15%
+Current status: |>>>>----------------| 20%
 * Able to enter the first scene
 * The moving animation is strange
 * open menu
 * Extend functionality using C language
+* Fire a shot, watch the animation, switch scenes.
 
 
 # Depends 

@@ -27,7 +27,7 @@ _TEXT SEGMENT
 
 _TEXT ENDS
 ;===================================
-_RDATA SEGMENT READ 'DATA'
+_RDATA SEGMENT READ 'DATA' 
 
 
   Include src/rdata.S
