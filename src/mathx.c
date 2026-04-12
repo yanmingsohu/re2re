@@ -6,6 +6,7 @@
 #include <string.h>
 #include <fenv.h>
 #include <math.h>
+#include "imports.h"
 
 
 // 试图用浮点数重写
@@ -98,12 +99,6 @@ void __cdecl mat3x3_to_vector_inplace(int16_t* mat, int16_t* vec) {
     mat_3x3_mul(mat, vec, vec);
 }
 
-
-typedef struct {
-    int16_t R[3][3];  // 12.4 fixed
-    int16_t pad;
-    int32_t T[3];     // 高精度平移
-} MATRIX;
 
 // FUN_450ce0
 void __cdecl mat_rot_tran(MATRIX* m1, MATRIX* m2, MATRIX* out) {
@@ -257,8 +252,6 @@ int32_t fp_cos(uint32_t x) {
 }
 
 
-extern int __stdcall MulDiv(int a, int b, int x);
-
 // FUN_451530
 void __cdecl blend_vec(const int16_t* a, const int16_t* b, 
                int16_t scaleA, int16_t scaleB, int16_t* out) {
@@ -353,19 +346,15 @@ int16_t* __cdecl rotate_xyz(int16_t* angles, int16_t* mat) {
 }
 
 
-extern void* pt_99ce20;
-extern float* pt_scr_h_width;
-extern float* pt_scr_h_height;
-
 static inline int32_t truncate_d(double v) {
-  return (int32_t)(int64_t)v;
+    return (int32_t)(int64_t)v;
 }
 
 
 // FUN_451060
-// 水 / 文档 投影
+// 文档/特效贴花 投影
 int __cdecl proj_2D_tile(int16_t* vec, int32_t* x, int32_t* y, int32_t *z) {
-  const int SCALE = 20;
+  const int SCALE = *pt_z_scale;
   const int Type = 2;
   
   int32_t lvec[4]; // 对应汇编中的 [ESP+4], [ESP+8], [ESP+12]
@@ -383,36 +372,37 @@ int __cdecl proj_2D_tile(int16_t* vec, int32_t* x, int32_t* y, int32_t *z) {
       lvec[2] = 1; // 防止除以零
   }
 
-  int16_t outX, outY;
+  int32_t outX, outY;
   double invZ;
   
   // $L_526214
   switch (Type) {
-    case 2: // $L_451184 之后的逻辑
-        // 简单的比例缩放
-        outX = (((double)lvec[0] * SCALE) / (double)lvec[2] + 160.0);
-        outY = (((double)lvec[1] * SCALE) / (double)lvec[2] + 120.0);        
-        break;
+  case 2: // $L_451184 之后的逻辑
+    // 简单的比例缩放
+    outX = ((double)lvec[0] * SCALE / lvec[2] + 160.0);
+    outY = ((double)lvec[1] * SCALE / lvec[2] + 120.0);        
+    break;
 
-    case 1: // $L_451108
-        invZ = 1.0 / (double)lvec[2];
-        outX = (((double)SCALE * invZ) * (double)lvec[0] + 200.0);
-        outY = (((double)SCALE * invZ) * (double)lvec[1] + 120.0);
-        break;
+  case 1: // $L_451108
+    invZ = 1.0 / lvec[2];
+    outX = ((double)SCALE * invZ * lvec[0] + 200.0);
+    outY = ((double)SCALE * invZ * lvec[1] + 120.0);
+    break;
 
-    case 0: // $L_451146
-        invZ = 1.0 / (double)lvec[2];
-        outX = (((double)lvec[0] * invZ) * SCALE + 200.0);
-        outY = (((double)lvec[1] * invZ) * SCALE + 120.0);
-        break;
+  case 0: // $L_451146
+    invZ = 1.0 / lvec[2];
+    outX = ((double)lvec[0] * invZ * SCALE + 200.0);
+    outY = ((double)lvec[1] * invZ * SCALE + 120.0);
+    break;
 
-    default: // 其他情况 (汇编 $L_451184 直接赋值)
-        outX = lvec[0];
-        outY = lvec[1];
-        break;
+  default: // 其他情况 (汇编 $L_451184 直接赋值)
+    outX = lvec[0];
+    outY = lvec[1];
+    break;
   }
-
+  
   *x = (outY << 16) + (outX & 0xFFFF);
   // 汇编末尾：mov EAX, EDI(posZ); sar EAX, 2;
+  // 这个函数返回的不是“坐标”，而是：深度值（用于排序）
   return lvec[2] >> 2;
 }

@@ -15,6 +15,8 @@ _pt_scr_h_width Dword $L_517438
   public _pt_scr_h_width
 _pt_scr_h_height Dword $L_51743c
   public _pt_scr_h_height
+_pt_z_scale Dword $L_526210
+  public _pt_z_scale
 
 ; 这个方法 c 没法调用
 ;_truncate_d dword truncate_d
