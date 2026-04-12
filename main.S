@@ -40,6 +40,7 @@ _DATA SEGMENT 'RDATA'
 
   Include src/data.S
   Include src/user_data.S
+  Include src/exports.S
 
 
 _DATA ENDS

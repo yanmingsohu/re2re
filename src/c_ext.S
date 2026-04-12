@@ -32,3 +32,4 @@ Extern _rotate_y : Proc
 Extern _rotate_x : Proc
 Extern _rotate_yxz : Proc
 Extern _rotate_xyz : Proc
+Extern _proj_2D_tile: Proc

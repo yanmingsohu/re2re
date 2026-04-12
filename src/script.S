@@ -2461,7 +2461,7 @@ $L_4e576e::
             lea EBX,DWORD PTR [ESI+36]
             push EBX
             push EBP
-            call FUN_450e30
+            call _rotate_xyz
 
             mov EDX,DWORD PTR [ESI+128]
             lea ECX,DWORD PTR [ESI+84]
@@ -2778,7 +2778,7 @@ $L_4e5b68::
             push EAX
             push ECX
             mov WORD PTR [ESP+20],DX
-            call FUN_450e30
+            call _rotate_xyz
 
             lea EDX,DWORD PTR [ESP+68]
             lea EAX,DWORD PTR [ESP+36]

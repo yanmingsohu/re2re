@@ -351,3 +351,68 @@ int16_t* __cdecl rotate_xyz(int16_t* angles, int16_t* mat) {
     rotate_x((int32_t)angles[0], mat); // X
     return mat;
 }
+
+
+extern void* pt_99ce20;
+extern float* pt_scr_h_width;
+extern float* pt_scr_h_height;
+
+static inline int32_t truncate_d(double v) {
+  return (int32_t)(int64_t)v;
+}
+
+
+// FUN_451060
+// 水 / 文档 投影
+int __cdecl proj_2D_tile(int16_t* vec, int32_t* x, int32_t* y, int32_t *z) {
+  const int SCALE = 20;
+  const int Type = 2;
+  
+  int32_t lvec[4]; // 对应汇编中的 [ESP+4], [ESP+8], [ESP+12]
+  MATRIX *mat = (MATRIX*)pt_99ce20;
+  
+  // 汇编：push [ESP+20](arg0), push OFFSET $L_99ce20
+  mat_vec_mul_n((int16_t*)mat, vec, lvec);
+
+  lvec[0] += mat->T[0];
+  lvec[1] += mat->T[1];
+  lvec[2] += mat->T[2];
+
+  // 3. Z轴边界检查
+  if (lvec[2] == 0) {
+      lvec[2] = 1; // 防止除以零
+  }
+
+  int16_t outX, outY;
+  double invZ;
+  
+  // $L_526214
+  switch (Type) {
+    case 2: // $L_451184 之后的逻辑
+        // 简单的比例缩放
+        outX = (((double)lvec[0] * SCALE) / (double)lvec[2] + 160.0);
+        outY = (((double)lvec[1] * SCALE) / (double)lvec[2] + 120.0);        
+        break;
+
+    case 1: // $L_451108
+        invZ = 1.0 / (double)lvec[2];
+        outX = (((double)SCALE * invZ) * (double)lvec[0] + 200.0);
+        outY = (((double)SCALE * invZ) * (double)lvec[1] + 120.0);
+        break;
+
+    case 0: // $L_451146
+        invZ = 1.0 / (double)lvec[2];
+        outX = (((double)lvec[0] * invZ) * SCALE + 200.0);
+        outY = (((double)lvec[1] * invZ) * SCALE + 120.0);
+        break;
+
+    default: // 其他情况 (汇编 $L_451184 直接赋值)
+        outX = lvec[0];
+        outY = lvec[1];
+        break;
+  }
+
+  *x = (outY << 16) + (outX & 0xFFFF);
+  // 汇编末尾：mov EAX, EDI(posZ); sar EAX, 2;
+  return lvec[2] >> 2;
+}
