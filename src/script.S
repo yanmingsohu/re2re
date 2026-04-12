@@ -2804,7 +2804,7 @@ $L_4e5b68::
             push EDX
             push EAX
             mov WORD PTR [ESP+44],1000
-            call FUN_4508a0
+            call _mat_vec_mul_cut
 
             lea ECX,DWORD PTR [ESP+44]
             lea EDX,DWORD PTR [ESP+52]
