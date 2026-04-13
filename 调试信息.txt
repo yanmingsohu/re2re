@@ -424,3 +424,8 @@ $L_540958           DWORD $L_503550 标题,没问题
           DWORD $L_506e60
           DWORD $L_506fd0
           DWORD $L_507980
+
+FUN_4de680
+  FUN_4d9280
+    FUN_4b44e0
+      FUN_4b4840 不稳定崩溃

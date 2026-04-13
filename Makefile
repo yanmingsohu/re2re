@@ -29,7 +29,7 @@ asm: bio2.S
 
 
 main.obj: main.S $(SRCS) 
-	$(ml) //c //coff main.S //Fo main.obj //Zi
+	$(ml) //c //coff main.S //Fo main.obj //Zi //Zd
 	
 bio2re.exe: main.obj $(C_OBJECTS)
 	$(link) //SUBSYSTEM:WINDOWS //ENTRY:_EntryPoint $(libs) $^ //OUT:bio2re.exe //LIBPATH:"$(libpath)"  //DEBUG

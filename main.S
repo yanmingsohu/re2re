@@ -27,7 +27,7 @@ _TEXT SEGMENT 'TEXT'
 
 _TEXT ENDS
 ;===================================
-_RDATA SEGMENT READ 'DATA' 
+_RDATA SEGMENT READ 'RDATA' 
 
 
   Include src/rdata.S
@@ -35,14 +35,18 @@ _RDATA SEGMENT READ 'DATA'
 
 _RDATA ENDS
 ;===================================
-_DATA SEGMENT 'RDATA'
+_DATA SEGMENT 'DATA'
 
 
   Include src/data.S
   Include src/user_data.S
   Include src/exports.S
 
-
 _DATA ENDS
+;===================================
+.DATA?
+
+  Include src/bss.S
+
 ;===================================
 END

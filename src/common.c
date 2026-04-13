@@ -82,3 +82,22 @@ void __cdecl open_console() {
   // stack();
   // debug();
 }
+
+
+void __cdecl __printx(char* a, char* b) {
+    printf(" P -- %x -- %x\r", a, b);
+    // if (b == 0xFFFF0000) {
+    //     printf(" 1:: %x\n", a);
+    //     return;
+    // }
+    // if (b == 0x40000000) {
+    //     printf(" 2:: %x\n", a);
+    //     return;
+    // }
+    // if (a == 0xA0 || b == 0x78) {
+    //     printf(" 3:: %x %x\n", a, b);
+    //     return;
+    // }
+    // if (a) puts(a);
+    // if (b) puts(b);
+}

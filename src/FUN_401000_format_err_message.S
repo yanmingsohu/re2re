@@ -10,7 +10,7 @@ COMMENT !
 
   路由逻辑：接收一个栈参数作为输入 ID，通过一系列比较指令判断其值。
   分支跳转：根据匹配到的常量范围，利用跳转表（Jump Table）或直接加载地址，决定执行路径。
-  子程序调用：绝大多数情况下，最终会调用同一个公共函数 FUN_448300，
+  子程序调用：绝大多数情况下，最终会调用同一个公共函数 _printx，
   但传递不同的后续处理入口地址作为参数。
   用途：
   常用于协议解析、命令分发或编译器生成的状态机调度代码，根据输入类型动态路由到具体的处理逻辑。
@@ -58,15 +58,15 @@ $L_401004::
             jne $L_401907
 
             mov DWORD PTR [ESP+4],OFFSET $L_51cb6c
-            jmp FUN_448300
+            jmp _printx
 $L_401079:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51cb44
-            jmp FUN_448300
+            jmp _printx
 $L_401086:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51cab0
-            jmp FUN_448300
+            jmp _printx
 $L_401093:
 
             cmp EAX,2147942414
@@ -74,11 +74,11 @@ $L_401093:
 $L_40109e:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51ca60
-            jmp FUN_448300
+            jmp _printx
 $L_4010ab:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51ca00
-            jmp FUN_448300
+            jmp _printx
 $L_4010b8:
 
             add EAX,2005532667
@@ -91,23 +91,23 @@ $L_4010b8:
 $L_4010d5:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c9cc
-            jmp FUN_448300
+            jmp _printx
 $L_4010e2:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c980
-            jmp FUN_448300
+            jmp _printx
 $L_4010ef:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c930
-            jmp FUN_448300
+            jmp _printx
 $L_4010fc:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c8f8
-            jmp FUN_448300
+            jmp _printx
 $L_401109:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c8a0
-            jmp FUN_448300
+            jmp _printx
 $L_401116:
 
             add EAX,2005532582
@@ -120,43 +120,43 @@ $L_401116:
 $L_401133:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c850
-            jmp FUN_448300
+            jmp _printx
 $L_401140:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c7f0
-            jmp FUN_448300
+            jmp _printx
 $L_40114d:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c798
-            jmp FUN_448300
+            jmp _printx
 $L_40115a:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c754
-            jmp FUN_448300
+            jmp _printx
 $L_401167:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c714
-            jmp FUN_448300
+            jmp _printx
 $L_401174:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c6c0
-            jmp FUN_448300
+            jmp _printx
 $L_401181:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c684
-            jmp FUN_448300
+            jmp _printx
 $L_40118e:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c654
-            jmp FUN_448300
+            jmp _printx
 $L_40119b:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c5f8
-            jmp FUN_448300
+            jmp _printx
 $L_4011a8:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c5d0
-            jmp FUN_448300
+            jmp _printx
 $L_4011b5:
 
             add EAX,2005532492
@@ -169,83 +169,83 @@ $L_4011b5:
 $L_4011d4:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c558
-            jmp FUN_448300
+            jmp _printx
 $L_4011e1:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c530
-            jmp FUN_448300
+            jmp _printx
 $L_4011ee:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c4b8
-            jmp FUN_448300
+            jmp _printx
 $L_4011fb:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c448
-            jmp FUN_448300
+            jmp _printx
 $L_401208:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c408
-            jmp FUN_448300
+            jmp _printx
 $L_401215:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c398
-            jmp FUN_448300
+            jmp _printx
 $L_401222:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c348
-            jmp FUN_448300
+            jmp _printx
 $L_40122f:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c2c8
-            jmp FUN_448300
+            jmp _printx
 $L_40123c:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c288
-            jmp FUN_448300
+            jmp _printx
 $L_401249:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c260
-            jmp FUN_448300
+            jmp _printx
 $L_401256:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c1f8
-            jmp FUN_448300
+            jmp _printx
 $L_401263:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c1c8
-            jmp FUN_448300
+            jmp _printx
 $L_401270:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c158
-            jmp FUN_448300
+            jmp _printx
 $L_40127d:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c0d8
-            jmp FUN_448300
+            jmp _printx
 $L_40128a:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c068
-            jmp FUN_448300
+            jmp _printx
 $L_401297:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51c000
-            jmp FUN_448300
+            jmp _printx
 $L_4012a4:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51bf80
-            jmp FUN_448300
+            jmp _printx
 $L_4012b1:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51bef8
-            jmp FUN_448300
+            jmp _printx
 $L_4012be:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51be88
-            jmp FUN_448300
+            jmp _printx
 $L_4012cb:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51be10
-            jmp FUN_448300
+            jmp _printx
 $L_4012d8:
 
             add EAX,2005532337
@@ -258,159 +258,159 @@ $L_4012d8:
 $L_4012f7:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51bd88
-            jmp FUN_448300
+            jmp _printx
 $L_401304:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51bd18
-            jmp FUN_448300
+            jmp _printx
 $L_401311:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51bc88
-            jmp FUN_448300
+            jmp _printx
 $L_40131e:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51bc28
-            jmp FUN_448300
+            jmp _printx
 $L_40132b:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51bbe8
-            jmp FUN_448300
+            jmp _printx
 $L_401338:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51bb78
-            jmp FUN_448300
+            jmp _printx
 $L_401345:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51bb38
-            jmp FUN_448300
+            jmp _printx
 $L_401352:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51bae0
-            jmp FUN_448300
+            jmp _printx
 $L_40135f:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51ba78
-            jmp FUN_448300
+            jmp _printx
 $L_40136c:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51ba08
-            jmp FUN_448300
+            jmp _printx
 $L_401379:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b8e0
-            jmp FUN_448300
+            jmp _printx
 $L_401386:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b898
-            jmp FUN_448300
+            jmp _printx
 $L_401393:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b7e8
-            jmp FUN_448300
+            jmp _printx
 $L_4013a0:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b7ac
-            jmp FUN_448300
+            jmp _printx
 $L_4013ad:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b770
-            jmp FUN_448300
+            jmp _printx
 $L_4013ba:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b708
-            jmp FUN_448300
+            jmp _printx
 $L_4013c7:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b6cc
-            jmp FUN_448300
+            jmp _printx
 $L_4013d4:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b688
-            jmp FUN_448300
+            jmp _printx
 $L_4013e1:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b630
-            jmp FUN_448300
+            jmp _printx
 $L_4013ee:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b600
-            jmp FUN_448300
+            jmp _printx
 $L_4013fb:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b580
-            jmp FUN_448300
+            jmp _printx
 $L_401408:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b528
-            jmp FUN_448300
+            jmp _printx
 $L_401415:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b4c8
-            jmp FUN_448300
+            jmp _printx
 $L_401422:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b460
-            jmp FUN_448300
+            jmp _printx
 $L_40142f:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b3e8
-            jmp FUN_448300
+            jmp _printx
 $L_40143c:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b3b4
-            jmp FUN_448300
+            jmp _printx
 $L_401449:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b370
-            jmp FUN_448300
+            jmp _printx
 $L_401456:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b300
-            jmp FUN_448300
+            jmp _printx
 $L_401463:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b2c0
-            jmp FUN_448300
+            jmp _printx
 $L_401470:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b248
-            jmp FUN_448300
+            jmp _printx
 $L_40147d:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b1c8
-            jmp FUN_448300
+            jmp _printx
 $L_40148a:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b140
-            jmp FUN_448300
+            jmp _printx
 $L_401497:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b104
-            jmp FUN_448300
+            jmp _printx
 $L_4014a4:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b0c0
-            jmp FUN_448300
+            jmp _printx
 $L_4014b1:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b058
-            jmp FUN_448300
+            jmp _printx
 $L_4014be:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b03c
-            jmp FUN_448300
+            jmp _printx
 $L_4014cb:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51b010
-            jmp FUN_448300
+            jmp _printx
 $L_4014d8:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51afc0
-            jmp FUN_448300
+            jmp _printx
 $L_4014e5:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51af30
-            jmp FUN_448300
+            jmp _printx
 $L_4014f2:
 
             add EAX,2005532093
@@ -423,319 +423,319 @@ $L_4014f2:
 $L_401511:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51aeb8
-            jmp FUN_448300
+            jmp _printx
 $L_40151e:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51ae60
-            jmp FUN_448300
+            jmp _printx
 $L_40152b:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51adf8
-            jmp FUN_448300
+            jmp _printx
 $L_401538:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51ada0
-            jmp FUN_448300
+            jmp _printx
 $L_401545:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51ad40
-            jmp FUN_448300
+            jmp _printx
 $L_401552:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51acb0
-            jmp FUN_448300
+            jmp _printx
 $L_40155f:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51ac7c
-            jmp FUN_448300
+            jmp _printx
 $L_40156c:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51ac44
-            jmp FUN_448300
+            jmp _printx
 $L_401579:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51abe8
-            jmp FUN_448300
+            jmp _printx
 $L_401586:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51ab88
-            jmp FUN_448300
+            jmp _printx
 $L_401593:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51ab40
-            jmp FUN_448300
+            jmp _printx
 $L_4015a0:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51ab00
-            jmp FUN_448300
+            jmp _printx
 $L_4015ad:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51aa80
-            jmp FUN_448300
+            jmp _printx
 $L_4015ba:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51aa18
-            jmp FUN_448300
+            jmp _printx
 $L_4015c7:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a9b0
-            jmp FUN_448300
+            jmp _printx
 $L_4015d4:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a950
-            jmp FUN_448300
+            jmp _printx
 $L_4015e1:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a8e0
-            jmp FUN_448300
+            jmp _printx
 $L_4015ee:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a858
-            jmp FUN_448300
+            jmp _printx
 $L_4015fb:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a818
-            jmp FUN_448300
+            jmp _printx
 $L_401608:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a7dc
-            jmp FUN_448300
+            jmp _printx
 $L_401615:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a780
-            jmp FUN_448300
+            jmp _printx
 $L_401622:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a728
-            jmp FUN_448300
+            jmp _printx
 $L_40162f:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a6fc
-            jmp FUN_448300
+            jmp _printx
 $L_40163c:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a688
-            jmp FUN_448300
+            jmp _printx
 $L_401649:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a670
-            jmp FUN_448300
+            jmp _printx
 $L_401656:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a658
-            jmp FUN_448300
+            jmp _printx
 $L_401663:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a640
-            jmp FUN_448300
+            jmp _printx
 $L_401670:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a62c
-            jmp FUN_448300
+            jmp _printx
 $L_40167d:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a614
-            jmp FUN_448300
+            jmp _printx
 $L_40168a:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a5f4
-            jmp FUN_448300
+            jmp _printx
 $L_401697:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a5d4
-            jmp FUN_448300
+            jmp _printx
 $L_4016a4:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a5b8
-            jmp FUN_448300
+            jmp _printx
 $L_4016b1:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a598
-            jmp FUN_448300
+            jmp _printx
 $L_4016be:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a580
-            jmp FUN_448300
+            jmp _printx
 $L_4016cb:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a564
-            jmp FUN_448300
+            jmp _printx
 $L_4016d8:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a54c
-            jmp FUN_448300
+            jmp _printx
 $L_4016e5:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a52c
-            jmp FUN_448300
+            jmp _printx
 $L_4016f2:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a510
-            jmp FUN_448300
+            jmp _printx
 $L_4016ff:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a4f0
-            jmp FUN_448300
+            jmp _printx
 $L_40170c:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a4d0
-            jmp FUN_448300
+            jmp _printx
 $L_401719:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a4b4
-            jmp FUN_448300
+            jmp _printx
 $L_401726:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a494
-            jmp FUN_448300
+            jmp _printx
 $L_401733:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a478
-            jmp FUN_448300
+            jmp _printx
 $L_401740:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a45c
-            jmp FUN_448300
+            jmp _printx
 $L_40174d:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a444
-            jmp FUN_448300
+            jmp _printx
 $L_40175a:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a428
-            jmp FUN_448300
+            jmp _printx
 $L_401767:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a408
-            jmp FUN_448300
+            jmp _printx
 $L_401774:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a3ec
-            jmp FUN_448300
+            jmp _printx
 $L_401781:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a3cc
-            jmp FUN_448300
+            jmp _printx
 $L_40178e:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a3ac
-            jmp FUN_448300
+            jmp _printx
 $L_40179b:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a38c
-            jmp FUN_448300
+            jmp _printx
 $L_4017a8:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a36c
-            jmp FUN_448300
+            jmp _printx
 $L_4017b5:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a34c
-            jmp FUN_448300
+            jmp _printx
 $L_4017c2:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a330
-            jmp FUN_448300
+            jmp _printx
 $L_4017cf:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a314
-            jmp FUN_448300
+            jmp _printx
 $L_4017dc:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a2fc
-            jmp FUN_448300
+            jmp _printx
 $L_4017e9:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a2e0
-            jmp FUN_448300
+            jmp _printx
 $L_4017f6:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a2c0
-            jmp FUN_448300
+            jmp _printx
 $L_401803:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a2a0
-            jmp FUN_448300
+            jmp _printx
 $L_401810:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a280
-            jmp FUN_448300
+            jmp _printx
 $L_40181d:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a260
-            jmp FUN_448300
+            jmp _printx
 $L_40182a:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a248
-            jmp FUN_448300
+            jmp _printx
 $L_401837:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a228
-            jmp FUN_448300
+            jmp _printx
 $L_401844:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a208
-            jmp FUN_448300
+            jmp _printx
 $L_401851:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a1ec
-            jmp FUN_448300
+            jmp _printx
 $L_40185e:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a1d4
-            jmp FUN_448300
+            jmp _printx
 $L_40186b:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a1bc
-            jmp FUN_448300
+            jmp _printx
 $L_401878:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a19c
-            jmp FUN_448300
+            jmp _printx
 $L_401885:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a184
-            jmp FUN_448300
+            jmp _printx
 $L_401892:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a168
-            jmp FUN_448300
+            jmp _printx
 $L_40189f:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a14c
-            jmp FUN_448300
+            jmp _printx
 $L_4018ac:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a134
-            jmp FUN_448300
+            jmp _printx
 $L_4018b9:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a124
-            jmp FUN_448300
+            jmp _printx
 $L_4018c6:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a110
-            jmp FUN_448300
+            jmp _printx
 $L_4018d3:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a0fc
-            jmp FUN_448300
+            jmp _printx
 $L_4018e0:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a0e0
-            jmp FUN_448300
+            jmp _printx
 $L_4018ed:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a0c4
-            jmp FUN_448300
+            jmp _printx
 $L_4018fa:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a0a8
-            jmp FUN_448300
+            jmp _printx
 $L_401907:
 
             mov DWORD PTR [ESP+4],OFFSET $L_51a070
-            jmp FUN_448300
+            jmp _printx
 $L_401914           DWORD $L_4010d5
 $L_401918           DWORD $L_4010e2
 $L_40191c           DWORD $L_4010ef

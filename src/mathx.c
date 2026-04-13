@@ -102,7 +102,7 @@ void __cdecl mat3x3_to_vector_inplace(int16_t* mat, int16_t* vec) {
 
 // FUN_450ce0
 void __cdecl mat_rot_tran(MATRIX* m1, MATRIX* m2, MATRIX* out) {
-  MATRIX tmp;
+    MATRIX tmp;
     int32_t temp_vec[3];
 
     // R = R1 * R2
