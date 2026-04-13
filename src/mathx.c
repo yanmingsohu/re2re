@@ -406,3 +406,29 @@ int __cdecl proj_2D_tile(int16_t* vec, int32_t* x, int32_t* y, int32_t *z) {
   // 这个函数返回的不是“坐标”，而是：深度值（用于排序）
   return lvec[2] >> 2;
 }
+
+
+static inline int16_t fix_mul_shift12(int16_t a, int32_t b) {
+    int32_t t = (int32_t)a * b;
+    t = (t + ((t >> 31) & 0xFFF)) >> 12;
+    return (int16_t)t;
+}
+
+
+// FUN_4511b0 未测试
+int16_t* mat3_scale_cols_q12(int16_t* mat, const int32_t* scale) {
+    // 共 9 个元素（0~16 每隔2字节）
+    mat[0] = fix_mul_shift12(mat[0], scale[0]);
+    mat[1] = fix_mul_shift12(mat[1], scale[1]);
+    mat[2] = fix_mul_shift12(mat[2], scale[2]);
+
+    mat[3] = fix_mul_shift12(mat[3], scale[0]);
+    mat[4] = fix_mul_shift12(mat[4], scale[1]);
+    mat[5] = fix_mul_shift12(mat[5], scale[2]);
+
+    mat[6] = fix_mul_shift12(mat[6], scale[0]);
+    mat[7] = fix_mul_shift12(mat[7], scale[1]);
+    mat[8] = fix_mul_shift12(mat[8], scale[2]);
+    printf("mat3_scale_cols_q12 %x %x\r", mat, scale);
+    return mat;
+}

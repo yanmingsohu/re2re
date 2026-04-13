@@ -2,34 +2,39 @@
 ; SPDX-License-Identifier: MIT
 ; https://github.com/yanmingsohu/
 
+CFunc MACRO name
+    EXTERN name:PROC
+ENDM
+
 ; -- event.c
-Extern _on_winmain_call : Proc
-Extern _on_before_window_show : Proc
+CFunc _on_winmain_call
+CFunc _on_before_window_show
 
 ; -- common.c
-Extern _debug : Proc
-Extern _stack : Proc
+CFunc _debug
+CFunc _stack
 
 ; -- mathx.c
-Extern _mat_3x3_mul : Proc
-Extern _mat_3x3_vec_mul : Proc
-Extern _mat3x3_mul_inplace : Proc
-Extern _mat3x3_to_vector_inplace : Proc
-Extern _mat_rot_tran : Proc
-Extern _mat_dot_mul : Proc
-Extern _fp_vec_norm : Proc
-Extern _fp_vec_norm2 : Proc
-Extern _pack_uv : Proc
-Extern _fp_coor_cps : Proc
-Extern _fp_vec_norm02 : Proc
-Extern _mat_vec_mul_n : Proc
-Extern _mat_vec_mul_cut : Proc
-Extern _fp_sin : Proc
-Extern _fp_cos : Proc
-Extern _blend_vec : Proc
-Extern _rotate_z : Proc
-Extern _rotate_y : Proc
-Extern _rotate_x : Proc
-Extern _rotate_yxz : Proc
-Extern _rotate_xyz : Proc
-Extern _proj_2D_tile: Proc
+CFunc _mat_3x3_mul                    
+CFunc _mat_3x3_vec_mul                
+CFunc _mat3x3_mul_inplace             
+CFunc _mat3x3_to_vector_inplace       
+CFunc _mat_rot_tran                   
+CFunc _mat_dot_mul                    
+CFunc _fp_vec_norm                    
+CFunc _fp_vec_norm2                   
+CFunc _pack_uv                        
+CFunc _fp_coor_cps                    
+CFunc _fp_vec_norm02                  
+CFunc _mat_vec_mul_n                  
+CFunc _mat_vec_mul_cut
+CFunc _fp_sin
+CFunc _fp_cos
+CFunc _blend_vec
+CFunc _rotate_z
+CFunc _rotate_y
+CFunc _rotate_x
+CFunc _rotate_yxz
+CFunc _rotate_xyz
+CFunc _proj_2D_tile
+CFunc _mat3_scale_cols_q12

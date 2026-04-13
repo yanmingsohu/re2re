@@ -59664,7 +59664,7 @@ $L_532b68           DWORD $L_532760
           DWORD $L_532fe8
           DWORD $L_5327b0
           DWORD $L_5330f0
-$L_532bd0           DWORD $L_532fb8
+$L_532bd0           DWORD $L_532fb8 ; title_l.bin
           BYTE 0f0H
           BYTE 009H
           BYTE 0ffH

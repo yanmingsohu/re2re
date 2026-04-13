@@ -6,12 +6,17 @@ Objective: To compile the assembly code so that it can run.
 ![screen](screen/2.png)
 
 
-Current status: |>>>>----------------| 20%
+Current status: |>>>>>---------------| 21%
 * Able to enter the first scene
 * The moving animation is strange
 * open menu
 * Extend functionality using C language
 * Fire a shot, watch the animation, switch scenes.
+* Fixed: 401050 crashes when calling 4ed82d ret
+* Fixed: Pistol cannot automatically reload, bullets cannot be combined
+* Fixed: Model corruption
+* Fixed: Statue cannot be pushed (caused by model corruption)
+* Fixed: Missing file causes game to freeze, program crashes (login medal playing video)
 
 
 # Depends 
