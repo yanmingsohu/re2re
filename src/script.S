@@ -6532,7 +6532,7 @@ $L_4e8470 PROC
             mov DL,BYTE PTR [EAX+1]
             push ECX
             push EDX
-            call FUN_448300
+            call _printx
 
             mov EAX,DWORD PTR [ESI+28]
             add ESP,8
@@ -6559,7 +6559,7 @@ $L_4e84a0 ENDP
 
 $L_4e84c0 PROC
 
-            call FUN_448300
+            call _printx
 
             mov EAX,DWORD PTR [ESP+4]
             mov ECX,DWORD PTR [EAX+28]
