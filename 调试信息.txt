@@ -372,6 +372,7 @@ $L_5338a0 表之前的数据在重编译时丢失，导致循环读到0，按键
 读取 data\\zmovie\\r200.bin 程序跑飞(大厅安装奖牌)
   fun_50d823/func_50c300 似乎是读取文件
   fun_50bb20 很可疑
+  :因为文件不存在死循环
 
 
 FUN_43ebf0 在调用 FUN_451060 这是背景投影方法
@@ -450,3 +451,17 @@ $L_8c83f4 = IDirectDraw
 
 FUN_50d823 分配内存
 FUN_511f85 释放内存
+
+需要检查:
+  lea ECX,DWORD PTR [ESI+$L_8c7060]
+  mov DWORD PTR [$L_5439c4],OFFSET $L_5440f8
+  add ECX,OFFSET $L_8c7060
+  $L_5439d0: 不确定
+
+  ESI+$L_
+
+DWORD PTR \[(E..)\+\$L_([0-9A-Fa-f]+)\]
+    DWORD PTR [$1 + $2H]
+
+DWORD 0(52[0-9A-Fa-f]+)h
+    DWORD $L_$1
