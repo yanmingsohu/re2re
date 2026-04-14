@@ -3,6 +3,7 @@
 // https://github.com/yanmingsohu/
 #include <windows.h>
 #include <ddraw.h>
+#include "imports.h"
 
 
 int __stdcall find3ddev(GUID *guid, LPSTR lpDesc, 

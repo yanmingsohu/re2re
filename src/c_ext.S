@@ -38,5 +38,10 @@ CFunc _rotate_yxz
 CFunc _rotate_xyz
 CFunc _proj_2D_tile
 CFunc _mat3_scale_cols_q12
+
+; -- draw.c
 CFunc _InitDirectDrawDisplay
 ; CFunc _printx
+
+; -- sys.c
+CFunc _create_window
