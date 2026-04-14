@@ -2,8 +2,8 @@
 ; SPDX-License-Identifier: MIT
 ; https://github.com/yanmingsohu/
 
-$win_width  DWORD 640 ;窗口高度和宽度
-$win_height DWORD 480
+$win_width  DWORD 1024 ;窗口高度和宽度
+$win_height DWORD 768
 
 res165              db 32 dup(0)
 BIN165              db "BIN165.bin", 0

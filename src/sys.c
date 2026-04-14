@@ -5,6 +5,7 @@
 #include "imports.h"
 
 extern void on_before_window_show(void);
+void center_window(HWND hWnd, RECT r);
 
 const char MainName[] = "BIOHAZARD(R) 2 PC (github.com/yanmingsohu/re2re)";
 
@@ -63,7 +64,22 @@ int create_window(HINSTANCE hInstance, int isAlreadyRegistered) {
 
     ShowWindow(hWnd, SW_SHOWNORMAL);
     SetForegroundWindow(hWnd);
+    center_window(hWnd, rect);
     UpdateWindow(hWnd);
 
     return 1;
+}
+
+
+void center_window(HWND hWnd, RECT r) {
+    int screenWidth  = GetSystemMetrics(SM_CXSCREEN);
+    int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+
+    int winWidth  = r.right  - r.left;
+    int winHeight = r.bottom - r.top;
+
+    int x = (screenWidth  - winWidth)  / 2;
+    int y = (screenHeight - winHeight) / 2;
+
+    SetWindowPos(hWnd, NULL, x, y, winWidth, winHeight, 0);
 }
