@@ -319,7 +319,7 @@ int16_t* __cdecl rotate_x(uint32_t angle, int16_t* mat) {
 
 // FUN_450ea0
 int16_t* __cdecl rotate_yxz(int16_t* angles, int16_t* mat) {
-  puts("y");
+  printf("\rrotate_yxz");
     // 初始化单位矩阵（4096 = 1.0）
     mat[0] = 4096; mat[1] = 0;    mat[2] = 0;
     mat[3] = 0;    mat[4] = 4096; mat[5] = 0;
@@ -334,6 +334,7 @@ int16_t* __cdecl rotate_yxz(int16_t* angles, int16_t* mat) {
 
 // FUN_450e30
 int16_t* __cdecl rotate_xyz(int16_t* angles, int16_t* mat) {
+    //printf("\rrotate_xyz");
     // 初始化单位矩阵（4096 = 1.0）
     mat[0] = 4096; mat[1] = 0;    mat[2] = 0;
     mat[3] = 0;    mat[4] = 4096; mat[5] = 0;

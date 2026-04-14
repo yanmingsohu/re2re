@@ -1,3 +1,6 @@
+// Disassembled by yanming.J
+// SPDX-License-Identifier: MIT
+// https://github.com/yanmingsohu/
 #include <stdint.h>
 
 extern void* pt_99ce20;
