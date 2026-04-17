@@ -981,3 +981,343 @@ $L_401d6c DB 000h,001h,002h,003h,004h,005h,006h,007h ; 0x401d6c (8 bytes)
           DB 090h,090h,090h,090h,090h,090h,090h,090h ; 0x401e34 (208 bytes)
           DB 090h,090h,090h,090h ; 0x401e3c (212 bytes)
 FUN_401000 ENDP
+
+
+ALIGN 16
+FUN_406a10 PROC
+
+            mov EAX,DWORD PTR [ESP+4]
+            add EAX,2005531972
+            cmp EAX,63
+            ja $L_406cb6
+
+            xor ECX,ECX
+            mov CL,BYTE PTR [EAX+$L_406d44]
+            jmp DWORD PTR [ECX*4+$L_406cb8]
+$L_406a31::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a670
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406a44::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a658
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406a57::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a5f4
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406a6a::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a5d4
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406a7d::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a5b8
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406a90::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a598
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406aa3::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a580
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406ab6::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a564
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406ac9::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a54c
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406adc::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a52c
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406aef::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a510
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406b02::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a4f0
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406b15::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a4d0
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406b28::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a4b4
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406b3b::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a494
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406b4e::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a478
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406b61::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a45c
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406b74::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a444
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406b87::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a428
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406b9a::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a408
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406bad::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a3ec
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406bc0::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a3cc
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406bd3::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a3ac
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406be6::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a38c
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406bf9::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a36c
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406c0c::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a2c0
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406c1f::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a2a0
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406c32::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a280
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406c45::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a260
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406c58::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a1d4
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406c6b::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a184
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406c7e::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a168
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406c91::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a14c
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+            ret 
+$L_406ca4::
+
+            push OFFSET $L_51dd40
+            push OFFSET $L_51a134
+            call DWORD PTR [__imp__printf]
+
+            add ESP,8
+$L_406cb6::
+
+            ret 
+          BYTE 090H
+$L_406cb8           DWORD $L_406a31 ;++
+$L_406cbc           DWORD $L_406a44
+$L_406cc0           DWORD $L_406a57
+$L_406cc4           DWORD $L_406a6a
+$L_406cc8           DWORD $L_406a7d
+$L_406ccc           DWORD $L_406a90
+$L_406cd0           DWORD $L_406aa3
+$L_406cd4           DWORD $L_406ab6
+$L_406cd8           DWORD $L_406ac9
+$L_406cdc           DWORD $L_406adc
+$L_406ce0           DWORD $L_406aef
+$L_406ce4           DWORD $L_406b02
+$L_406ce8           DWORD $L_406b15
+$L_406cec           DWORD $L_406b28
+$L_406cf0           DWORD $L_406b3b
+$L_406cf4           DWORD $L_406b4e
+$L_406cf8           DWORD $L_406b61
+$L_406cfc           DWORD $L_406b74
+$L_406d00           DWORD $L_406b87
+$L_406d04           DWORD $L_406b9a
+$L_406d08           DWORD $L_406bad
+$L_406d0c           DWORD $L_406bc0
+$L_406d10           DWORD $L_406bd3
+$L_406d14           DWORD $L_406be6
+$L_406d18           DWORD $L_406bf9
+$L_406d1c           DWORD $L_406c0c
+$L_406d20           DWORD $L_406c1f
+$L_406d24           DWORD $L_406c32
+$L_406d28           DWORD $L_406c45
+$L_406d2c           DWORD $L_406c58
+$L_406d30           DWORD $L_406c6b
+$L_406d34           DWORD $L_406c7e
+$L_406d38           DWORD $L_406c91
+$L_406d3c           DWORD $L_406ca4
+$L_406d40           DWORD $L_406cb6
+$L_406d44 DB 00h,01h,22h,22h,22h,22h,22h,22h,22h,22h,02h,03h,04h,05h,06h,07h ; 0x406D44 (16 bytes)
+          DB 08h,09h,22h,22h,0Ah,0Bh,0Ch,0Dh,0Eh,0Fh,10h,11h,12h,13h,14h,15h ; 0x406D54 (32 bytes)
+          DB 16h,17h,18h,22h,22h,22h,22h,22h,19h,1Ah,1Bh,1Ch,22h,22h,22h,22h ; 0x406D64 (48 bytes)
+          DB 22h,22h,1Dh,22h,22h,22h,22h,22h,22h,22h,22h,22h,1Eh,1Fh,20h,21h ; 0x406D74 (64 bytes)
+            nop
+            nop
+            nop
+            nop
+            nop
+            nop
+            nop
+            nop
+            nop
+            nop
+            nop
+            nop
+FUN_406a10 ENDP

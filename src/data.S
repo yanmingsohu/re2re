@@ -775,7 +775,7 @@ $L_51cd30                     DB 'though this class is unable you have tried to 
           BYTE 000H
 
           DB 3 DUP(0)
-$L_51cd84           BYTE 083H
+$L_51cd84           BYTE 083H ; クラスが見つかりません 找不到类
           BYTE 04eH
           BYTE 083H
           BYTE 089H
