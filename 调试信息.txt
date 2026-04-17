@@ -465,3 +465,19 @@ DWORD PTR \[(E..)\+\$L_([0-9A-Fa-f]+)\]
 
 DWORD 0(52[0-9A-Fa-f]+)h
     DWORD $L_$1
+
+打印内存分配信息:
+  ; call DWORD PTR __imp__HeapAlloc
+        push EAX ; 保存上一个函数返回值
+        push 1 ; id
+        push OFFSET $L_99ecc0 ; 指向堆的指针地址
+        push DWORD PTR [$L_99ecc0] ; 堆地址
+        push EAX ; 分配到的内存首地址
+        push ESI ; 字节长度
+        call _memInfo@20
+        pop EAX
+
+
+替换打印:
+  ; call _printx
+  call DWORD PTR [__imp__printf]

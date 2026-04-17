@@ -3,6 +3,7 @@
 // https://github.com/yanmingsohu/
 #include "windows.h"
 #include "stdio.h"
+#include "stdint.h"
 
 
 void __cdecl debug() {
@@ -85,7 +86,7 @@ void __cdecl open_console() {
 
 
 void __cdecl __printx(char* a, char* b) {
-    printf(" P -- %x -- %x\r", a, b);
+    printf(" P -- %x -- %x\r", (uint32_t)a, (uint32_t)b);
     // if (b == 0xFFFF0000) {
     //     printf(" 1:: %x\n", a);
     //     return;
@@ -100,4 +101,15 @@ void __cdecl __printx(char* a, char* b) {
     // }
     // if (a) puts(a);
     // if (b) puts(b);
+}
+
+
+void __stdcall memInfo(int bytes, uint32_t a, uint32_t hb, uint32_t hp, int id) {
+    if (id & 0xF00) {
+        printf(" @ Req(%3d) mem %8d Bytes addr:%08xH heapBase:%08x SaveTo:%08xH\n", 
+            id, bytes, a, hb, hp);
+    } else {
+        printf(" @ Req(%3d) mem %8d Bytes addr:%08xH heapBase:%08x heapPtr:%08xH\n", 
+            id, bytes, a, hb, hp);
+    }
 }

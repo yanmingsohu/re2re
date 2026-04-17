@@ -9,6 +9,34 @@
 #include "imports.h"
 
 
+static int MSC = 0;
+static int P2T = 0;
+static int RXYZ = 0;
+static int RYXZ = 0;
+static int RX = 0;
+static int RY = 0;
+static int RZ = 0;
+static int BV = 0;
+static int MVMC = 0;
+static int MVMN = 0;
+static int FCC = 0;
+static int FS = 0;
+static int PU = 0;
+static int FVN = 0;
+static int F2 = 0;
+static int F3 = 0;
+static int MDM = 0;
+static int MRT = 0;
+static int M3 = 0;
+static int M3M = 0;
+
+
+void debug_math() {
+    printf("\rMSC %d P2T %d RXYZ %d RYXZ %d RX %d RY %d RZ %d BV %d MVMC %d MVMN %d FCC %d FS %d PU %d FVN %d F2 %d F3 %d MDM %d MRT %d M3 %d M3M %d",
+        MSC, P2T, RXYZ, RYXZ, RX, RY, RZ, BV, MVMC, MVMN, FCC, FS, PU, FVN, F2, F3, MDM, MRT, M3, M3M);
+}
+
+
 // 试图用浮点数重写
 void __cdecl mat_3x3_fmul(int16_t* vec, int16_t* mat, int16_t* out) {
   float m0 = mat[0] / 16.0f, m1 = mat[1] / 16.0f, m2 = mat[2] / 16.0f;
@@ -68,6 +96,7 @@ void __cdecl mat_3x3_mul(int16_t* vec, int16_t* mat, int16_t* out) {
   *(int32_t*)(&out[4]) = ((int32_t)(uint16_t)r12 << 16) | (uint16_t)r11;
   *(int32_t*)(&out[6]) = ((int32_t)(uint16_t)r21 << 16) | (uint16_t)r20;
   out[8] = r22;
+  M3M++;
 }
 
 
@@ -85,12 +114,13 @@ void __cdecl mat_3x3_vec_mul(int16_t* mat, int32_t* vec, int32_t* out) {
     out[1] = ((int32_t)mat[3]*v0 + (int32_t)mat[4]*v1 + (int32_t)mat[5]*v2) >> 12;
     // 行2点积
     out[2] = ((int32_t)mat[6]*v0 + (int32_t)mat[7]*v1 + (int32_t)mat[8]*v2) >> 12;
+    M3++;
 }
 
 
 // FUN_450ca0
 void __cdecl mat3x3_mul_inplace(int16_t *mat, int16_t* vec) {
-  mat_3x3_mul(mat, vec, mat);
+    mat_3x3_mul(mat, vec, mat);
 }
 
 
@@ -128,6 +158,7 @@ void __cdecl mat_rot_tran(MATRIX* m1, MATRIX* m2, MATRIX* out) {
     // ✔ 写到 out（不是 m2）
     memcpy(out, &tmp, sizeof(MATRIX));
     //printf("\r%d %d %d", out->R[0], out->R[1], out->R[2]);
+    MRT++;
 }
 
 
@@ -138,6 +169,7 @@ void __cdecl mat_dot_mul(int32_t* v1, int32_t* v2, int32_t* out) {
     out[2] = v1[0] * v2[1] - v2[0] * v1[1];
     // 附带写入（副作用）
     out[3] = (int32_t)v2;
+    MDM++;
 }
 
 
@@ -167,6 +199,7 @@ void __cdecl fp_vec_norm(int16_t* base, int16_t* __, int index) {
     v[0] = (int16_t)(fx * inv * SCALE_OUT);
     v[1] = (int16_t)(fy * inv * SCALE_OUT);
     v[2] = (int16_t)(fz * inv * SCALE_OUT);
+    FVN++;
 }
 
 
@@ -174,6 +207,7 @@ void __cdecl fp_vec_norm(int16_t* base, int16_t* __, int index) {
 void __cdecl fp_vec_norm2(int16_t* dst, int16_t* src) {
     fp_vec_norm(dst, src, 0);
     fp_vec_norm(dst, src, 1);
+    F2++;
 }
 
 
@@ -181,6 +215,7 @@ void __cdecl fp_vec_norm2(int16_t* dst, int16_t* src) {
 void __cdecl fp_vec_norm02(int16_t* base, int16_t* auxiliary) {
     fp_vec_norm(base, auxiliary, 0);
     fp_vec_norm(base, auxiliary, 2);
+    F3++;
 }
 
 
@@ -192,6 +227,7 @@ uint16_t __cdecl pack_uv(int32_t a, int32_t b) {
     int32_t part_a = q & 0x3F;
     // b 取低10位再左移6位
     int32_t part_b = (b & 0x3FF) << 6;
+    PU++;
     return (uint16_t)(part_b + part_a);
 }
 
@@ -206,6 +242,7 @@ uint16_t __cdecl fp_coor_cps(int a, int b, int c, int d) {
     // 第四个参数：带符号 /64
     int t3 = (c + ((c >> 31) & 63)) >> 6;
     t = (t << 4) + t3;
+    FCC++;
     return (uint16_t)t;
 }
 
@@ -221,6 +258,7 @@ void __cdecl mat_vec_mul_n(int16_t* mat, int16_t* vec, int32_t* out) {
     out[1] = (mat[3] * x + mat[4] * y + mat[5] * z) >> 12;
     // 第三行
     out[2] = (mat[6] * x + mat[7] * y + mat[8] * z) >> 12;
+    MVMN++;
 }
 
 
@@ -233,6 +271,7 @@ void __cdecl mat_vec_mul_cut(int16_t* mat, int16_t* vec, int16_t* out) {
     out[0] = (int16_t)tmp[0];
     out[1] = (int16_t)tmp[1];
     out[2] = (int16_t)tmp[2];
+    MVMC++;
 }
 
 
@@ -242,6 +281,7 @@ int32_t __cdecl fp_sin(uint32_t x) {
     uint32_t idx = x & 0x7FF;
     double angle = (double)idx * (2.0 * M_PI / 4096.0);
     double val = fabs(sin(angle));
+    FS++;
     return (int32_t)(val * 4096.0) * sign;
 }
 
@@ -264,6 +304,7 @@ void __cdecl blend_vec(const int16_t* a, const int16_t* b,
     out[2] = (int16_t)(
             MulDiv(a[2], scaleA, 4096) +
             MulDiv(b[2], scaleB, 4096) );
+    BV++;
 }
 
 
@@ -277,6 +318,7 @@ int16_t* __cdecl rotate_z(uint32_t angle, int16_t* mat) {
       0,    0,     4096,
     };
     mat_3x3_mul((int16_t*)&rot, mat, mat);
+    RZ++;
     return mat;  // ← 汇编里的 EAX = ESI
 }
 
@@ -292,6 +334,7 @@ int16_t* __cdecl rotate_y(uint32_t angle, int16_t* mat) {
     };
     // mat = rot × mat（左乘）
     mat_3x3_mul((int16_t*)&rot, mat, mat);
+    RY++;
     return mat;
 }
 
@@ -313,6 +356,7 @@ int16_t* __cdecl rotate_x(uint32_t angle, int16_t* mat) {
         0,    sinv,  cosv
     };
     mat_3x3_mul((int16_t*)&rot, mat, mat);
+    RX++;
     return mat;
 }
 
@@ -328,6 +372,7 @@ int16_t* __cdecl rotate_yxz(int16_t* angles, int16_t* mat) {
     rotate_z(angles[2], mat); // Z
     rotate_x(angles[0], mat); // X
     rotate_y(angles[1], mat); // Y
+    RYXZ++;
     return mat;
 }
 
@@ -343,6 +388,7 @@ int16_t* __cdecl rotate_xyz(int16_t* angles, int16_t* mat) {
     rotate_z((int32_t)angles[2], mat); // Z
     rotate_y((int32_t)angles[1], mat); // Y
     rotate_x((int32_t)angles[0], mat); // X
+    RXYZ++;
     return mat;
 }
 
@@ -405,6 +451,7 @@ int __cdecl proj_2D_tile(int16_t* vec, int32_t* x, int32_t* y, int32_t *z) {
   *x = (outY << 16) + (outX & 0xFFFF);
   // 汇编末尾：mov EAX, EDI(posZ); sar EAX, 2;
   // 这个函数返回的不是“坐标”，而是：深度值（用于排序）
+  P2T++;
   return lvec[2] >> 2;
 }
 
@@ -430,6 +477,6 @@ int16_t* mat3_scale_cols_q12(int16_t* mat, const int32_t* scale) {
     mat[6] = fix_mul_shift12(mat[6], scale[0]);
     mat[7] = fix_mul_shift12(mat[7], scale[1]);
     mat[8] = fix_mul_shift12(mat[8], scale[2]);
-    printf("mat3_scale_cols_q12 %x %x\r", mat, scale);
+    MSC++;
     return mat;
 }

@@ -13,6 +13,7 @@ CFunc _on_before_window_show
 ; -- common.c
 CFunc _debug
 CFunc _stack
+Cfunc _memInfo@20
 
 ; -- mathx.c
 CFunc _mat_3x3_mul                    
@@ -38,6 +39,7 @@ CFunc _rotate_yxz
 CFunc _rotate_xyz
 CFunc _proj_2D_tile
 CFunc _mat3_scale_cols_q12
+CFunc _debug_math
 
 ; -- draw.c
 CFunc _InitDirectDrawDisplay
