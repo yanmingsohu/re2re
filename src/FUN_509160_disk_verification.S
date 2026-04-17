@@ -21,7 +21,7 @@ FUN_509160 PROC
 
             xor EBP,EBP
             mov DWORD PTR [ESP+308],EBP
-            call DWORD PTR __imp__GetLogicalDrives
+            call DWORD PTR __imp__GetLogicalDrives@0
 
             mov DWORD PTR [ESP+40],EAX
             mov DWORD PTR [ESP+16],EBP
@@ -41,7 +41,7 @@ $L_50919f:
             push EAX
             call FUN_50c6c0 ; sprintf 类函数，构造路径
 
-            mov EBX,DWORD PTR __imp__SetErrorMode
+            mov EBX,DWORD PTR __imp__SetErrorMode@4
             add ESP,12
             push 32769
             call EBX
@@ -55,7 +55,7 @@ $L_50919f:
             push 2147483648
             push ECX
             mov EDI,EAX
-            call DWORD PTR __imp__CreateFileA
+            call DWORD PTR __imp__CreateFileA@28
 
             push EDI
             mov ESI,EAX
@@ -66,7 +66,7 @@ $L_50919f:
 
             push 0
             push ESI
-            call DWORD PTR __imp__GetFileSize
+            call DWORD PTR __imp__GetFileSize@8
 
             mov EBX,EAX
             test EBX,EBX
@@ -98,7 +98,7 @@ $L_50919f:
             push EBX
             push EBP
             push ESI
-            call DWORD PTR __imp__ReadFile
+            call DWORD PTR __imp__ReadFile@20
 
             test EAX,EAX
             je $L_509295
@@ -135,7 +135,7 @@ $L_509295:
 $L_5092a2:
 
             push ESI
-            call DWORD PTR __imp__CloseHandle
+            call DWORD PTR __imp__CloseHandle@4
 $L_5092a9:
 
             inc EBP

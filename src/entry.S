@@ -18,7 +18,7 @@ __EntryPoint PROC
             push ESI
             push EDI
             mov DWORD PTR [EBP-24],ESP
-            call DWORD PTR __imp__GetVersion
+            call DWORD PTR __imp__GetVersion@0
 
             xor EDX,EDX
             mov DL,AH
@@ -48,7 +48,7 @@ $L_50d950::
             mov DWORD PTR [EBP-4],ESI
             call FUN_5103aa
 
-            call DWORD PTR __imp__GetCommandLineA
+            call DWORD PTR __imp__GetCommandLineA@0
 
             mov DWORD PTR [$L_99edf4],EAX
             call FUN_512612
@@ -63,7 +63,7 @@ $L_50d950::
             mov DWORD PTR [EBP-48],ESI
             lea EAX,DWORD PTR [EBP-92]
             push EAX
-            call DWORD PTR __imp__GetStartupInfoA
+            call DWORD PTR __imp__GetStartupInfoA@4
 
             call FUN_5122b4
 
@@ -83,7 +83,7 @@ $L_50d9a0::
             push DWORD PTR [EBP-100]
             push ESI
             push ESI
-            call DWORD PTR __imp__GetModuleHandleA
+            call DWORD PTR __imp__GetModuleHandleA@4
 
             ; 这里打开窗口
             push EAX
