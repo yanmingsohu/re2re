@@ -295,6 +295,7 @@ $L_4e4330 ENDP
 ; 终止指定槽位的协程,把它标记为不活跃,让槽位可以被重新分配。对应 SPAWN 的反操作。
 ; KILL  slot_id
 $L_4e4360 PROC
+    call_c_vm vm_kill
             mov ECX,DWORD PTR [ESP+4]
             xor EDX,EDX
             mov EAX,DWORD PTR [ECX+28]
@@ -313,6 +314,7 @@ $L_4e4360 ENDP
 
 
 $L_4e4390 PROC
+    call_c_vm vm_call
             mov EAX,DWORD PTR [ESP+4]
             push EBX
             push ESI
@@ -341,6 +343,7 @@ $L_4e4390 ENDP
 
 
 $L_4e43e0 PROC
+    call_c_vm vm_return
             mov EAX,DWORD PTR [ESP+4]
             xor EDX,EDX
             mov ECX,DWORD PTR [EAX+320]
@@ -361,6 +364,7 @@ $L_4e43e0 ENDP
 
 
 $L_4e4420 PROC
+    call_c_vm vm_yield
             mov EAX,DWORD PTR [ESP+4]
             mov ECX,DWORD PTR [EAX+320]
             add ECX,-4

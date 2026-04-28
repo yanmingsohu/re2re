@@ -56,3 +56,7 @@ Cfunc vm_vib_set0
 Cfunc vm_vib_set1
 Cfunc vm_jump
 Cfunc vm_end
+Cfunc vm_kill
+Cfunc vm_return
+Cfunc vm_call
+Cfunc vm_yield

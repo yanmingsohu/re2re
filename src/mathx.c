@@ -7,6 +7,7 @@
 #include <fenv.h>
 #include <math.h>
 #include "imports.h"
+#include "mathx.h"
 
 
 static int MSC = 0;

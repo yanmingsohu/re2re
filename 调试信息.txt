@@ -481,3 +481,31 @@ DWORD 0(52[0-9A-Fa-f]+)h
 替换打印:
   ; call _printx
   call DWORD PTR [__imp__printf]
+
+================================================================
+
+```c
+// Resident Evil 2 VM Context Structure
+struct VMContext {
+    uint8_t  event_status;          // offset 0: 事件状态
+    uint8_t  pad1;                  // offset 1: 填充
+    int8_t   idx_offset;            // offset 2: 槽位索引
+    uint8_t  reserved_pad[5];       // offset 3-7: 对齐填充
+    int8_t   data_buffer[20];       // offset 8-27: 数据缓冲区
+
+    uint32_t pc;                    // offset 28: 程序计数器
+
+    uint8_t  pad[288];              // offset 32-319: 对齐填充
+    uint32_t* next_instruction_ptr; // offset 320: 栈指针/下一指令指针
+    uint32_t  jump_table[14];       // offset 324: 跳转表
+};
+```
+你正在分析汇编代码, 这是一个游戏中的虚拟机用于运行游戏脚本
+
+* 补全这个结构的内部结构, 可以重写reserved部分, 保留已经解析的符号
+* 函数的第一个参数一般是  struct VMContext 的指针, 具体以汇编代码为准
+* 显而易见的代码功能不要加注释
+* 根据功能重写 VMContext 中的变量名
+* 推测这个函数在虚拟机中的作用
+* 所有推测出的新成员放入 VMContext 结构中, 不要扩展新的的 struct
+* 接下来会发送汇编代码, 你输出c代码

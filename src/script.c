@@ -3,25 +3,8 @@
 // https://github.com/yanmingsohu/
 
 #include <stdint.h>
-
-void msgc(char* str);
-
-
-// Resident Evil 2 VM Context Structure
-struct VMContext {
-  uint8_t  event_status;          // offset 0: 事件状态
-  uint8_t  is_active;             // offset 1: 由 $L_4e42d7 修改，推测为激活状态/错误标志
-  int8_t   slot_index;            // offset 2: 槽位索引
-  uint8_t  jump_offsets[5];       // offset 3-7: 对齐填充
-  int8_t   data_buffer[20];       // offset 8-27: 数据缓冲区
-
-  uint8_t* pc;                    // offset 28: 程序计数器
-
-  uint8_t  pad[164];              // offset 32-195
-  uint32_t state_table[31];       // offset 196-323: 由 [EAX+EDX*4+196] 推测为状态或对象表
-  uint32_t* next_instruction_ptr; // offset 320: 栈指针/下一指令指针
-  uint8_t*  jump_table[14];       // offset 324: 跳转表
-};
+#include "imports.h"
+#include "script.h"
 
 
 // FUN_450100 主虚拟机循环
@@ -42,19 +25,19 @@ int vm_nop(struct VMContext* ctx) {
 // FUN_4e42a0 条件跳转
 int vm_jump(struct VMContext* ctx) {
   // msgc("vm_jump");
-  if (ctx->slot_index == 0) {
+  if (ctx->jump_index == 0) {
     ctx->is_active = 0;
     return 2;
   }
 
-  int8_t offset = ctx->jump_offsets[ctx->slot_index];
-  uint8_t idx = ctx->slot_index - 1;
+  int8_t offset = ctx->jump_offsets[ctx->jump_index];
+  uint8_t idx = ctx->jump_index - 1;
   
   ctx->pc = ctx->jump_table[idx];
-  ctx->slot_index = idx;
+  ctx->jump_index = idx;
   
   // 计算目标地址: base(196) + (offset + idx*8)*4
-  ctx->next_instruction_ptr = &ctx->state_table[offset + idx * 8];
+  ctx->call_stack = &ctx->snap[5 + idx] + offset * 4;
   return 1;
 }
 
@@ -73,19 +56,63 @@ int vm_load(struct VMContext* ctx) { return 0; }
 // FUN_4e4330 数据存储
 int vm_store(struct VMContext* ctx) { return 0; }
 
+
 // FUN_4e4360 终止协程
 int vm_kill(struct VMContext* ctx) { 
-  return 0;
+  // msgc("vm_kill");
+  int index = VMI(ctx, flag).flag_idx;
+  pt_vm_slot_flag[index].active = 0;
+  ctx->pc += 2;
+  return 1;
 }
 
+
+// FUN_4e3e30 ???
+void _vm_jump(struct VMContext* ctx, uint32_t index) {
+  // 计算目标 PC: 基址 + 表中对应的偏移量
+  uintptr_t base = (uintptr_t)*pt_vm_base;
+  uint16_t offset = (*pt_vm_base)[index]; // 对应 [EDX + EAX*2]
+  ctx->pc = (uint8_t*)(base + offset);
+  ctx->is_active = 1;
+  ctx->event_status = 0;
+  ctx->jump_offsets[1] = 255; // [EAX+4]
+  ctx->data_buffer[0] = 255; // [EAX+8]
+  ctx->call_stack = &ctx->snap[ctx->jump_index + 6];
+}
+
+
 // FUN_4e4390 函数调用
-int vm_call(struct VMContext* ctx) { return 0; }
+int vm_call(struct VMContext* ctx) {
+  VMInstruction* inst = (VMInstruction*) ctx->pc;
+  // printf("vm_call %x ", inst->jump.offset);
+  ctx->pc += 4;
+  ctx->jump_offsets[ctx->jump_index + 1]++;
+  *ctx->call_stack = (uint32_t*)(ctx->pc + inst->jump.offset);
+  ctx->call_stack++;
+  return 1;
+}
+
 
 // FUN_4e43e0 函数返回
-int vm_return(struct VMContext* ctx) { return 0; }
+int vm_return(struct VMContext* ctx) {
+  // msgc("vm_return");
+  ctx->call_stack--;
+  ctx->pc += VMI(ctx, jump).offset;
+  ctx->jump_offsets[ctx->jump_index + 1]--;
+  return 1;
+}
+
 
 // FUN_4e4420 让出执行权
-int vm_yield(struct VMContext* ctx) { return 0; }
+int vm_yield(struct VMContext* ctx) {
+  msgc("vm_yield");
+  ctx->call_stack--;
+  ctx->pc += 2;
+  uint8_t* target = (uint8_t*)((uintptr_t)ctx + ctx->jump_index + 4);
+  (*target)--;
+  return 1;
+}
+
 
 // FUN_4e4450 压栈
 int vm_push(struct VMContext* ctx) { return 0; }
