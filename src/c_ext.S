@@ -2,48 +2,57 @@
 ; SPDX-License-Identifier: MIT
 ; https://github.com/yanmingsohu/
 
-CFunc MACRO name
-    EXTERN name:PROC
+Cfunc MACRO name
+    EXTERN _&name:PROC
+    name TEXTEQU <_&name>
 ENDM
 
 ; -- event.c
-CFunc _on_winmain_call
-CFunc _on_before_window_show
+Cfunc on_winmain_call
+Cfunc on_before_window_show
 
 ; -- common.c
-CFunc _debug
-CFunc _stack
-Cfunc _memInfo@20
+Cfunc debug
+Cfunc stack
+Cfunc memInfo@20
 
 ; -- mathx.c
-CFunc _mat_3x3_mul                    
-CFunc _mat_3x3_vec_mul                
-CFunc _mat3x3_mul_inplace             
-CFunc _mat3x3_to_vector_inplace       
-CFunc _mat_rot_tran                   
-CFunc _mat_dot_mul                    
-CFunc _fp_vec_norm                    
-CFunc _fp_vec_norm2                   
-CFunc _pack_uv                        
-CFunc _fp_coor_cps                    
-CFunc _fp_vec_norm02                  
-CFunc _mat_vec_mul_n                  
-CFunc _mat_vec_mul_cut
-CFunc _fp_sin
-CFunc _fp_cos
-CFunc _blend_vec
-CFunc _rotate_z
-CFunc _rotate_y
-CFunc _rotate_x
-CFunc _rotate_yxz
-CFunc _rotate_xyz
-CFunc _proj_2D_tile
-CFunc _mat3_scale_cols_q12
-CFunc _debug_math
+Cfunc mat_3x3_mul                    
+Cfunc mat_3x3_vec_mul                
+Cfunc mat3x3_mul_inplace             
+Cfunc mat3x3_to_vector_inplace       
+Cfunc mat_rot_tran                   
+Cfunc mat_dot_mul                    
+Cfunc fp_vec_norm                    
+Cfunc fp_vec_norm2                   
+Cfunc pack_uv                        
+Cfunc fp_coor_cps                    
+Cfunc fp_vec_norm02                  
+Cfunc mat_vec_mul_n                  
+Cfunc mat_vec_mul_cut
+Cfunc fp_sin
+Cfunc fp_cos
+Cfunc blend_vec
+Cfunc rotate_z
+Cfunc rotate_y
+Cfunc rotate_x
+Cfunc rotate_yxz
+Cfunc rotate_xyz
+Cfunc proj_2D_tile
+Cfunc mat3_scale_cols_q12
+Cfunc debug_math
 
 ; -- draw.c
-CFunc _InitDirectDrawDisplay
-; CFunc _printx
+Cfunc InitDirectDrawDisplay
+; Cfunc printx
 
 ; -- sys.c
-CFunc _create_window
+Cfunc create_window
+
+; -- script.c
+Cfunc vm_nop
+Cfunc vm_vib_fade_set
+Cfunc vm_vib_set0
+Cfunc vm_vib_set1
+Cfunc vm_jump
+Cfunc vm_end

@@ -24,4 +24,4 @@ typedef struct {
 #pragma pack(pop)
 
 // windows.h
-extern int __stdcall MulDiv(int a, int b, int x);
+extern __declspec(dllimport) int __stdcall MulDiv(int a, int b, int x);

@@ -3,6 +3,10 @@
 ; https://github.com/yanmingsohu/
 ; 与游戏脚本系统 (vm) 相关代码
 
+call_c_vm MACRO func_name
+  jmp func_name
+ENDM
+
 
 COMMENT #
   脚本执行主循环(Script Dispatcher)整体结构初始化全局状态
@@ -30,27 +34,6 @@ COMMENT #
   这是RE2脚本系统的每帧主调度循环,遍历4个活跃实体槽,对每个实体连续派发脚本
   指令直到挂起或结束。配合调用栈支持子程序跳转,配合全局中断标志支持紧急退出,
   是整个脚本引擎的心脏。
-
-  struct VMContext
-  {
-      uint8_t pad0[1];
-      uint8_t running;      // +1  🔥(Evt_end 用到)
-      uint8_t callDepth;    // +2
-      uint8_t frameType[];  // +3
-      uint8_t type[];       // +4
-      uint8_t counter[];    // +8
-
-      // do-while
-      uint32_t addrTable[];
-      uint32_t targetTable[];
-      uint8_t  typeTable[];
-
-      // 控制流 frame(32字节一组)
-      uint8_t  frameTable[];   // +196
-      uint8_t* framePtr;       // +320
-      uint32_t retAddr[];      // +324
-      uint8_t* pc;             // +28
-  };
 #
 ALIGN 16
 FUN_450100 PROC
@@ -225,6 +208,7 @@ FUN_4e41e0 ENDP
 
 ; 虚拟机指令集里的一个 NOP 或者对齐跳过指令
 FUN_4e4280 PROC
+    call_c_vm vm_nop
             mov EAX,DWORD PTR [ESP+4]
             mov ECX,DWORD PTR [EAX+28]
             inc ECX
@@ -235,6 +219,7 @@ FUN_4e4280 ENDP
 
 
 $L_4e42a0 PROC
+    call_c_vm vm_jump
             mov EAX,DWORD PTR [ESP+4]
             movsx ECX,BYTE PTR [EAX+2]
             test ECX,ECX
@@ -260,6 +245,7 @@ $L_4e42a0 ENDP
 
 
 $L_4e42f0 PROC
+    call_c_vm vm_end
             mov EAX,DWORD PTR [ESP+4]
             mov ECX,DWORD PTR [EAX+28]
             inc ECX
@@ -894,6 +880,7 @@ $L_4e4840 ENDP
 
 
 $L_4e48d0 PROC
+    call_c_vm vm_vib_set0
             mov EAX,DWORD PTR [ESP+4]
             mov ECX,DWORD PTR [EAX+28]
             add ECX,6
@@ -7609,6 +7596,7 @@ $L_4e8fd0 ENDP
 
 
 $L_4e9000 PROC
+    call_c_vm vm_vib_fade_set
             mov EAX,DWORD PTR [ESP+4]
             mov ECX,DWORD PTR [EAX+28]
             add ECX,8
@@ -7616,3 +7604,128 @@ $L_4e9000 PROC
             mov EAX,1
             ret 
 $L_4e9000 ENDP
+
+
+
+; 这就是虚拟机里的 CALL 或 GOTO 指令
+ALIGN 16
+FUN_4e3e30 PROC
+
+            mov EDX,DWORD PTR [$L_695dfc]
+            mov EAX,DWORD PTR [ESP+8]
+            xor ECX,ECX
+            push ESI
+            mov CX,WORD PTR [EDX+EAX*2]
+            mov EAX,DWORD PTR [ESP+8]
+            add ECX,EDX
+            movsx ESI,BYTE PTR [EAX+2]
+            add ESI,6
+            mov BYTE PTR [EAX+1],1
+            shl ESI,5
+            add ESI,EAX
+            mov BYTE PTR [EAX],0
+            mov DWORD PTR [EAX+320],ESI
+            mov BYTE PTR [EAX+4],255
+            mov BYTE PTR [EAX+8],255
+            mov DWORD PTR [EAX+28],ECX
+            pop ESI
+            ret 
+FUN_4e3e30 ENDP
+
+
+; 分配/查找一个空闲的上下文槽位,然后跳转到 FUN_4e3e30 初始化它。
+; 从池中分配一个空闲上下文,初始化后开始执行指定子程序。
+; 这是虚拟机里的并发/协程创建指令,类似于创建一个新的执行线程或fiber。
+; FUN_4e3e70(uint8_t subroutine_id, uint8_t arg2)
+ALIGN 16
+FUN_4e3e70 PROC
+
+            mov AL,BYTE PTR [$L_695e08]
+            test AL,AL
+            mov EAX,DWORD PTR [ESP+4]
+            jne $L_4e3eae
+
+            cmp EAX,10
+            jb $L_4e3edd
+
+            mov CL,BYTE PTR [$L_694c89]
+            mov EAX,2
+            test CL,CL
+            je $L_4e3edd
+
+            mov ECX,OFFSET $L_694c89
+$L_4e3e96::
+
+            cmp EAX,9
+            je $L_4e3edd
+
+            inc EAX
+            add ECX,372
+            cmp EAX,10
+            jae $L_4e3f0c
+
+            cmp BYTE PTR [ECX],0
+            jne $L_4e3e96
+
+            jmp $L_4e3edd
+$L_4e3eae::
+
+            cmp EAX,14
+            jb $L_4e3edd
+
+            mov CL,BYTE PTR [$L_695829]
+            mov EAX,10
+            test CL,CL
+            je $L_4e3edd
+
+            mov ECX,OFFSET $L_695829
+$L_4e3ec7::
+
+            cmp EAX,13
+            je $L_4e3edd
+
+            inc EAX
+            add ECX,372
+            cmp EAX,14
+            jae $L_4e3f0c
+
+            cmp BYTE PTR [ECX],0
+            jne $L_4e3ec7
+$L_4e3edd::
+
+            mov ECX,EAX
+            push EDI
+            shl ECX,5
+            sub ECX,EAX
+            lea EAX,DWORD PTR [ECX+ECX*2]
+            mov ECX,6
+            lea EDX,DWORD PTR [EAX*4+$L_6949a0]
+            xor EAX,EAX
+            mov DWORD PTR [ESP+8],EDX
+            lea EDI,DWORD PTR [EDX+344]
+            mov BYTE PTR [EDX+2],0
+
+            rep stosd DWORD PTR ES:[EDI]
+
+            pop EDI
+            jmp FUN_4e3e30
+$L_4e3f0c::
+            ret 
+FUN_4e3e70 ENDP
+
+
+; 这条指令就是虚拟机的 CALL subroutine_id
+ALIGN 16
+FUN_4e3e10 PROC
+
+            push EDI
+            mov ECX,32
+            xor EAX,EAX
+            mov EDI,OFFSET $L_9887f0
+
+            rep stosd DWORD PTR ES:[EDI]
+
+            mov BYTE PTR [$L_98e4c8],AL
+            pop EDI
+            ret 
+FUN_4e3e10 ENDP
