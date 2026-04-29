@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <ddraw.h>
 #include "imports.h"
+#include "draw.h"
 
 
 int __stdcall find3ddev(GUID *guid, LPSTR lpDesc, 

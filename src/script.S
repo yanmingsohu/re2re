@@ -6199,6 +6199,7 @@ $L_4e8177::
 $L_4e8150 ENDP
 
 
+; bgm_control
 $L_4e8180 PROC
             push ESI
             push EDI

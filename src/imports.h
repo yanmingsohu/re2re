@@ -23,5 +23,5 @@ extern void**           pt_hWnd;
 extern int32_t*         pt_win_w;
 extern int32_t*         pt_win_h;
 extern void*            pt_win_proc_fn;
-extern VMStatusSlot*    pt_vm_slot_flag;  // $L_6949a1 
+extern VMStatusSlot     pt_vm_slot_flag[256][4];  // $L_6949a1 
 extern uint16_t**       pt_vm_base;       // $L_695dfc

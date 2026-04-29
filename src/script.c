@@ -30,14 +30,13 @@ int vm_jump(struct VMContext* ctx) {
     return 2;
   }
 
-  int8_t offset = ctx->jump_offsets[ctx->jump_index];
   uint8_t idx = ctx->jump_index - 1;
-  
+  int8_t offset = ctx->jump_offsets[idx];
   ctx->pc = ctx->jump_table[idx];
   ctx->jump_index = idx;
   
   // 计算目标地址: base(196) + (offset + idx*8)*4
-  ctx->call_stack = &ctx->snap[5 + idx] + offset * 4;
+  ctx->call_stack = (uint32_t*)&ctx->snap[5 + idx].slots[offset];
   return 1;
 }
 
@@ -61,7 +60,7 @@ int vm_store(struct VMContext* ctx) { return 0; }
 int vm_kill(struct VMContext* ctx) { 
   // msgc("vm_kill");
   int index = VMI(ctx, flag).flag_idx;
-  pt_vm_slot_flag[index].active = 0;
+  pt_vm_slot_flag[index][0].active = 0;
   ctx->pc += 2;
   return 1;
 }
@@ -77,7 +76,7 @@ void _vm_jump(struct VMContext* ctx, uint32_t index) {
   ctx->event_status = 0;
   ctx->jump_offsets[1] = 255; // [EAX+4]
   ctx->data_buffer[0] = 255; // [EAX+8]
-  ctx->call_stack = &ctx->snap[ctx->jump_index + 6];
+  ctx->call_stack = (uint32_t *) &ctx->snap[ctx->jump_index + 6];
 }
 
 
@@ -87,7 +86,7 @@ int vm_call(struct VMContext* ctx) {
   // printf("vm_call %x ", inst->jump.offset);
   ctx->pc += 4;
   ctx->jump_offsets[ctx->jump_index + 1]++;
-  *ctx->call_stack = (uint32_t*)(ctx->pc + inst->jump.offset);
+  *ctx->call_stack = (uint32_t)(uintptr_t)(ctx->pc + inst->jump.offset);
   ctx->call_stack++;
   return 1;
 }
@@ -108,8 +107,7 @@ int vm_yield(struct VMContext* ctx) {
   msgc("vm_yield");
   ctx->call_stack--;
   ctx->pc += 2;
-  uint8_t* target = (uint8_t*)((uintptr_t)ctx + ctx->jump_index + 4);
-  (*target)--;
+  ctx->jump_offsets[ctx->jump_index + 1]--;
   return 1;
 }
 

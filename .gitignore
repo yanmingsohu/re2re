@@ -2,6 +2,7 @@ node_modules
 tmp
 venv
 fish-speech
+ps_disk
 
 __pycache__
 .token

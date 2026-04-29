@@ -19,3 +19,16 @@ FUN_FIX_SCREEN PROC
       pop EDX
       ret
 FUN_FIX_SCREEN ENDP
+
+
+fun_show_this Proc
+      push ECX
+      push OFFSET this_str
+      call DWORD PTR [__imp__printf]
+      pop ECX
+      pop ECX
+      ret
+
+this_str DB 'This: %x '
+         DB 0Ah, 00h
+fun_show_this Endp

@@ -1,3 +1,6 @@
+// Disassembled by yanming.J
+// SPDX-License-Identifier: MIT
+// https://github.com/yanmingsohu/
 #include <stdint.h>
 #pragma pack(push, 1)
 
@@ -11,6 +14,7 @@ typedef struct {
       uint8_t   reserved0;  // offset 7: 对齐填充 (1 byte)
       uint16_t  locals[12]; // offset 8-31: 局部变量区 (12 * 2 = 24 bytes)
     };
+    uint32_t slots[7];
     uint8_t data[28];
   };
 } VMJumpSnapshot;

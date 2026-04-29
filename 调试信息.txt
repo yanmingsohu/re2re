@@ -483,6 +483,18 @@ DWORD 0(52[0-9A-Fa-f]+)h
   call DWORD PTR [__imp__printf]
 
 ================================================================
+$L_8c7024 变量使用位置汇总
+行号	函数	操作类型	功能描述
+450	FUN_4021c0	add ECX,OFFSET	作为参数传递给 FUN_4164c0，添加渲染资源
+533	FUN_402290	lea ECX	初始化调用 FUN_416510 初始化渲染器
+1966	FUN_402bc0	lea ECX	作为参数传给 FUN_40c800，渲染提交
+1994	FUN_402bc0	lea ECX	作为参数传给 FUN_404e40，渲染器结束处理
+5190	FUN_4050c0	lea ECX	调用 FUN_416620，初始化 DirectDraw Surface
+5243	FUN_405320	lea EBP	关键位置：设置 EBP 为 $L_8c7024 地址，后续用于 _InitDirectDrawDisplay 的输出参数
+426070	未知	add ECX,OFFSET	功能未知
+426143	未知	add ECX,OFFSET
+
+================================================================
 
 ```c
 // Resident Evil 2 VM Context Structure
