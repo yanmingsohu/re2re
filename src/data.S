@@ -90131,7 +90131,7 @@ $L_53d488           BYTE 0c8H
           BYTE 016H
           BYTE 000H
           BYTE 000H
-$L_53d4b8           DWORD FUN_4f6030
+$L_53d4b8           DWORD FUN_4f6030 ; 0
           DWORD $L_4f6060
           DWORD $L_4f6070
           DWORD $L_4f60a0
@@ -90141,7 +90141,7 @@ $L_53d4b8           DWORD FUN_4f6030
           DWORD $L_4f62e0
           DWORD $L_4f6390
           DWORD $L_4f6440
-          DWORD $L_4f64b0
+          DWORD $L_4f64b0 ; 10
           DWORD $L_4f64e0
           DWORD $L_4f64f0
           DWORD $L_4f6520
@@ -90151,34 +90151,34 @@ $L_53d4b8           DWORD FUN_4f6030
           DWORD FUN_47e3b0
           DWORD $L_4f6550
           DWORD FUN_47e3b0
-          DWORD FUN_47e3b0
+          DWORD FUN_47e3b0 ; 20
           DWORD $L_4f6660
           DWORD $L_4f4100
           DWORD $L_4f4400
           DWORD $L_4f4100
           DWORD $L_4f4400
-          DWORD $L_4f3e70
-          BYTE 070H
-          BYTE 03eH
-          BYTE 04fH
+          DWORD $L_4f3e70 ; 26
+
+          BYTE 000H
+          BYTE 000H
+          BYTE 000H
           BYTE 000H
 
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
+
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
+
           BYTE 000H
           BYTE 000H
           BYTE 000H
           BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
-          BYTE 000H
+
           BYTE 000H
           BYTE 000H
           BYTE 000H
